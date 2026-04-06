@@ -18,20 +18,32 @@ const t = useTranslations(lang);
       {t.portfolio.items.map((item) => (
         <a
           href={item.link}
-          class="group block p-6 bg-white border border-gray-200 rounded-2xl hover:border-indigo-300 hover:shadow-sm transition-all"
+          target={item.link !== "#" ? "_blank" : undefined}
+          rel={item.link !== "#" ? "noopener noreferrer" : undefined}
+          class="group block p-4 bg-white border border-gray-200 rounded-2xl hover:border-indigo-300 hover:shadow-sm transition-all"
         >
-          <div class="w-full h-32 bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl mb-5"></div>
-          <h3 class="font-semibold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors">
+          <div class="w-full h-36 rounded-xl mb-4 overflow-hidden bg-gradient-to-br from-indigo-50 to-indigo-100">
+            {item.image && (
+              <img
+                src={item.image}
+                alt={item.title}
+                class="w-full h-full object-cover"
+              />
+            )}
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-1.5 group-hover:text-indigo-600 transition-colors">
             {item.title}
           </h3>
-          <p class="text-sm text-gray-500 mb-4 leading-relaxed">{item.description}</p>
-          <div class="flex flex-wrap gap-1.5">
-            {item.tags.map((tag) => (
-              <span class="px-2 py-0.5 bg-indigo-50 text-indigo-600 text-xs rounded-md font-medium">
-                {tag}
-              </span>
-            ))}
-          </div>
+          <p class="text-sm text-gray-500 mb-3 leading-relaxed">{item.description}</p>
+          {item.tags.length > 0 && (
+            <div class="flex flex-wrap gap-1.5">
+              {item.tags.map((tag) => (
+                <span class="px-2 py-0.5 bg-indigo-50 text-indigo-600 text-xs rounded-md font-medium">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
         </a>
       ))}
     </div>
