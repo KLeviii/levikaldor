@@ -29,7 +29,82 @@ const {
     <title>{title}</title>
   </head>
   <body class="text-gray-900 antialiased">
+    <canvas id="constellation-canvas" aria-hidden="true"></canvas>
     <slot />
+    <script>
+      // ── Constellation background ──
+      const canvas = document.getElementById("constellation-canvas") as HTMLCanvasElement;
+      const ctx = canvas.getContext("2d")!;
+
+      const POINT_COUNT = 70;
+      const MAX_DIST = 160;
+      const SPEED = 0.25;
+      const DOT_RADIUS = 1.5;
+      const DOT_OPACITY = 0.35;
+      const LINE_OPACITY = 0.12;
+      const COLOR = "99, 102, 241"; // indigo-500
+
+      type Point = { x: number; y: number; vx: number; vy: number };
+      let points: Point[] = [];
+      let W = 0, H = 0;
+
+      function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      }
+
+      function init() {
+        resize();
+        points = Array.from({ length: POINT_COUNT }, () => ({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          vx: (Math.random() - 0.5) * SPEED,
+          vy: (Math.random() - 0.5) * SPEED,
+        }));
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+
+        for (const p of points) {
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < 0 || p.x > W) p.vx *= -1;
+          if (p.y < 0 || p.y > H) p.vy *= -1;
+        }
+
+        for (let i = 0; i < points.length; i++) {
+          for (let j = i + 1; j < points.length; j++) {
+            const dx = points[i].x - points[j].x;
+            const dy = points[i].y - points[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < MAX_DIST) {
+              const alpha = LINE_OPACITY * (1 - dist / MAX_DIST);
+              ctx.beginPath();
+              ctx.strokeStyle = `rgba(${COLOR}, ${alpha})`;
+              ctx.lineWidth = 1;
+              ctx.moveTo(points[i].x, points[i].y);
+              ctx.lineTo(points[j].x, points[j].y);
+              ctx.stroke();
+            }
+          }
+        }
+
+        for (const p of points) {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, DOT_RADIUS, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${COLOR}, ${DOT_OPACITY})`;
+          ctx.fill();
+        }
+
+        requestAnimationFrame(draw);
+      }
+
+      init();
+      draw();
+      window.addEventListener("resize", init, { passive: true });
+    </script>
+
     <script>
       const observer = new IntersectionObserver(
         (entries) => {
