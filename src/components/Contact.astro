@@ -60,34 +60,12 @@ const t = useTranslations(lang);
       </div>
       <button
         type="submit"
-        id="submit-btn"
-        class="px-6 py-3 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 transition-colors disabled:opacity-60"
-        data-send={t.contact.send}
-        data-sending={t.contact.sending}
+        disabled
+        title="Hamarosan elérhető"
+        class="px-6 py-3 bg-indigo-600 text-white rounded-xl font-medium opacity-50 cursor-not-allowed"
       >
         {t.contact.send}
       </button>
     </form>
   </div>
 </section>
-
-<script>
-  const form = document.getElementById("contact-form") as HTMLFormElement;
-  const btn = document.getElementById("submit-btn") as HTMLButtonElement;
-
-  form?.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    btn.disabled = true;
-    btn.textContent = btn.dataset.sending ?? "...";
-
-    // Placeholder: valós form submission (Formspree/Netlify) ide kerül
-    await new Promise((r) => setTimeout(r, 1000));
-
-    btn.textContent = "✓";
-    setTimeout(() => {
-      btn.disabled = false;
-      btn.textContent = btn.dataset.send ?? "";
-      form.reset();
-    }, 2000);
-  });
-</script>

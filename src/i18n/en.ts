@@ -7,7 +7,7 @@ export const en = {
   },
   hero: {
     greeting: "Hi, I'm",
-    name: "Levi Kálmán",
+    name: "Levi Káldor",
     tagline: "Web Developer & Designer",
     description: "I build modern, fast and thoughtful websites — from concept to launch.",
     cta: "Get in touch",

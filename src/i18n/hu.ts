@@ -7,7 +7,7 @@ export const hu = {
   },
   hero: {
     greeting: "Szia, én vagyok",
-    name: "Kálmán Levi",
+    name: "Káldor Levi",
     tagline: "Webfejlesztő & dizájner",
     description: "Modern, gyors és átgondolt weboldalakat készítek – az ötlettől az éles indulásig.",
     cta: "Vedd fel a kapcsolatot",
