@@ -33,3 +33,10 @@ const otherLangHref = lang === "hu" ? "/en/" : "/";
     </a>
   </nav>
 </header>
+
+<script>
+  const header = document.querySelector("header");
+  window.addEventListener("scroll", () => {
+    header?.classList.toggle("nav-scrolled", window.scrollY > 10);
+  }, { passive: true });
+</script>

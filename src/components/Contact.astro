@@ -12,10 +12,12 @@ const t = useTranslations(lang);
 
 <section id="contact" class="py-20">
   <div class="max-w-5xl mx-auto px-4">
-    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">{t.contact.title}</h2>
-    <p class="text-gray-500 mb-12">{t.contact.subtitle}</p>
+    <h2 data-animate class="text-3xl md:text-4xl font-bold text-gray-900 mb-3">{t.contact.title}</h2>
+    <p data-animate style="transition-delay: 80ms" class="text-gray-500 mb-12">{t.contact.subtitle}</p>
     <form
       id="contact-form"
+      data-animate
+      style="transition-delay: 160ms"
       class="max-w-xl space-y-5"
       novalidate
     >

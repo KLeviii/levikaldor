@@ -12,8 +12,8 @@ const t = useTranslations(lang);
 
 <section id="services" class="py-20">
   <div class="max-w-5xl mx-auto px-4">
-    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-12">{t.services.title}</h2>
-    <div class="grid sm:grid-cols-2 gap-6">
+    <h2 data-animate class="text-3xl md:text-4xl font-bold text-gray-900 mb-12">{t.services.title}</h2>
+    <div data-stagger class="grid sm:grid-cols-2 gap-6">
       {t.services.items.map((item) => (
         <div class="p-6 border border-gray-200 rounded-2xl hover:border-indigo-300 hover:shadow-sm transition-all group">
           <span class="text-3xl mb-4 block">{item.icon}</span>

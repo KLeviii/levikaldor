@@ -14,13 +14,13 @@ const skills = ["HTML & CSS", "JavaScript", "TypeScript", "Astro", "React", "Nod
 
 <section id="about" class="py-20 bg-gray-50">
   <div class="max-w-5xl mx-auto px-4">
-    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-12">{t.about.title}</h2>
+    <h2 data-animate class="text-3xl md:text-4xl font-bold text-gray-900 mb-12">{t.about.title}</h2>
     <div class="grid md:grid-cols-2 gap-12 items-start">
       <div>
-        <p class="text-gray-600 text-lg leading-relaxed mb-5">{t.about.p1}</p>
-        <p class="text-gray-600 text-lg leading-relaxed">{t.about.p2}</p>
+        <p data-animate class="text-gray-600 text-lg leading-relaxed mb-5">{t.about.p1}</p>
+        <p data-animate style="transition-delay: 100ms" class="text-gray-600 text-lg leading-relaxed">{t.about.p2}</p>
       </div>
-      <div>
+      <div data-animate style="transition-delay: 150ms">
         <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-widest mb-5">
           {t.about.skills}
         </h3>

@@ -20,5 +20,30 @@ const { title = "Kálmán Levi – Webfejlesztő", lang = "hu" } = Astro.props;
   </head>
   <body class="bg-white text-gray-900 antialiased">
     <slot />
+    <script>
+      // Scroll-in animáció – egyszer aktiválódik, többé nem
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const el = entry.target;
+
+            if (el.hasAttribute("data-stagger")) {
+              Array.from(el.children).forEach((child, i) => {
+                (child as HTMLElement).style.transitionDelay = `${i * 100}ms`;
+              });
+            }
+
+            el.classList.add("is-visible");
+            observer.unobserve(el);
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      document
+        .querySelectorAll("[data-animate], [data-stagger]")
+        .forEach((el) => observer.observe(el));
+    </script>
   </body>
 </html>
