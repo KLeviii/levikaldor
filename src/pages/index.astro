@@ -7,9 +7,174 @@ import Services from "../components/Services.astro";
 import Portfolio from "../components/Portfolio.astro";
 import Contact from "../components/Contact.astro";
 import Footer from "../components/Footer.astro";
+
+const SITE = "https://levikaldor.hu";
+
+// ─── JSON-LD ─────────────────────────────────────────────────────────────────
+
+const schemaPerson = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": `${SITE}/#person`,
+  name: "Káldor Levente",
+  jobTitle: "Webfejlesztő",
+  description:
+    "Egyedi weboldal és webshop fejlesztés vállalkozásoknak – modern technológiákkal, SEO-optimalizáltan.",
+  url: SITE,
+  sameAs: ["https://github.com/KLeviii"],
+  knowsAbout: [
+    "Web Development",
+    "SEO",
+    "JavaScript",
+    "TypeScript",
+    "Vue.js",
+    "Nuxt",
+    "Astro",
+    "React",
+    "Node.js",
+    "Tailwind CSS",
+  ],
+  knowsLanguage: ["hu", "en"],
+};
+
+const schemaWebSite = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${SITE}/#website`,
+  url: SITE,
+  name: "Káldor Levente – Webfejlesztő",
+  description:
+    "Egyedi weboldal és webshop fejlesztés vállalkozásoknak – modern, gyors, keresőoptimalizált.",
+  inLanguage: "hu-HU",
+  publisher: { "@id": `${SITE}/#person` },
+  potentialAction: {
+    "@type": "SearchAction",
+    target: {
+      "@type": "EntryPoint",
+      urlTemplate: `${SITE}/?s={search_term_string}`,
+    },
+    "query-input": "required name=search_term_string",
+  },
+};
+
+const schemaProfessionalService = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "@id": `${SITE}/#business`,
+  name: "Káldor Levente – Webfejlesztő",
+  description:
+    "Egyedi weboldal és webshop fejlesztés, SEO-optimalizálás, karbantartás vállalkozásoknak.",
+  url: SITE,
+  founder: { "@id": `${SITE}/#person` },
+  priceRange: "$$",
+  currenciesAccepted: "HUF, EUR",
+  areaServed: {
+    "@type": "Country",
+    name: "Hungary",
+  },
+  serviceType: [
+    "Weboldal készítés",
+    "Webshop fejlesztés",
+    "SEO optimalizálás",
+    "Karbantartás",
+  ],
+  // AggregateRating – frissítsd valós adatokra mielőtt élesbe kerül
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "5",
+    bestRating: "5",
+    worstRating: "1",
+    ratingCount: "3",
+  },
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Webfejlesztési szolgáltatások",
+    itemListElement: [
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Weboldal készítés",
+          description:
+            "Egyedi, reszponzív weboldal fejlesztése modern technológiákkal – mobilon és asztali gépen egyaránt tökéletesen működő, gyors betöltésű oldalak.",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Webshop fejlesztés",
+          description:
+            "Teljes körű webshop fejlesztés: termékkezelés, online fizetési integráció, szállítói kapcsolat – minden, ami az online értékesítéshez kell.",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Sebesség és SEO optimalizálás",
+          description:
+            "Google Core Web Vitals optimalizálás, technikai SEO, oldalsebességi audit – hogy magasabban jelenj meg a találati listán.",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Karbantartás és support",
+          description:
+            "Rendszeres biztonsági frissítések, hibaelhárítás és technikai támogatás – hogy az oldalad mindig megbízhatóan működjön.",
+        },
+      },
+    ],
+  },
+};
+
+const schemaPortfolio = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Portfólió – Káldor Levente",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      item: {
+        "@type": "WebSite",
+        name: "Laguna Lovasklub",
+        description:
+          "Lovarda weboldala – rendezvények, online foglalás, galéria és adminfelület.",
+        url: "https://lagunalovasklub.hu",
+      },
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      item: {
+        "@type": "WebApplication",
+        name: "klevi.hu",
+        description: "Kvízek, eszközök és játékok – ingyenesen, reklám nélkül.",
+        url: "https://klevi.hu",
+        applicationCategory: "GameApplication",
+        operatingSystem: "Web",
+      },
+    },
+  ],
+};
 ---
 
-<Layout lang="hu" title="Káldor Levente – Webfejlesztő">
+<Layout
+  lang="hu"
+  title="Káldor Levente – Webfejlesztő | Weboldal és webshop készítés"
+  description="Káldor Levente webfejlesztő – egyedi weboldal és webshop készítés, keresőoptimalizálás (SEO), karbantartás. Modern, gyors weboldalak vállalkozásoknak."
+  ogImage="/og/home-hu.png"
+  canonical="https://levikaldor.hu/"
+  alternates={[
+    { lang: "hu", href: "https://levikaldor.hu/" },
+    { lang: "en", href: "https://levikaldor.hu/en/" },
+    { lang: "x-default", href: "https://levikaldor.hu/" },
+  ]}
+  jsonld={[schemaPerson, schemaWebSite, schemaProfessionalService, schemaPortfolio]}
+>
   <Navbar lang="hu" home />
   <main>
     <Hero lang="hu" />

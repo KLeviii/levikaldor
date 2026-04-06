@@ -3,6 +3,8 @@ import Layout from "../layouts/Layout.astro";
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
 
+const SITE = "https://levikaldor.hu";
+
 const faqs = [
   {
     q: "Mennyibe kerül egy weboldal elkészítése?",
@@ -55,23 +57,56 @@ const schemaFaq = {
     acceptedAnswer: { "@type": "Answer", text: a },
   })),
 };
+
+const schemaBreadcrumb = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Főoldal",
+      item: `${SITE}/`,
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "GYIK",
+      item: `${SITE}/gyik/`,
+    },
+  ],
+};
 ---
 
 <Layout
   lang="hu"
   title="GYIK – Weboldal készítés kérdések és válaszok | Káldor Levente"
   description="Válaszok a leggyakoribb kérdésekre: weboldal ár, elkészítési idő, SEO, reszponzív dizájn, webshop fejlesztés – Káldor Levente webfejlesztő."
+  ogImage="/og/gyik.png"
+  canonical="https://levikaldor.hu/gyik/"
+  alternates={[
+    { lang: "hu", href: "https://levikaldor.hu/gyik/" },
+    { lang: "x-default", href: "https://levikaldor.hu/gyik/" },
+  ]}
+  jsonld={[schemaFaq, schemaBreadcrumb]}
 >
-  <script type="application/ld+json" set:html={JSON.stringify(schemaFaq)} />
-
   <Navbar lang="hu" />
 
   <main class="pt-32 pb-20">
     <div class="max-w-3xl mx-auto px-4">
-      <a href="/" class="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-indigo-600 transition-colors mb-10">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
-        Vissza a főoldalra
-      </a>
+      <nav aria-label="Breadcrumb" class="mb-10">
+        <ol class="flex items-center gap-2 text-sm text-gray-400">
+          <li>
+            <a href="/" class="hover:text-indigo-600 transition-colors">Főoldal</a>
+          </li>
+          <li aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </li>
+          <li>
+            <span class="text-gray-600 font-medium" aria-current="page">GYIK</span>
+          </li>
+        </ol>
+      </nav>
 
       <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
         Gyakran ismételt kérdések

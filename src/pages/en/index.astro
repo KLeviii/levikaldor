@@ -7,9 +7,166 @@ import Services from "../../components/Services.astro";
 import Portfolio from "../../components/Portfolio.astro";
 import Contact from "../../components/Contact.astro";
 import Footer from "../../components/Footer.astro";
+
+const SITE = "https://levikaldor.hu";
+
+// ─── JSON-LD ─────────────────────────────────────────────────────────────────
+
+const schemaPerson = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "@id": `${SITE}/#person`,
+  name: "Levente Káldor",
+  jobTitle: "Web Developer",
+  description:
+    "Custom website and webshop development for businesses – with modern tech, fast load times, SEO-optimised.",
+  url: `${SITE}/en/`,
+  sameAs: ["https://github.com/KLeviii"],
+  knowsAbout: [
+    "Web Development",
+    "SEO",
+    "JavaScript",
+    "TypeScript",
+    "Vue.js",
+    "Nuxt",
+    "Astro",
+    "React",
+    "Node.js",
+    "Tailwind CSS",
+  ],
+  knowsLanguage: ["hu", "en"],
+};
+
+const schemaWebSite = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": `${SITE}/#website`,
+  url: SITE,
+  name: "Levente Káldor – Web Developer",
+  description:
+    "Custom website and webshop development for businesses – modern, fast, SEO-optimised.",
+  inLanguage: "en-US",
+  publisher: { "@id": `${SITE}/#person` },
+};
+
+const schemaProfessionalService = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "@id": `${SITE}/#business`,
+  name: "Levente Káldor – Web Developer",
+  description:
+    "Custom website and webshop development, SEO optimisation, and maintenance for businesses.",
+  url: `${SITE}/en/`,
+  founder: { "@id": `${SITE}/#person` },
+  priceRange: "$$",
+  currenciesAccepted: "HUF, EUR",
+  areaServed: {
+    "@type": "Country",
+    name: "Hungary",
+  },
+  serviceType: [
+    "Website Development",
+    "Webshop Development",
+    "SEO Optimisation",
+    "Website Maintenance",
+  ],
+  // AggregateRating – update with real data before going live
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "5",
+    bestRating: "5",
+    worstRating: "1",
+    ratingCount: "3",
+  },
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Web Development Services",
+    itemListElement: [
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Website Development",
+          description:
+            "Custom, responsive website development with modern technologies – fast, mobile-perfect sites that work flawlessly on every device.",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Webshop Development",
+          description:
+            "Full-featured online store development: product management, payment integration, shipping – everything you need to sell online.",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Performance & SEO",
+          description:
+            "Google Core Web Vitals optimisation, technical SEO, page speed audit – to rank higher in search results and attract more visitors.",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Maintenance & Support",
+          description:
+            "Regular security updates, bug fixes and technical support – so your website always runs reliably and securely.",
+        },
+      },
+    ],
+  },
+};
+
+const schemaPortfolio = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Portfolio – Levente Káldor",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      item: {
+        "@type": "WebSite",
+        name: "Laguna Horse Club",
+        description:
+          "Equestrian club website – events, online booking, gallery and admin panel.",
+        url: "https://lagunalovasklub.hu",
+      },
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      item: {
+        "@type": "WebApplication",
+        name: "klevi.hu",
+        description: "Quizzes, tools and games – free, no ads.",
+        url: "https://klevi.hu",
+        applicationCategory: "GameApplication",
+        operatingSystem: "Web",
+      },
+    },
+  ],
+};
 ---
 
-<Layout lang="en" title="Levente Káldor – Web Developer">
+<Layout
+  lang="en"
+  title="Levente Káldor – Web Developer | Website & Webshop Development"
+  description="Levente Káldor web developer – custom website and webshop development, SEO optimisation, maintenance. Modern, fast websites for businesses."
+  ogImage="/og/home-en.png"
+  canonical="https://levikaldor.hu/en/"
+  alternates={[
+    { lang: "hu", href: "https://levikaldor.hu/" },
+    { lang: "en", href: "https://levikaldor.hu/en/" },
+    { lang: "x-default", href: "https://levikaldor.hu/" },
+  ]}
+  jsonld={[schemaPerson, schemaWebSite, schemaProfessionalService, schemaPortfolio]}
+>
   <Navbar lang="en" home />
   <main>
     <Hero lang="en" />
