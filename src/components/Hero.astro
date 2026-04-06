@@ -104,7 +104,13 @@ const t = useTranslations(lang);
     requestAnimationFrame(draw);
   }
 
+  let prevW = window.innerWidth;
   init();
   draw();
-  window.addEventListener("resize", init, { passive: true });
+  window.addEventListener("resize", () => {
+    if (window.innerWidth !== prevW) {
+      prevW = window.innerWidth;
+      init();
+    }
+  }, { passive: true });
 </script>
