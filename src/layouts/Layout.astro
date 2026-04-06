@@ -1,17 +1,38 @@
 ---
 import "../styles/global.css";
 
+interface Alternate {
+  lang: string;
+  href: string;
+}
+
 interface Props {
   title?: string;
   description?: string;
   lang?: string;
+  ogImage?: string;
+  canonical?: string;
+  alternates?: Alternate[];
+  noindex?: boolean;
+  jsonld?: object | object[];
 }
 
 const {
   title = "Káldor Levente – Webfejlesztő | Weboldal és webshop készítés",
   description = "Káldor Levente webfejlesztő – egyedi weboldal és webshop készítés, keresőoptimalizálás (SEO), karbantartás. Modern, gyors weboldalak vállalkozásoknak.",
   lang = "hu",
+  ogImage = "/og/home-hu.png",
+  canonical,
+  alternates = [],
+  noindex = false,
+  jsonld,
 } = Astro.props;
+
+const SITE = "https://levikaldor.hu";
+const canonicalUrl = canonical ?? SITE + Astro.url.pathname;
+const ogImageUrl = ogImage.startsWith("http") ? ogImage : SITE + ogImage;
+const ogLocale = lang === "hu" ? "hu_HU" : "en_US";
+const ogLocaleAlt = lang === "hu" ? "en_US" : "hu_HU";
 ---
 
 <!doctype html>
@@ -19,14 +40,49 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary meta -->
+    <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content="Káldor Levente" />
+    {noindex
+      ? <meta name="robots" content="noindex, nofollow" />
+      : <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    }
+
+    <!-- Canonical + hreflang -->
+    <link rel="canonical" href={canonicalUrl} />
+    {alternates.map((alt) => (
+      <link rel="alternate" hreflang={alt.lang} href={alt.href} />
+    ))}
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Káldor Levente – Webfejlesztő" />
+    <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
-    <meta property="og:locale" content={lang === "hu" ? "hu_HU" : "en_US"} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:locale:alternate" content={ogLocaleAlt} />
+
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={title} />
+
+    <!-- JSON-LD structured data -->
+    {jsonld && (
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(Array.isArray(jsonld) ? jsonld : [jsonld])} />
+    )}
+
+    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{title}</title>
   </head>
   <body class="text-gray-900 antialiased">
     <slot />
