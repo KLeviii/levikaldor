@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://levikaldor.hu/sitemap-index.xml
