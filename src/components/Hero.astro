@@ -10,8 +10,31 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 ---
 
-<section id="hero" class="min-h-screen flex items-center pt-20">
-  <div class="max-w-5xl mx-auto px-4 py-20">
+<section
+  id="hero"
+  class="relative min-h-screen flex items-center pt-20 overflow-hidden bg-white"
+  style="background-image: radial-gradient(circle, #94a3b8 1.5px, transparent 1.5px); background-size: 24px 24px;"
+>
+  <!-- Blob 1 – indigo, bal felső -->
+  <div
+    class="pointer-events-none absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full opacity-50"
+    style="background: radial-gradient(circle, #6366f1 0%, transparent 70%); filter: blur(40px);"
+  ></div>
+  <!-- Blob 2 – sky, jobb alsó -->
+  <div
+    class="pointer-events-none absolute -bottom-32 -right-32 w-[500px] h-[500px] rounded-full opacity-40"
+    style="background: radial-gradient(circle, #38bdf8 0%, transparent 70%); filter: blur(50px);"
+  ></div>
+  <!-- Blob 3 – violet, középen -->
+  <div
+    class="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full opacity-30"
+    style="background: radial-gradient(circle, #a78bfa 0%, transparent 70%); filter: blur(60px);"
+  ></div>
+
+  <!-- Fehér fade az alján -->
+  <div class="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-white to-transparent"></div>
+
+  <div class="relative max-w-5xl mx-auto px-4 py-20">
     <p class="text-indigo-600 font-medium mb-2 text-lg">{t.hero.greeting}</p>
     <h1 class="text-5xl md:text-7xl font-bold text-gray-900 mb-4 leading-tight">
       {t.hero.name}
