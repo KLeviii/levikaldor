@@ -51,7 +51,7 @@ export const hu = {
     viewProject: "Projekt megtekintése",
     items: [
       {
-        title: "Laguna Lovas Klub",
+        title: "Laguna Lovasklub",
         description: "Lovarda weboldala – rendezvények, online foglalás, galéria és adminfelület.",
         tags: ["Nuxt 3", "Vue", "Bootstrap 5", "Supabase", "Sass"],
         link: "https://lagunalovasklub.hu",
