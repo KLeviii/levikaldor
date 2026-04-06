@@ -53,7 +53,7 @@ export const en = {
         title: "Laguna Horse Club",
         description: "Equestrian club website – events, booking, gallery.",
         tags: ["Nuxt 3", "Vue", "Bootstrap 5", "Supabase", "Sass"],
-        link: "#",
+        link: "https://lagunalovasklub.hu",
         image: "/portfolio/laguna-og.png",
       },
       {
@@ -62,13 +62,6 @@ export const en = {
         tags: ["HTML", "CSS", "JavaScript"],
         link: "https://klevi.hu",
         image: "/portfolio/klevi-og.png",
-      },
-      {
-        title: "Project 3",
-        description: "Description coming soon.",
-        tags: [],
-        link: "#",
-        image: null,
       },
     ],
   },

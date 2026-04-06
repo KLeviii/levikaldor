@@ -53,7 +53,7 @@ export const hu = {
         title: "Laguna Lovas Klub",
         description: "Lovarda weboldala – rendezvények, foglalás, galéria.",
         tags: ["Nuxt 3", "Vue", "Bootstrap 5", "Supabase", "Sass"],
-        link: "#",
+        link: "https://lagunalovasklub.hu",
         image: "/portfolio/laguna-og.png",
       },
       {
@@ -62,13 +62,6 @@ export const hu = {
         tags: ["HTML", "CSS", "JavaScript"],
         link: "https://klevi.hu",
         image: "/portfolio/klevi-og.png",
-      },
-      {
-        title: "Projekt 3",
-        description: "Leírás hamarosan.",
-        tags: [],
-        link: "#",
-        image: null,
       },
     ],
   },
