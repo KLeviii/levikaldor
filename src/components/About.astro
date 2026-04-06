@@ -1,0 +1,37 @@
+---
+import type { Lang } from "../i18n";
+import { useTranslations } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const skills = ["HTML & CSS", "JavaScript", "TypeScript", "Astro", "React", "Node.js", "Tailwind CSS", "Git"];
+---
+
+<section id="about" class="py-20 bg-gray-50">
+  <div class="max-w-5xl mx-auto px-4">
+    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-12">{t.about.title}</h2>
+    <div class="grid md:grid-cols-2 gap-12 items-start">
+      <div>
+        <p class="text-gray-600 text-lg leading-relaxed mb-5">{t.about.p1}</p>
+        <p class="text-gray-600 text-lg leading-relaxed">{t.about.p2}</p>
+      </div>
+      <div>
+        <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-widest mb-5">
+          {t.about.skills}
+        </h3>
+        <div class="flex flex-wrap gap-2">
+          {skills.map((skill) => (
+            <span class="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm text-gray-700 font-medium">
+              {skill}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

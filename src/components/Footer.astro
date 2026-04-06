@@ -1,0 +1,36 @@
+---
+import type { Lang } from "../i18n";
+import { useTranslations } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+---
+
+<footer class="py-10 border-t border-gray-100">
+  <div class="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <p class="text-sm text-gray-400">
+      © {year} Kálmán Levi. {t.footer.rights}
+    </p>
+    <div class="flex items-center gap-5">
+      <a
+        href="https://github.com/KLeviii"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-gray-400 hover:text-gray-700 transition-colors text-sm font-medium"
+      >
+        GitHub
+      </a>
+      <a
+        href="mailto:levi@example.com"
+        class="text-gray-400 hover:text-gray-700 transition-colors text-sm font-medium"
+      >
+        Email
+      </a>
+    </div>
+  </div>
+</footer>
