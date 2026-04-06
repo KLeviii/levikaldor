@@ -37,7 +37,19 @@ const otherLangHref = lang === "hu" ? "/en/" : "/";
 
 <script>
   const header = document.querySelector("header");
-  window.addEventListener("scroll", () => {
-    header?.classList.toggle("nav-scrolled", window.scrollY > 10);
-  }, { passive: true });
+  const isHome = ["/" , "/en/"].includes(window.location.pathname);
+
+  function updateNav() {
+    const atTop = window.scrollY < 10;
+    if (isHome && atTop) {
+      header?.classList.add("nav-top");
+      header?.classList.remove("nav-scrolled");
+    } else {
+      header?.classList.remove("nav-top");
+      header?.classList.toggle("nav-scrolled", window.scrollY > 10);
+    }
+  }
+
+  updateNav();
+  window.addEventListener("scroll", updateNav, { passive: true });
 </script>

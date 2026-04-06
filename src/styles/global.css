@@ -35,12 +35,33 @@ body {
   transform: translateY(0);
 }
 
-/* ── Navbar árnyék scroll után ── */
+/* ── Navbar ── */
 header {
-  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  transition: box-shadow 0.4s ease, border-color 0.4s ease, background-color 0.4s ease;
 }
 
 header.nav-scrolled {
   box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.07);
   border-bottom-color: transparent;
+}
+
+header.nav-top {
+  background-color: transparent !important;
+  border-bottom-color: transparent;
+  box-shadow: none;
+}
+
+/* ── FAQ accordion ── */
+.faq-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.faq-body > div {
+  overflow: hidden;
+}
+
+details.is-open .faq-body {
+  grid-template-rows: 1fr;
 }

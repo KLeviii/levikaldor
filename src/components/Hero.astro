@@ -12,7 +12,7 @@ const t = useTranslations(lang);
 
 <section
   id="hero"
-  class="relative min-h-screen flex items-center pt-20 overflow-hidden bg-white"
+  class="relative min-h-screen flex items-center overflow-hidden bg-white"
   style="background-image: radial-gradient(circle, #d1d5db 1px, transparent 1px); background-size: 28px 28px;"
 >
   <div class="pointer-events-none absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full opacity-50"
@@ -23,7 +23,7 @@ const t = useTranslations(lang);
     style="background: radial-gradient(circle, #a78bfa 0%, transparent 70%); filter: blur(60px);"></div>
   <div class="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-white to-transparent"></div>
 
-  <div class="relative max-w-5xl mx-auto px-4 py-20">
+  <div class="relative max-w-5xl mx-auto px-4 pt-36 pb-24">
     <p data-animate style="transition-delay: 0ms" class="text-indigo-600 font-medium mb-2 text-lg">{t.hero.greeting}</p>
     <h1 data-animate style="transition-delay: 100ms" class="text-5xl md:text-7xl font-bold text-gray-900 mb-4 leading-tight">
       {t.hero.name}
