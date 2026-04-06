@@ -1,0 +1,122 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+
+const faqs = [
+  {
+    q: "Mennyibe kerül egy weboldal elkészítése?",
+    a: "Az ár a projekt összetettségétől, a szükséges funkciókötl és a dizájn igényektől függ. Egy egyszerű bemutatkozó oldal és egy komplex webshop árazása jelentősen eltér egymástól. Vedd fel velem a kapcsolatot, és ingyenes árajánlatot küldök.",
+  },
+  {
+    q: "Mennyi idő alatt készül el a weboldalam?",
+    a: "Egy egyszerűbb bemutatkozó weboldal általában 1–3 hét alatt elkészül. Összetettebb projekteknél – például webshop, adminfelület vagy egyedi funkciók esetén – ez 4–8 hét is lehet, a projekt méretétől és az igényektől függően.",
+  },
+  {
+    q: "Szükségem lesz domainre és tárhelyre?",
+    a: "Igen, a weboldalhoz saját domain (pl. ceged.hu) és tárhely szükséges. Ezek kiválasztásában, regisztrálásában és beállításában szívesen segítek – akár teljesen elvégzem helyetted.",
+  },
+  {
+    q: "Mi az a reszponzív weboldal?",
+    a: "Egy reszponzív weboldal mobilon, tableten és asztali gépen egyaránt jól néz ki és jól működik. Ma ez alapkövetelmény: a Google is előnyben részesíti a mobilbarát oldalakat a keresési találatoknál.",
+  },
+  {
+    q: "Mit jelent a keresőoptimalizálás (SEO)?",
+    a: "A SEO (Search Engine Optimization) azon technikák összessége, amelyek segítségével a weboldalad előrébb kerül a Google találati listáján. Magában foglalja a megfelelő kulcsszavak használatát, a gyors betöltési időt, a strukturált adatokat, a mobilbarát kialakítást és a minőségi tartalmat.",
+  },
+  {
+    q: "Mi a különbség weboldal és webshop között?",
+    a: "A weboldal elsősorban bemutatkozásra, tájékoztatásra és kapcsolatfelvételre szolgál. A webshop ezzel szemben online értékesítésre alkalmas: kosárkezelés, fizetési felület, rendeléskövetés és termékkezelő rendszer tartozik hozzá.",
+  },
+  {
+    q: "Hogyan zajlik az együttműködés folyamata?",
+    a: "Az együttműködés általában így néz ki: (1) Ingyenes konzultáció és igényfelmérés, (2) Árajánlat és megállapodás, (3) Dizájn és fejlesztés, (4) Tesztelés és visszajelzési körök, (5) Éles indulás és átadás. Az egész folyamat során folyamatos kommunikáció és átláthatóság jellemzi a munkánkat.",
+  },
+  {
+    q: "Van lehetőség folyamatos karbantartásra az átadás után?",
+    a: "Igen, az elkészült oldal folyamatos karbantartását és frissítését is vállalom. Ez magában foglalhat biztonsági frissítéseket, tartalomfrissítéseket, kisebb módosításokat és technikai támogatást.",
+  },
+  {
+    q: "Szükségem van weboldalra, ha már van Facebook-oldalam?",
+    a: "Igen. A közösségi média oldalak nem helyettesítik a saját weboldalt: a weboldaladon teljes kontrollt gyakorolsz a tartalom, a dizájn és az adatok felett. Ráadásul a Google is a weboldalad alapján sorol be – egy Facebook-oldal nem javítja az organikus keresési helyezésedet.",
+  },
+  {
+    q: "Milyen technológiákkal dolgozol?",
+    a: "Főként Vue / Nuxt 3, Astro, React és Node.js alapú projektekben dolgozom, de egyszerűbb oldalakhoz vanilla HTML, CSS és JavaScript is megoldást jelent. A stílushoz Tailwind CSS-t, Bootstrap-et és Sass-t egyaránt használok. Az adatbázis oldalon Supabase tapasztalatom van.",
+  },
+];
+
+const schemaFaq = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map(({ q, a }) => ({
+    "@type": "Question",
+    name: q,
+    acceptedAnswer: { "@type": "Answer", text: a },
+  })),
+};
+---
+
+<Layout
+  lang="hu"
+  title="GYIK – Weboldal készítés kérdések és válaszok | Káldor Levente"
+  description="Válaszok a leggyakoribb kérdésekre: weboldal ár, elkészítési idő, SEO, reszponzív dizájn, webshop fejlesztés – Káldor Levente webfejlesztő."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(schemaFaq)} />
+
+  <Navbar lang="hu" />
+
+  <main class="pt-32 pb-20">
+    <div class="max-w-3xl mx-auto px-4">
+      <a href="/" class="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-indigo-600 transition-colors mb-10">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Vissza a főoldalra
+      </a>
+
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        Gyakran ismételt kérdések
+      </h1>
+      <p class="text-gray-500 text-lg mb-16">
+        Weboldal készítés, webshop fejlesztés, SEO – minden, amit tudni érdemes.
+      </p>
+
+      <div class="space-y-4">
+        {faqs.map((faq, i) => (
+          <details
+            data-animate
+            style={`transition-delay: ${i * 40}ms`}
+            class="group border border-gray-200 rounded-2xl overflow-hidden open:border-indigo-200"
+          >
+            <summary class="flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none font-medium text-gray-900 hover:text-indigo-600 transition-colors">
+              {faq.q}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18" height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="flex-shrink-0 transition-transform group-open:rotate-180 text-gray-400"
+              >
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </summary>
+            <p class="px-6 pb-5 text-gray-600 leading-relaxed">{faq.a}</p>
+          </details>
+        ))}
+      </div>
+
+      <div class="mt-16 p-8 bg-indigo-50 rounded-2xl text-center">
+        <h2 class="text-xl font-bold text-gray-900 mb-2">Nem találtad meg a választ?</h2>
+        <p class="text-gray-600 mb-6">Írj nekem és személyesen válaszolok.</p>
+        <a href="/#contact" class="inline-block px-6 py-3 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 transition-colors">
+          Kapcsolatfelvétel
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <Footer lang="hu" />
+</Layout>
