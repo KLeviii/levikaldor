@@ -1,0 +1,183 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar.astro";
+import Footer from "../../components/Footer.astro";
+
+const SITE = "https://levikaldor.hu";
+
+const faqs = [
+  {
+    q: "How much does a website cost?",
+    a: "The price depends on the complexity of the project, the required features and design needs. A simple landing page and a complex webshop are priced very differently. Get in touch and I'll send you a free quote.",
+  },
+  {
+    q: "How long does it take to build a website?",
+    a: "A simpler landing page usually takes 1–3 weeks. For more complex projects – such as a webshop, admin panel or custom features – it can take 4–8 weeks, depending on the size and requirements.",
+  },
+  {
+    q: "Do I need a domain and hosting?",
+    a: "Yes, you need your own domain (e.g. yourbusiness.com) and hosting for the website. I'm happy to help you choose, register and set them up – or I can take care of the whole process for you.",
+  },
+  {
+    q: "What is a responsive website?",
+    a: "A responsive website looks and works great on mobile, tablet and desktop alike. This is a baseline requirement today – Google also favours mobile-friendly sites in search results.",
+  },
+  {
+    q: "What does SEO mean?",
+    a: "SEO (Search Engine Optimisation) is the set of techniques that help your website rank higher on Google. It includes using the right keywords, fast load times, structured data, mobile-friendly design and quality content.",
+  },
+  {
+    q: "What is the difference between a website and a webshop?",
+    a: "A website is primarily used for presentation, information and contact. A webshop, on the other hand, is designed for online sales: it includes cart management, payment gateway, order tracking and product management.",
+  },
+  {
+    q: "How does the collaboration process work?",
+    a: "The collaboration typically looks like this: (1) Free consultation and requirements gathering, (2) Quote and agreement, (3) Design and development, (4) Testing and feedback rounds, (5) Launch and handover. Throughout the entire process, we maintain continuous communication and transparency.",
+  },
+  {
+    q: "Is ongoing maintenance available after handover?",
+    a: "Yes, I also offer ongoing maintenance and updates for completed sites. This can include security updates, content updates, minor modifications and technical support.",
+  },
+  {
+    q: "Do I need a website if I already have a Facebook page?",
+    a: "Yes. Social media pages are no substitute for your own website: on your website you have full control over content, design and data. Moreover, Google ranks you based on your website – a Facebook page does not improve your organic search ranking.",
+  },
+  {
+    q: "What technologies do you work with?",
+    a: "I mainly work on Vue / Nuxt 3, Astro, React and Node.js based projects, but vanilla HTML, CSS and JavaScript also works for simpler sites. For styling I use Tailwind CSS, Bootstrap and Sass. On the database side I have experience with Supabase.",
+  },
+];
+
+const schemaFaq = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map(({ q, a }) => ({
+    "@type": "Question",
+    name: q,
+    acceptedAnswer: { "@type": "Answer", text: a },
+  })),
+};
+
+const schemaBreadcrumb = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: `${SITE}/en/`,
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "FAQ",
+      item: `${SITE}/en/faq/`,
+    },
+  ],
+};
+---
+
+<Layout
+  lang="en"
+  title="FAQ – Website Development Questions & Answers | Levente Káldor"
+  description="Answers to the most common questions: website pricing, timeline, SEO, responsive design, webshop development – Levente Káldor web developer."
+  ogImage="/og/gyik.png"
+  canonical="https://levikaldor.hu/en/faq/"
+  alternates={[
+    { lang: "hu", href: "https://levikaldor.hu/gyik/" },
+    { lang: "en", href: "https://levikaldor.hu/en/faq/" },
+    { lang: "x-default", href: "https://levikaldor.hu/gyik/" },
+  ]}
+  jsonld={[schemaFaq, schemaBreadcrumb]}
+>
+  <Navbar lang="en" />
+
+  <main class="pt-32 pb-20">
+    <div class="max-w-3xl mx-auto px-4">
+      <nav aria-label="Breadcrumb" class="mb-10">
+        <ol class="flex items-center gap-2 text-sm text-gray-400">
+          <li>
+            <a href="/en/" class="hover:text-indigo-600 transition-colors">Home</a>
+          </li>
+          <li aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </li>
+          <li>
+            <span class="text-gray-600 font-medium" aria-current="page">FAQ</span>
+          </li>
+        </ol>
+      </nav>
+
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        Frequently Asked Questions
+      </h1>
+      <p class="text-gray-500 text-lg mb-16">
+        Website development, webshop creation, SEO – everything worth knowing.
+      </p>
+
+      <div class="space-y-3">
+        {faqs.map((faq, i) => (
+          <div
+            data-animate
+            style={`transition-delay: ${i * 40}ms`}
+            class="faq-item border border-gray-200 rounded-2xl overflow-hidden transition-colors duration-300"
+          >
+            <button
+              type="button"
+              class="faq-trigger w-full flex items-center justify-between gap-4 px-6 py-5 text-left font-medium text-gray-900 hover:text-indigo-600 transition-colors select-none"
+            >
+              <span>{faq.q}</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18" height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="faq-chevron shrink-0 text-gray-400 transition-transform duration-300"
+              >
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </button>
+            <div class="faq-body">
+              <div>
+                <p class="px-6 pb-5 pt-1 text-gray-600 leading-relaxed">{faq.a}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <script>
+        document.querySelectorAll(".faq-item").forEach((item) => {
+          const trigger = item.querySelector(".faq-trigger")!;
+          const chevron = item.querySelector(".faq-chevron") as HTMLElement;
+
+          trigger.addEventListener("click", () => {
+            const isOpen = item.classList.contains("is-open");
+            if (isOpen) {
+              item.classList.remove("is-open", "border-indigo-200");
+              chevron.style.transform = "rotate(0deg)";
+            } else {
+              item.classList.add("is-open", "border-indigo-200");
+              chevron.style.transform = "rotate(180deg)";
+            }
+          });
+        });
+      </script>
+
+      <div class="mt-16 p-8 bg-indigo-50 rounded-2xl text-center">
+        <h2 class="text-xl font-bold text-gray-900 mb-2">Didn't find your answer?</h2>
+        <p class="text-gray-600 mb-6">Write to me and I'll reply personally.</p>
+        <a href="/en/#contact" class="inline-block px-6 py-3 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 transition-colors">
+          Get in touch
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <Footer lang="en" />
+</Layout>

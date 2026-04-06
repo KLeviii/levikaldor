@@ -5,6 +5,7 @@ export const en = {
     portfolio: "Portfolio",
     contact: "Contact",
     faq: "FAQ",
+    menu: "Menu",
   },
   hero: {
     greeting: "Hi, I'm",
@@ -80,5 +81,6 @@ export const en = {
   },
   footer: {
     rights: "All rights reserved.",
+    name: "Levente Káldor",
   },
 };

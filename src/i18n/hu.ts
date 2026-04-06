@@ -5,6 +5,7 @@ export const hu = {
     portfolio: "Portfólió",
     contact: "Kapcsolat",
     faq: "GYIK",
+    menu: "Menü",
   },
   hero: {
     greeting: "Szia, én vagyok",
@@ -80,5 +81,6 @@ export const hu = {
   },
   footer: {
     rights: "Minden jog fenntartva.",
+    name: "Káldor Levente",
   },
 };
