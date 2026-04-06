@@ -4,25 +4,27 @@ import { useTranslations } from "../i18n";
 
 interface Props {
   lang: Lang;
+  home?: boolean;
 }
 
-const { lang } = Astro.props;
+const { lang, home = false } = Astro.props;
 const t = useTranslations(lang);
 const otherLang = lang === "hu" ? "en" : "hu";
 const otherLangHref = lang === "hu" ? "/en/" : "/";
+const base = home ? "" : (lang === "hu" ? "/" : "/en/");
 ---
 
 <header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur border-b border-gray-100">
   <nav class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-    <a href="#hero" class="hover:opacity-80 transition-opacity">
+    <a href={base + "#hero"} class="hover:opacity-80 transition-opacity">
       <img src="/favicon.svg" alt="KL" class="w-9 h-9" />
     </a>
 
     <ul class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
-      <li><a href="#about" class="hover:text-indigo-600 transition-colors">{t.nav.about}</a></li>
-      <li><a href="#services" class="hover:text-indigo-600 transition-colors">{t.nav.services}</a></li>
-      <li><a href="#portfolio" class="hover:text-indigo-600 transition-colors">{t.nav.portfolio}</a></li>
-      <li><a href="#contact" class="hover:text-indigo-600 transition-colors">{t.nav.contact}</a></li>
+      <li><a href={base + "#about"} class="hover:text-indigo-600 transition-colors">{t.nav.about}</a></li>
+      <li><a href={base + "#services"} class="hover:text-indigo-600 transition-colors">{t.nav.services}</a></li>
+      <li><a href={base + "#portfolio"} class="hover:text-indigo-600 transition-colors">{t.nav.portfolio}</a></li>
+      <li><a href={base + "#contact"} class="hover:text-indigo-600 transition-colors">{t.nav.contact}</a></li>
       <li><a href={lang === "hu" ? "/gyik/" : "/en/faq/"} class="hover:text-indigo-600 transition-colors">{t.nav.faq}</a></li>
     </ul>
 
@@ -37,7 +39,7 @@ const otherLangHref = lang === "hu" ? "/en/" : "/";
 
 <script>
   const header = document.querySelector("header");
-  const isHome = ["/" , "/en/"].includes(window.location.pathname);
+  const isHome = ["/", "/en/"].includes(window.location.pathname);
 
   function updateNav() {
     const atTop = window.scrollY < 10;

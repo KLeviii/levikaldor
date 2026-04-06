@@ -82,13 +82,16 @@ const schemaFaq = {
 
       <div class="space-y-3">
         {faqs.map((faq, i) => (
-          <details
+          <div
             data-animate
             style={`transition-delay: ${i * 40}ms`}
-            class="faq-item border border-gray-200 rounded-2xl overflow-hidden"
+            class="faq-item border border-gray-200 rounded-2xl overflow-hidden transition-colors duration-300"
           >
-            <summary class="faq-summary flex items-center justify-between gap-4 px-6 py-5 cursor-pointer list-none font-medium text-gray-900 hover:text-indigo-600 transition-colors select-none">
-              {faq.q}
+            <button
+              type="button"
+              class="faq-trigger w-full flex items-center justify-between gap-4 px-6 py-5 text-left font-medium text-gray-900 hover:text-indigo-600 transition-colors select-none"
+            >
+              <span>{faq.q}</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="18" height="18"
@@ -98,37 +101,33 @@ const schemaFaq = {
                 stroke-width="2"
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                class="faq-chevron shrink-0 text-gray-400 transition-transform duration-400"
+                class="faq-chevron shrink-0 text-gray-400 transition-transform duration-300"
               >
                 <path d="M6 9l6 6 6-6"/>
               </svg>
-            </summary>
+            </button>
             <div class="faq-body">
               <div>
                 <p class="px-6 pb-5 pt-1 text-gray-600 leading-relaxed">{faq.a}</p>
               </div>
             </div>
-          </details>
+          </div>
         ))}
       </div>
 
       <script>
-        document.querySelectorAll(".faq-item").forEach((details) => {
-          const summary = details.querySelector(".faq-summary")!;
-          const chevron = details.querySelector(".faq-chevron") as HTMLElement;
+        document.querySelectorAll(".faq-item").forEach((item) => {
+          const trigger = item.querySelector(".faq-trigger")!;
+          const chevron = item.querySelector(".faq-chevron") as HTMLElement;
 
-          summary.addEventListener("click", (e) => {
-            e.preventDefault();
-            const isOpen = details.classList.contains("is-open");
-
+          trigger.addEventListener("click", () => {
+            const isOpen = item.classList.contains("is-open");
             if (isOpen) {
-              details.classList.remove("is-open");
+              item.classList.remove("is-open", "border-indigo-200");
               chevron.style.transform = "rotate(0deg)";
-              details.classList.remove("border-indigo-200");
             } else {
-              details.classList.add("is-open");
+              item.classList.add("is-open", "border-indigo-200");
               chevron.style.transform = "rotate(180deg)";
-              details.classList.add("border-indigo-200");
             }
           });
         });
