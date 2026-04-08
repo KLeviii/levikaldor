@@ -26,7 +26,6 @@ const techStack = [
   { slug: "git",         label: "Git",          color: "#F05032" },
 ];
 
-const row2 = [...techStack].reverse();
 ---
 
 <section id="about" class="py-20 hex-bg">
@@ -43,16 +42,19 @@ const row2 = [...techStack].reverse();
       {t.about.skills}
     </p>
 
-    <!-- Sor 1 – balra görgő -->
-    <!-- .marquee-wrapper vágja le vízszintesen, a .marquee-row-nak van padding a scale() számára -->
-    <div class="marquee-wrapper mb-1">
+    <!-- Screen reader: statikus lista -->
+    <ul class="sr-only">
+      {techStack.map(({ label }) => <li>{label}</li>)}
+    </ul>
+
+    <!-- Vizuális marquee – dekoratív, screen reader elől rejtve -->
+    <div class="marquee-wrapper mb-1" aria-hidden="true">
       <div class="marquee-row">
         <div class="marquee-track" id="track-1">
-          {[...techStack, ...techStack].map(({ slug, label, color }) => (
+          {[...techStack, ...techStack, ...techStack].map(({ slug, label, color }) => (
             <div
               class="tech-icon mx-5"
-              title={label}
-              aria-label={label}
+              data-tooltip={label}
               data-color={color}
             >
               <span
@@ -127,15 +129,11 @@ const row2 = [...techStack].reverse();
     transform: scale(1.25);
   }
 
-  /* Ha a sorban valamelyik ikon hovered, a többiek halványodnak */
-  .marquee-row.has-hover .tech-icon:not(.is-hovered) .icon-mask {
-    opacity: 0.25;
-  }
 
-  /* ── Keyframes ── */
+  /* ── Keyframes – JS állítja be a pixel értéket ── */
   @keyframes marquee-left {
     from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
+    to   { transform: translateX(var(--marquee-offset, -33.333%)); }
   }
 </style>
 
@@ -149,18 +147,20 @@ const row2 = [...techStack].reverse();
     const track = row.querySelector<HTMLElement>('.marquee-track');
     if (!track) return;
 
+    // Egy szett ikonjainak pontos pixelszélessége (1/3 a track-ből)
+    const oneSetWidth = track.scrollWidth / 3;
+    track.style.setProperty('--marquee-offset', `-${oneSetWidth}px`);
+
     const icons = row.querySelectorAll<HTMLElement>('.tech-icon');
 
     icons.forEach((icon) => {
       icon.addEventListener('mouseenter', () => {
         track.style.animationPlayState = 'paused';
-        row.classList.add('has-hover');
         icon.classList.add('is-hovered');
       });
 
       icon.addEventListener('mouseleave', () => {
         icon.classList.remove('is-hovered');
-        row.classList.remove('has-hover');
         track.style.animationPlayState = 'running';
       });
     });

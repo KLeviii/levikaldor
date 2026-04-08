@@ -15,7 +15,7 @@ const base = home ? "" : (lang === "hu" ? "/" : "/en/");
 ---
 
 <header class="fixed top-0 left-0 right-0 z-60 bg-white/90 dark:bg-gray-950/90 backdrop-blur border-b border-gray-100 dark:border-gray-800 transition-all duration-300">
-  <nav class="px-4 py-4 flex items-center justify-between">
+  <nav class="px-4 py-4 flex items-center justify-between" aria-label={lang === "hu" ? "Főnavigáció" : "Main navigation"}>
     <a href={base + "#hero"} id="nav-logo" class="hover:opacity-80 transition-all duration-300">
       <img src="/favicon.svg" alt="KL" class="w-9 h-9 transition-all duration-300" id="nav-logo-img" />
     </a>
@@ -30,22 +30,21 @@ const base = home ? "" : (lang === "hu" ? "/" : "/en/");
       <li><a href={base + "#portfolio"} class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t.nav.portfolio}</a></li>
       <li><a href={base + "#contact"} class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t.nav.contact}</a></li>
       <li><a href={lang === "hu" ? "/gyik/" : "/en/faq/"} class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t.nav.faq}</a></li>
+      <li><a href={lang === "hu" ? "/arak/" : "/en/pricing/"} class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t.nav.pricing}</a></li>
     </ul>
 
     <div class="flex items-center gap-3">
-      <!-- Dark mode toggle -->
+      <!-- Dark mode toggle (desktop only in header) -->
       <button
         id="theme-toggle"
         aria-label="Téma váltása"
-        class="flex items-center justify-center w-9 h-9 rounded-lg border border-gray-200 dark:border-gray-700
+        class="hidden md:flex items-center justify-center w-9 h-9 rounded-lg border border-gray-200 dark:border-gray-700
                text-gray-600 dark:text-gray-300 hover:border-indigo-400 hover:text-indigo-600
                dark:hover:border-indigo-500 dark:hover:text-indigo-400 transition-all"
       >
-        <!-- Moon (light mode-ban látható) -->
         <svg id="icon-moon" class="w-4 h-4 dark:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
         </svg>
-        <!-- Sun (dark mode-ban látható) -->
         <svg id="icon-sun" class="w-4 h-4 hidden dark:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="5"/>
           <line x1="12" y1="1" x2="12" y2="3"/>
@@ -59,9 +58,11 @@ const base = home ? "" : (lang === "hu" ? "/" : "/en/");
         </svg>
       </button>
 
+      <!-- Language switch (desktop only in header) -->
       <a
         href={otherLangHref}
-        class="text-sm font-medium px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700
+        aria-label={lang === "hu" ? "Switch to English" : "Váltás magyarra"}
+        class="hidden md:inline-block text-sm font-medium px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700
                text-gray-600 dark:text-gray-300 hover:border-indigo-400 hover:text-indigo-600
                dark:hover:border-indigo-500 dark:hover:text-indigo-400 transition-all"
       >
@@ -92,22 +93,58 @@ const base = home ? "" : (lang === "hu" ? "/" : "/en/");
 <!-- Drawer: sits below header (z-50 < z-60), full screen, top-0 -->
 <div
   id="drawer"
-  class="fixed top-0 right-0 h-full w-full bg-white dark:bg-gray-950 z-50 translate-x-full transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col"
+  class="fixed top-0 right-0 h-full w-full bg-white/85 dark:bg-gray-950/85 backdrop-blur-xl z-50 translate-x-full transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col"
 >
   <!-- Spacer matching navbar height -->
   <div class="shrink-0" style="height: 65px;"></div>
 
   <!-- Links: vertically centered in remaining space -->
-  <nav class="flex flex-col items-center justify-center gap-1 flex-1">
+  <nav class="flex flex-col items-center justify-center gap-1 flex-1" aria-label={lang === "hu" ? "Mobilnavigáció" : "Mobile navigation"}>
     <a href={base + "#about"}   class="drawer-link w-full text-center py-4 text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t.nav.about}</a>
     <a href={base + "#services"} class="drawer-link w-full text-center py-4 text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t.nav.services}</a>
     <a href={base + "#portfolio"} class="drawer-link w-full text-center py-4 text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t.nav.portfolio}</a>
     <a href={base + "#contact"}  class="drawer-link w-full text-center py-4 text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t.nav.contact}</a>
     <a href={lang === "hu" ? "/gyik/" : "/en/faq/"} class="drawer-link w-full text-center py-4 text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t.nav.faq}</a>
+    <a href={lang === "hu" ? "/arak/" : "/en/pricing/"} class="drawer-link w-full text-center py-4 text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t.nav.pricing}</a>
   </nav>
 
-  <!-- Footer credit -->
-  <div class="px-6 py-6 border-t border-gray-100 dark:border-gray-800 text-center">
+  <!-- Drawer footer: theme + lang + credit -->
+  <div class="px-6 py-6 border-t border-gray-100 dark:border-gray-800 flex flex-col items-center gap-4">
+    <div class="flex items-center gap-3">
+      <!-- Mobile theme toggle -->
+      <button
+        id="theme-toggle-mobile"
+        aria-label="Téma váltása"
+        class="flex items-center justify-center w-10 h-10 rounded-lg border border-gray-200 dark:border-gray-700
+               text-gray-600 dark:text-gray-300 hover:border-indigo-400 hover:text-indigo-600
+               dark:hover:border-indigo-500 dark:hover:text-indigo-400 transition-all"
+      >
+        <svg class="w-5 h-5 dark:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="w-5 h-5 hidden dark:block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+      <!-- Mobile language switch -->
+      <a
+        href={otherLangHref}
+        aria-label={lang === "hu" ? "Switch to English" : "Váltás magyarra"}
+        class="text-sm font-medium px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700
+               text-gray-600 dark:text-gray-300 hover:border-indigo-400 hover:text-indigo-600
+               dark:hover:border-indigo-500 dark:hover:text-indigo-400 transition-all"
+      >
+        {otherLang.toUpperCase()}
+      </a>
+    </div>
     <p class="text-xs text-gray-400 dark:text-gray-500">{new Date().getFullYear()} {t.footer.name} © {t.footer.rights}</p>
   </div>
 </div>
@@ -123,6 +160,8 @@ const base = home ? "" : (lang === "hu" ? "/" : "/en/");
   const hbMid     = document.getElementById("hb-mid")!;
   const hbBottom  = document.getElementById("hb-bottom")!;
 
+  const headerEl = document.querySelector("header")!;
+
   function openDrawer() {
     drawer.classList.remove("translate-x-full");
     backdrop.classList.remove("opacity-0", "pointer-events-none");
@@ -135,6 +174,9 @@ const base = home ? "" : (lang === "hu" ? "/" : "/en/");
     logoImg.classList.add("w-12", "h-12");
     menuLabel.classList.remove("opacity-0");
     menuLabel.classList.add("opacity-100");
+    // Always show glass effect when drawer is open
+    headerEl.classList.remove("nav-top");
+    headerEl.classList.add("nav-scrolled");
   }
 
   function closeDrawer() {
@@ -149,6 +191,13 @@ const base = home ? "" : (lang === "hu" ? "/" : "/en/");
     logoImg.classList.add("w-9", "h-9");
     menuLabel.classList.remove("opacity-100");
     menuLabel.classList.add("opacity-0");
+    // Restore natural scroll-based state
+    const atTop = window.scrollY < 10;
+    const isHome = ["/", "/en/"].includes(window.location.pathname);
+    if (isHome && atTop) {
+      headerEl.classList.add("nav-top");
+      headerEl.classList.remove("nav-scrolled");
+    }
   }
 
   toggle.addEventListener("click", () => {
@@ -156,7 +205,22 @@ const base = home ? "" : (lang === "hu" ? "/" : "/en/");
   });
   backdrop.addEventListener("click", closeDrawer);
   drawerLinks.forEach(link => link.addEventListener("click", closeDrawer));
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDrawer(); });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") { closeDrawer(); toggle.focus(); }
+    // Focus trap
+    if (e.key === "Tab" && !drawer.classList.contains("translate-x-full")) {
+      const focusable = Array.from(drawer.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), [tabindex="0"]'
+      )).filter(el => !el.closest("[aria-hidden]"));
+      if (!focusable.length) return;
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault(); last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault(); first.focus();
+      }
+    }
+  });
 </script>
 
 <script>
@@ -179,9 +243,10 @@ const base = home ? "" : (lang === "hu" ? "/" : "/en/");
 </script>
 
 <script>
-  const themeToggle = document.getElementById("theme-toggle");
-  themeToggle?.addEventListener("click", () => {
-    const isDark = document.documentElement.classList.toggle("dark");
-    localStorage.setItem("kl-theme", isDark ? "dark" : "light");
+  document.querySelectorAll("#theme-toggle, #theme-toggle-mobile").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const isDark = document.documentElement.classList.toggle("dark");
+      localStorage.setItem("kl-theme", isDark ? "dark" : "light");
+    });
   });
 </script>

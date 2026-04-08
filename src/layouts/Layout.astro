@@ -95,12 +95,14 @@ const ogLocaleAlt = lang === "hu" ? "en_US" : "hu_HU";
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body class="text-gray-900 dark:text-white antialiased">
+    <a href="#main-content" class="skip-link">{lang === "hu" ? "Ugrás a tartalomra" : "Skip to content"}</a>
+
     <!-- Scroll progress bar -->
     <div
       id="scroll-progress"
       aria-hidden="true"
-      class="fixed left-0 z-55 h-0.5 bg-indigo-500/80 pointer-events-none"
-      style="top: 65px; width: 0%;"
+      class="fixed left-0 z-55 h-1 pointer-events-none"
+      style="top: 65px; width: 0%; background: #6366f1; box-shadow: 0 0 8px 1px #6366f1cc;"
     ></div>
 
     <!-- Scroll-to-top gomb -->
@@ -119,7 +121,64 @@ const ogLocaleAlt = lang === "hu" ? "en_US" : "hu_HU";
       </svg>
     </button>
 
-    <slot />
+    <main id="main-content">
+      <slot />
+    </main>
+    <script>
+      // ── Globális tooltip ──
+      const tip = document.createElement("div");
+      tip.id = "kl-tooltip";
+      document.body.appendChild(tip);
+
+      const OFFSET = 14;
+      let hideTimer: ReturnType<typeof setTimeout>;
+
+      function showTip(text: string, x: number, y: number) {
+        clearTimeout(hideTimer);
+        tip.textContent = text;
+        positionTip(x, y);
+        tip.classList.add("visible");
+      }
+
+      function positionTip(x: number, y: number) {
+        const tw = tip.offsetWidth;
+        const th = tip.offsetHeight;
+        let left = x + OFFSET;
+        let top  = y - th - OFFSET;
+        if (left + tw > window.innerWidth - 8) left = x - tw - OFFSET;
+        if (top < 8) top = y + OFFSET;
+        tip.style.left = left + "px";
+        tip.style.top  = top  + "px";
+      }
+
+      function hideTip() {
+        tip.classList.remove("visible");
+      }
+
+      document.addEventListener("mouseover", (e) => {
+        const el = (e.target as HTMLElement).closest("[data-tooltip]") as HTMLElement | null;
+        if (el) showTip(el.dataset.tooltip!, e.clientX, e.clientY);
+      });
+      document.addEventListener("mousemove", (e) => {
+        if (tip.classList.contains("visible")) positionTip(e.clientX, e.clientY);
+      });
+      document.addEventListener("mouseout", (e) => {
+        const el = (e.target as HTMLElement).closest("[data-tooltip]");
+        if (el) hideTip();
+      });
+      document.addEventListener("focusin", (e) => {
+        const el = (e.target as HTMLElement).closest("[data-tooltip]") as HTMLElement | null;
+        if (el) {
+          const r = el.getBoundingClientRect();
+          showTip(el.dataset.tooltip!, r.left + r.width / 2, r.top);
+        }
+      });
+      document.addEventListener("focusout", (e) => {
+        const el = (e.target as HTMLElement).closest("[data-tooltip]");
+        if (el) hideTip();
+      });
+    </script>
+
     <script>
       // Scroll-in animáció
       const observer = new IntersectionObserver(

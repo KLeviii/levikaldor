@@ -1,0 +1,71 @@
+---
+import type { Lang } from "../i18n";
+import { useTranslations } from "../i18n";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section id="stats" class="py-16 hex-bg">
+  <div class="max-w-5xl mx-auto px-4">
+    <h2
+      data-animate
+      class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12"
+    >
+      {t.stats.title}
+    </h2>
+    <div data-stagger class="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
+      {
+        t.stats.items.map((item) => (
+          <div class="flex flex-col items-center">
+            <p class="text-5xl font-bold text-indigo-600 dark:text-indigo-400">
+              <span class="stat-counter" data-target={item.value}>0</span>
+              {item.suffix}
+            </p>
+            <p class="text-gray-600 dark:text-gray-300 mt-2 text-lg">
+              {item.label}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  function animateCounter(el: HTMLElement) {
+    const target = parseInt(el.dataset.target ?? "0", 10);
+    const duration = 1200;
+    const start = performance.now();
+
+    function tick(now: number) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 2);
+      el.textContent = Math.round(eased * target).toLocaleString("hu-HU");
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  const counters = document.querySelectorAll<HTMLElement>(".stat-counter");
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          animateCounter(entry.target as HTMLElement);
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.3 }
+  );
+
+  counters.forEach((el) => observer.observe(el));
+</script>

@@ -34,11 +34,11 @@ const t = useTranslations(lang);
     <p data-animate style="transition-delay: 300ms" class="text-gray-600 dark:text-gray-300 max-w-xl text-lg leading-relaxed mb-10">
       {t.hero.description}
     </p>
-    <div data-animate style="transition-delay: 400ms" class="flex flex-wrap gap-4">
-      <a href="#contact" class="px-6 py-3 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 transition-colors">
+    <div data-animate style="transition-delay: 400ms" class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+      <a href="#contact" class="flex items-center justify-center px-6 py-3 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 transition-colors">
         {t.hero.cta}
       </a>
-      <a href="#portfolio" class="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-medium hover:border-indigo-400 hover:text-indigo-600 dark:hover:border-indigo-500 dark:hover:text-indigo-400 transition-colors">
+      <a href="#portfolio" class="flex items-center justify-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-medium hover:border-indigo-400 hover:text-indigo-600 dark:hover:border-indigo-500 dark:hover:text-indigo-400 transition-colors">
         {t.hero.cv}
       </a>
     </div>
