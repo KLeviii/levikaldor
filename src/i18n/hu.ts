@@ -78,6 +78,7 @@ export const hu = {
     messagePlaceholder: "Miről szól a projekt?",
     send: "Üzenet küldése",
     sending: "Küldés...",
+    orEmail: "Vagy írj emailt közvetlenül:",
   },
   footer: {
     rights: "Minden jog fenntartva.",

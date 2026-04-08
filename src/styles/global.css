@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Tailwind v4 – class-alapú dark mode */
+@custom-variant dark (&:where(.dark, .dark *));
+
 html {
   scroll-behavior: smooth;
 }
@@ -12,6 +15,13 @@ body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background-color: white;
   background-image: radial-gradient(circle, #d1d5db 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* ── Dark mode – body ── */
+.dark body {
+  background-color: #020617;
+  background-image: radial-gradient(circle, #1e293b 1px, transparent 1px);
   background-size: 28px 28px;
 }
 
@@ -53,9 +63,48 @@ body {
   background: linear-gradient(to top, white, transparent);
 }
 
+/* ── Dark mode – hex-bg ── */
+.dark .hex-bg {
+  background-color: #020617;
+  background-image: none;
+}
+
+.dark .hex-bg::before,
+.dark .hex-bg::after {
+  display: none;
+}
+
 .hex-bg > * {
   position: relative;
   z-index: 1;
+}
+
+/* ── Tech stack marquee ── */
+@keyframes scroll-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes scroll-right {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: scroll-left 35s linear infinite;
+}
+
+.marquee-track-reverse {
+  display: flex;
+  width: max-content;
+  animation: scroll-right 32s linear infinite;
+}
+
+.marquee-row:hover .marquee-track,
+.marquee-row:hover .marquee-track-reverse {
+  animation-play-state: paused;
 }
 
 /* ── Scroll-in animáció ── */
@@ -103,7 +152,20 @@ header.nav-top {
   box-shadow: none;
 }
 
+/* ── Dark mode – navbar ── */
+.dark header.nav-scrolled {
+  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.4);
+}
+
 /* ── FAQ accordion ── */
+.faq-item.is-open {
+  border-color: #c7d2fe; /* indigo-200 */
+}
+
+.dark .faq-item.is-open {
+  border-color: rgba(99, 102, 241, 0.3);
+}
+
 .faq-body {
   display: grid;
   grid-template-rows: 0fr;

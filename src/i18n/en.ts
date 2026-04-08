@@ -78,6 +78,7 @@ export const en = {
     messagePlaceholder: "What's your project about?",
     send: "Send message",
     sending: "Sending...",
+    orEmail: "Or reach out directly by email:",
   },
   footer: {
     rights: "All rights reserved.",

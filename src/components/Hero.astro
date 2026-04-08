@@ -12,38 +12,58 @@ const t = useTranslations(lang);
 
 <section
   id="hero"
-  class="relative min-h-screen flex items-center overflow-hidden bg-white"
+  class="relative min-h-screen flex items-center overflow-hidden bg-white dark:bg-[#020617]"
 >
   <canvas id="constellation-canvas" aria-hidden="true"></canvas>
-  <div class="pointer-events-none absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full opacity-50"
+  <div class="pointer-events-none absolute -top-40 -left-40 w-150 h-150 rounded-full opacity-50"
     style="background: radial-gradient(circle, #6366f1 0%, transparent 70%); filter: blur(40px);"></div>
-  <div class="pointer-events-none absolute -bottom-32 -right-32 w-[500px] h-[500px] rounded-full opacity-40"
+  <div class="pointer-events-none absolute -bottom-32 -right-32 w-125 h-125 rounded-full opacity-40"
     style="background: radial-gradient(circle, #38bdf8 0%, transparent 70%); filter: blur(50px);"></div>
-  <div class="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full opacity-30"
+  <div class="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-100 h-100 rounded-full opacity-30"
     style="background: radial-gradient(circle, #a78bfa 0%, transparent 70%); filter: blur(60px);"></div>
-  <div class="pointer-events-none absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-white to-transparent"></div>
+  <div class="hero-bottom-fade pointer-events-none absolute inset-x-0 bottom-0"></div>
 
   <div class="relative z-2 max-w-5xl mx-auto px-4 pt-36 pb-24">
     <p data-animate style="transition-delay: 0ms" class="text-indigo-600 font-medium mb-2 text-lg">{t.hero.greeting}</p>
-    <h1 data-animate style="transition-delay: 100ms" class="text-5xl md:text-7xl font-bold text-gray-900 mb-4 leading-tight">
+    <h1 data-animate style="transition-delay: 100ms" class="text-5xl md:text-7xl font-bold text-gray-900 dark:text-white mb-4 leading-tight">
       {t.hero.name}
     </h1>
-    <p data-animate style="transition-delay: 200ms" class="text-2xl md:text-3xl text-gray-500 font-light mb-6">
+    <p data-animate style="transition-delay: 200ms" class="text-2xl md:text-3xl text-gray-500 dark:text-gray-400 font-light mb-6">
       {t.hero.tagline}
     </p>
-    <p data-animate style="transition-delay: 300ms" class="text-gray-600 max-w-xl text-lg leading-relaxed mb-10">
+    <p data-animate style="transition-delay: 300ms" class="text-gray-600 dark:text-gray-300 max-w-xl text-lg leading-relaxed mb-10">
       {t.hero.description}
     </p>
     <div data-animate style="transition-delay: 400ms" class="flex flex-wrap gap-4">
       <a href="#contact" class="px-6 py-3 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 transition-colors">
         {t.hero.cta}
       </a>
-      <a href="#portfolio" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-medium hover:border-indigo-400 hover:text-indigo-600 transition-colors">
+      <a href="#portfolio" class="px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-xl font-medium hover:border-indigo-400 hover:text-indigo-600 dark:hover:border-indigo-500 dark:hover:text-indigo-400 transition-colors">
         {t.hero.cv}
       </a>
     </div>
   </div>
 </section>
+
+<style>
+  .hero-bottom-fade {
+    height: 160px;
+    background: linear-gradient(to top, white 0%, transparent 100%);
+  }
+
+  :global(.dark) .hero-bottom-fade {
+    height: 280px;
+    background: linear-gradient(
+      to top,
+      #020617 0%,
+      rgba(2, 6, 23, 0.92) 12%,
+      rgba(2, 6, 23, 0.72) 30%,
+      rgba(2, 6, 23, 0.42) 55%,
+      rgba(2, 6, 23, 0.12) 78%,
+      transparent 100%
+    );
+  }
+</style>
 
 <script>
   const canvas = document.getElementById("constellation-canvas") as HTMLCanvasElement;

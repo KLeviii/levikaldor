@@ -39,6 +39,16 @@ const ogLocaleAlt = lang === "hu" ? "en_US" : "hu_HU";
 <html lang={lang}>
   <head>
     <meta charset="UTF-8" />
+    <!-- Anti-FOUC: dark mode class alkalmazása JS bundle előtt -->
+    <script is:inline>
+      (function() {
+        const stored = localStorage.getItem('kl-theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (stored === 'dark' || (!stored && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Primary meta -->
@@ -84,9 +94,34 @@ const ogLocaleAlt = lang === "hu" ? "en_US" : "hu_HU";
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
-  <body class="text-gray-900 antialiased">
+  <body class="text-gray-900 dark:text-white antialiased">
+    <!-- Scroll progress bar -->
+    <div
+      id="scroll-progress"
+      aria-hidden="true"
+      class="fixed left-0 z-55 h-0.5 bg-indigo-500/80 pointer-events-none"
+      style="top: 65px; width: 0%;"
+    ></div>
+
+    <!-- Scroll-to-top gomb -->
+    <button
+      id="scroll-top"
+      aria-label="Vissza a tetejére"
+      class="fixed bottom-6 right-6 z-50 w-10 h-10 flex items-center justify-center
+             bg-indigo-600 hover:bg-indigo-700 text-white rounded-full shadow-lg
+             opacity-0 translate-y-2 scale-90 pointer-events-none
+             transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24"
+           fill="none" stroke="currentColor" stroke-width="2.5"
+           stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="18 15 12 9 6 15"/>
+      </svg>
+    </button>
+
     <slot />
     <script>
+      // Scroll-in animáció
       const observer = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
@@ -106,6 +141,32 @@ const ogLocaleAlt = lang === "hu" ? "en_US" : "hu_HU";
       document
         .querySelectorAll("[data-animate], [data-stagger]")
         .forEach((el) => observer.observe(el));
+
+      // Scroll progress bar
+      const progressBar = document.getElementById("scroll-progress");
+      if (progressBar) {
+        window.addEventListener("scroll", () => {
+          const max = document.documentElement.scrollHeight - window.innerHeight;
+          const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
+          progressBar.style.width = pct + "%";
+        }, { passive: true });
+      }
+
+      // Scroll-to-top gomb
+      const scrollTopBtn = document.getElementById("scroll-top");
+      if (scrollTopBtn) {
+        window.addEventListener("scroll", () => {
+          const show = window.scrollY > 300;
+          scrollTopBtn.classList.toggle("opacity-0", !show);
+          scrollTopBtn.classList.toggle("translate-y-2", !show);
+          scrollTopBtn.classList.toggle("scale-90", !show);
+          scrollTopBtn.classList.toggle("pointer-events-none", !show);
+        }, { passive: true });
+
+        scrollTopBtn.addEventListener("click", () => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      }
     </script>
   </body>
 </html>

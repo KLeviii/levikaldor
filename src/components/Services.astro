@@ -19,17 +19,17 @@ const icons: Record<string, string> = {
 
 <section id="services" class="py-20">
   <div class="max-w-5xl mx-auto px-4">
-    <h2 data-animate class="text-3xl md:text-4xl font-bold text-gray-900 mb-12">{t.services.title}</h2>
+    <h2 data-animate class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-12">{t.services.title}</h2>
     <div data-stagger class="grid sm:grid-cols-2 gap-6">
       {t.services.items.map((item) => (
-        <div class="p-6 border border-gray-200 rounded-2xl hover:border-indigo-300 hover:shadow-sm transition-all group">
-          <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-5 group-hover:bg-indigo-100 transition-colors">
+        <div class="p-6 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl hover:border-indigo-300 dark:hover:border-indigo-600 hover:shadow-sm transition-all group">
+          <div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-5 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-900/50 transition-colors">
             <Fragment set:html={icons[item.icon]} />
           </div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
             {item.title}
           </h3>
-          <p class="text-gray-600 leading-relaxed text-sm">{item.description}</p>
+          <p class="text-gray-600 dark:text-gray-300 leading-relaxed text-sm">{item.description}</p>
         </div>
       ))}
     </div>
