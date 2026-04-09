@@ -211,3 +211,48 @@ header.nav-top {
 .faq-item.is-open .faq-body {
   grid-template-rows: 1fr;
 }
+
+/* ── Custom scrollbar ── */
+
+/* Webkit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c7d2fe;
+  border-radius: 999px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6366f1;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Dark mode – webkit */
+.dark ::-webkit-scrollbar-thumb {
+  background: #3730a3;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #6366f1;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #c7d2fe transparent;
+}
+
+.dark * {
+  scrollbar-color: #3730a3 transparent;
+}

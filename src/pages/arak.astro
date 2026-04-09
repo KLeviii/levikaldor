@@ -43,7 +43,7 @@ function formatHUF(amount: number) {
 >
   <Navbar lang="hu" />
 
-  <main class="pt-32 pb-44">
+  <main class="pt-32 pb-16">
     <div class="max-w-3xl mx-auto px-4">
       <!-- Breadcrumb -->
       <nav aria-label="Breadcrumb" class="mb-10">
@@ -296,6 +296,26 @@ function formatHUF(amount: number) {
 </style>
 
 <script>
+  const scrollBtn = document.getElementById("scroll-top");
+  const totalBar = document.getElementById("total-bar");
+  if (scrollBtn && totalBar) {
+    const ro = new ResizeObserver(() => {
+      if (window.innerWidth < 768) {
+        scrollBtn.style.bottom = totalBar.offsetHeight + 12 + "px";
+      } else {
+        scrollBtn.style.bottom = "";
+      }
+    });
+    ro.observe(totalBar);
+    window.addEventListener(
+      "resize",
+      () => {
+        if (window.innerWidth >= 768) scrollBtn.style.bottom = "";
+      },
+      { passive: true },
+    );
+  }
+
   const BASE = 150000;
 
   interface ProjectType {

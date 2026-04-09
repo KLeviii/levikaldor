@@ -18,8 +18,13 @@ const jsonld = [
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home",    item: `${SITE}/en/` },
-      { "@type": "ListItem", position: 2, name: "Pricing", item: `${SITE}/en/pricing/` },
+      { "@type": "ListItem", position: 1, name: "Home", item: `${SITE}/en/` },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Pricing",
+        item: `${SITE}/en/pricing/`,
+      },
     ],
   },
 ];
@@ -43,9 +48,8 @@ function formatHUF(amount: number) {
 >
   <Navbar lang="en" />
 
-  <main class="pt-32 pb-44">
+  <main class="pt-32 pb-16">
     <div class="max-w-3xl mx-auto px-4">
-
       <!-- Breadcrumb -->
       <nav aria-label="Breadcrumb" class="mb-10">
         <ol
@@ -80,89 +84,145 @@ function formatHUF(amount: number) {
         </ol>
       </nav>
 
-      <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-3">{t.pricing.title}</h1>
-      <p class="text-lg text-gray-600 dark:text-gray-300 mb-10">{t.pricing.subtitle}</p>
+      <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-3">
+        {t.pricing.title}
+      </h1>
+      <p class="text-lg text-gray-600 dark:text-gray-300 mb-10">
+        {t.pricing.subtitle}
+      </p>
 
       <!-- Base fee card -->
-      <div data-animate class="mb-10 p-8 bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl flex items-center justify-between gap-6">
+      <div
+        data-animate
+        class="mb-10 p-8 bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl flex items-center justify-between gap-6"
+      >
         <div>
-          <p class="text-lg font-bold text-gray-900 dark:text-white">{t.pricing.baselineLabel}</p>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{t.pricing.baselineNote}</p>
+          <p class="text-lg font-bold text-gray-900 dark:text-white">
+            {t.pricing.baselineLabel}
+          </p>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+            {t.pricing.baselineNote}
+          </p>
         </div>
-        <p class="text-3xl font-bold text-indigo-600 dark:text-indigo-400 shrink-0">{formatHUF(t.pricing.baselineAmount)}</p>
+        <p
+          class="text-3xl font-bold text-indigo-600 dark:text-indigo-400 shrink-0"
+        >
+          {formatHUF(t.pricing.baselineAmount)}
+        </p>
       </div>
 
       <!-- Project type -->
       <fieldset data-animate style="transition-delay: 60ms" class="mb-10">
-        <legend class="text-xl font-semibold text-gray-900 dark:text-white mb-4">{t.pricing.projectTypeLabel}</legend>
+        <legend class="text-xl font-semibold text-gray-900 dark:text-white mb-4"
+          >{t.pricing.projectTypeLabel}</legend
+        >
         <div class="grid sm:grid-cols-2 gap-3" id="project-type-group">
-          {t.pricing.projectTypes.map((type) => (
-            <label class="project-type-card cursor-pointer flex items-center justify-between gap-3 p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 hover:border-indigo-400 dark:hover:border-indigo-500 transition-all">
-              <div class="flex items-center gap-3">
-                <input
-                  type="radio"
-                  name="project-type"
-                  value={type.id}
-                  data-price={type.price}
-                  data-flat={type.isFlat ? "true" : "false"}
-                  class="accent-indigo-600 w-4 h-4 shrink-0"
-                />
-                <span class="font-medium text-gray-800 dark:text-gray-100">{type.label}</span>
-              </div>
-              <span class="text-sm font-semibold text-indigo-600 dark:text-indigo-400 shrink-0">
-                {type.isFlat ? formatHUF(type.price) : (type.price === 0 ? "Base" : `+${formatHUF(type.price)}`)}
-              </span>
-            </label>
-          ))}
+          {
+            t.pricing.projectTypes.map((type) => (
+              <label class="project-type-card cursor-pointer flex items-center justify-between gap-3 p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 hover:border-indigo-400 dark:hover:border-indigo-500 transition-all">
+                <div class="flex items-center gap-3">
+                  <input
+                    type="radio"
+                    name="project-type"
+                    value={type.id}
+                    data-price={type.price}
+                    data-flat={type.isFlat ? "true" : "false"}
+                    class="accent-indigo-600 w-4 h-4 shrink-0"
+                  />
+                  <span class="font-medium text-gray-800 dark:text-gray-100">
+                    {type.label}
+                  </span>
+                </div>
+                <span class="text-sm font-semibold text-indigo-600 dark:text-indigo-400 shrink-0">
+                  {type.isFlat
+                    ? formatHUF(type.price)
+                    : type.price === 0
+                      ? "Base"
+                      : `+${formatHUF(type.price)}`}
+                </span>
+              </label>
+            ))
+          }
         </div>
-        <p id="flat-notice" class="hidden mt-3 text-sm text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-xl px-4 py-3">
+        <p
+          id="flat-notice"
+          class="hidden mt-3 text-sm text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-xl px-4 py-3"
+        >
           {t.pricing.flatNote}
         </p>
       </fieldset>
 
       <!-- Module categories -->
       <div id="modules-section">
-        {t.pricing.categories.map((cat, i) => (
-          <section data-animate
-              style={`transition-delay: ${120 + i * 60}ms`} class="mb-8">
-            <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">{cat.label}</h2>
-            <div class="grid sm:grid-cols-2 gap-3">
-              {cat.items.map((mod) => (
-                <label class="module-card cursor-pointer flex items-center justify-between gap-3 p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 hover:border-indigo-400 dark:hover:border-indigo-500 transition-all">
-                  <div class="flex items-center gap-3">
-                    <input
-                      type="checkbox"
-                      name="module"
-                      value={mod.id}
-                      data-price={mod.price}
-                      data-cat={cat.id}
-                      class="accent-indigo-600 w-4 h-4 shrink-0"
-                    />
-                    <span class="font-medium text-gray-800 dark:text-gray-100 text-sm">{mod.label}</span>
-                  </div>
-                  <span class="text-sm font-semibold text-indigo-600 dark:text-indigo-400 shrink-0">+{formatHUF(mod.price)}</span>
-                </label>
-              ))}
-            </div>
-          </section>
-        ))}
+        {
+          t.pricing.categories.map((cat, i) => (
+            <section
+              data-animate
+              style={`transition-delay: ${120 + i * 60}ms`}
+              class="mb-8"
+            >
+              <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                {cat.label}
+              </h2>
+              <div class="grid sm:grid-cols-2 gap-3">
+                {cat.items.map((mod) => (
+                  <label class="module-card cursor-pointer flex items-center justify-between gap-3 p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 hover:border-indigo-400 dark:hover:border-indigo-500 transition-all">
+                    <div class="flex items-center gap-3">
+                      <input
+                        type="checkbox"
+                        name="module"
+                        value={mod.id}
+                        data-price={mod.price}
+                        data-cat={cat.id}
+                        class="accent-indigo-600 w-4 h-4 shrink-0"
+                      />
+                      <span class="font-medium text-gray-800 dark:text-gray-100 text-sm">
+                        {mod.label}
+                      </span>
+                    </div>
+                    <span class="text-sm font-semibold text-indigo-600 dark:text-indigo-400 shrink-0">
+                      +{formatHUF(mod.price)}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </section>
+          ))
+        }
       </div>
 
       <!-- Surcharge notice -->
-      <div data-animate style="transition-delay: 300ms" class="mt-4 mb-12 p-4 bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-200 dark:border-amber-700">
-        <p class="text-sm text-amber-800 dark:text-amber-200">{t.pricing.surchargeNotice}</p>
+      <div
+        data-animate
+        style="transition-delay: 300ms"
+        class="mt-4 mb-12 p-4 bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-200 dark:border-amber-700"
+      >
+        <p class="text-sm text-amber-800 dark:text-amber-200">
+          {t.pricing.surchargeNotice}
+        </p>
       </div>
-
     </div>
   </main>
 
   <!-- Sticky total bar -->
-  <div id="total-bar" class="fixed bottom-0 left-0 right-0 z-30 border-t border-gray-200 dark:border-gray-700 px-4 py-4 total-bar-bg">
+  <div
+    id="total-bar"
+    class="fixed bottom-0 left-0 right-0 z-30 border-t border-gray-200 dark:border-gray-700 px-4 py-4 total-bar-bg"
+  >
     <div class="max-w-3xl mx-auto flex items-center justify-between gap-4">
       <div class="min-w-0">
-        <p class="text-xs text-gray-500 dark:text-gray-400">{t.pricing.totalLabel}</p>
-        <p id="total-display" class="text-2xl font-bold text-indigo-600 dark:text-indigo-400 leading-tight">150 000 Ft</p>
-        <p class="text-xs text-gray-400 dark:text-gray-500 truncate">{t.pricing.totalBaseline}</p>
+        <p class="text-xs text-gray-500 dark:text-gray-400">
+          {t.pricing.totalLabel}
+        </p>
+        <p
+          id="total-display"
+          class="text-2xl font-bold text-indigo-600 dark:text-indigo-400 leading-tight"
+        >
+          150 000 Ft
+        </p>
+        <p class="text-xs text-gray-400 dark:text-gray-500 truncate">
+          {t.pricing.totalBaseline}
+        </p>
       </div>
       <a
         id="cta-btn"
@@ -172,7 +232,11 @@ function formatHUF(amount: number) {
         {t.pricing.cta}
       </a>
     </div>
-    <p class="max-w-3xl mx-auto text-xs text-gray-400 dark:text-gray-500 mt-1.5">{t.pricing.disclaimer}</p>
+    <p
+      class="max-w-3xl mx-auto text-xs text-gray-400 dark:text-gray-500 mt-1.5"
+    >
+      {t.pricing.disclaimer}
+    </p>
   </div>
 
   <Footer lang="en" />
@@ -186,7 +250,9 @@ function formatHUF(amount: number) {
   }
 
   .module-card {
-    transition: border-color 0.15s, background-color 0.15s;
+    transition:
+      border-color 0.15s,
+      background-color 0.15s;
   }
   .module-card:has(input:checked) {
     border-color: #6366f1;
@@ -203,7 +269,9 @@ function formatHUF(amount: number) {
   }
 
   .project-type-card {
-    transition: border-color 0.15s, background-color 0.15s;
+    transition:
+      border-color 0.15s,
+      background-color 0.15s;
   }
   .project-type-card:has(input:checked) {
     border-color: #6366f1;
@@ -215,14 +283,14 @@ function formatHUF(amount: number) {
   }
 
   .total-bar-bg {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  box-shadow: 0 -1px 24px 0 rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    box-shadow: 0 -1px 24px 0 rgba(0, 0, 0, 0.08);
   }
   :global(.dark) .total-bar-bg {
-  background: rgba(2, 6, 23, 0.75);
-  box-shadow: 0 -1px 24px 0 rgba(0, 0, 0, 0.4);
+    background: rgba(2, 6, 23, 0.75);
+    box-shadow: 0 -1px 24px 0 rgba(0, 0, 0, 0.4);
   }
 
   :global(footer) {
@@ -231,6 +299,26 @@ function formatHUF(amount: number) {
 </style>
 
 <script>
+  const scrollBtn = document.getElementById("scroll-top");
+  const totalBar = document.getElementById("total-bar");
+  if (scrollBtn && totalBar) {
+    const ro = new ResizeObserver(() => {
+      if (window.innerWidth < 768) {
+        scrollBtn.style.bottom = totalBar.offsetHeight + 12 + "px";
+      } else {
+        scrollBtn.style.bottom = "";
+      }
+    });
+    ro.observe(totalBar);
+    window.addEventListener(
+      "resize",
+      () => {
+        if (window.innerWidth >= 768) scrollBtn.style.bottom = "";
+      },
+      { passive: true },
+    );
+  }
+
   const BASE = 150000;
 
   interface ProjectType {
@@ -239,7 +327,11 @@ function formatHUF(amount: number) {
     isFlat: boolean;
   }
 
-  let selectedProjectType: ProjectType | null = { id: "landing", price: 0, isFlat: false };
+  let selectedProjectType: ProjectType | null = {
+    id: "landing",
+    price: 0,
+    isFlat: false,
+  };
   const selectedModules = new Map<string, number>();
 
   function formatHUF(n: number): string {
@@ -268,10 +360,12 @@ function formatHUF(amount: number) {
   }
 
   function setModulesDisabled(disabled: boolean) {
-    document.querySelectorAll<HTMLInputElement>("input[name='module']").forEach((el) => {
-      el.disabled = disabled;
-      if (disabled) el.checked = false;
-    });
+    document
+      .querySelectorAll<HTMLInputElement>("input[name='module']")
+      .forEach((el) => {
+        el.disabled = disabled;
+        if (disabled) el.checked = false;
+      });
     if (disabled) selectedModules.clear();
 
     const notice = document.getElementById("flat-notice");
@@ -300,30 +394,38 @@ function formatHUF(amount: number) {
     updateDisplay();
   }
 
-  document.querySelectorAll<HTMLInputElement>("input[name='project-type']").forEach((el) => {
-    el.addEventListener("change", onProjectTypeChange);
-  });
-  document.querySelectorAll<HTMLInputElement>("input[name='module']").forEach((el) => {
-    el.addEventListener("change", onModuleChange);
-  });
+  document
+    .querySelectorAll<HTMLInputElement>("input[name='project-type']")
+    .forEach((el) => {
+      el.addEventListener("change", onProjectTypeChange);
+    });
+  document
+    .querySelectorAll<HTMLInputElement>("input[name='module']")
+    .forEach((el) => {
+      el.addEventListener("change", onModuleChange);
+    });
 
-  const firstRadio = document.querySelector<HTMLInputElement>("input[name='project-type'][value='landing']");
+  const firstRadio = document.querySelector<HTMLInputElement>(
+    "input[name='project-type'][value='landing']",
+  );
   if (firstRadio) {
     firstRadio.checked = true;
   }
   updateDisplay();
 
   const observer = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("is-visible");
-        observer.unobserve(entry.target);
-      }
-    });
-  },
-  { threshold: 0.1 }
-);
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1 },
+  );
 
-document.querySelectorAll("[data-animate]").forEach((el) => observer.observe(el));
+  document
+    .querySelectorAll("[data-animate]")
+    .forEach((el) => observer.observe(el));
 </script>

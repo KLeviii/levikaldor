@@ -14,7 +14,7 @@ const otherLangHref = lang === "hu" ? "/en/" : "/";
 const base = home ? "" : (lang === "hu" ? "/" : "/en/");
 ---
 
-<header class="fixed top-0 left-0 right-0 z-60 bg-white/90 dark:bg-gray-950/90 backdrop-blur border-b border-gray-100 dark:border-gray-800 transition-all duration-300">
+<header class={`fixed top-0 left-0 right-0 z-60 bg-white/90 dark:bg-gray-950/90 backdrop-blur border-b border-gray-100 dark:border-gray-800 transition-all duration-300${home ? " nav-top" : ""}`}>
   <nav class="px-4 py-4 flex items-center justify-between" aria-label={lang === "hu" ? "Főnavigáció" : "Main navigation"}>
     <a href={base + "#hero"} id="nav-logo" class="hover:opacity-80 transition-all duration-300">
       <img src="/favicon.svg" alt="KL" class="w-9 h-9 transition-all duration-300" id="nav-logo-img" />
