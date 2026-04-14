@@ -23,13 +23,13 @@ const SITE = "https://levikaldor.hu";
       <nav aria-label="Breadcrumb" class="mb-10" data-animate style="transition-delay: 0ms">
         <ol class="flex items-center gap-2 text-sm text-gray-400 dark:text-gray-500">
           <li>
-            <a href="/" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">Főoldal</a>
+            <a href="/" class="hover:text-(--accent) transition-colors">Főoldal</a>
           </li>
           <li aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
           </li>
           <li>
-            <a href="/arak/" class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t.summary.breadcrumbPricing}</a>
+            <a href="/arak/" class="hover:text-(--accent) transition-colors">{t.summary.breadcrumbPricing}</a>
           </li>
           <li aria-hidden="true">
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
@@ -41,7 +41,7 @@ const SITE = "https://levikaldor.hu";
       </nav>
 
       <h1
-        class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-10"
+        class="text-4xl md:text-5xl font-bold text-(--text-primary) mb-10"
         data-animate
         style="transition-delay: 60ms"
       >
@@ -50,16 +50,16 @@ const SITE = "https://levikaldor.hu";
 
       <noscript>
         <meta http-equiv="refresh" content="0;url=/arak/" />
-        <p class="text-gray-600 dark:text-gray-300">JavaScript szükséges. <a href="/arak/" class="text-indigo-600 underline">Vissza az árkalkulátorhoz.</a></p>
+        <p class="text-(--text-secondary)">JavaScript szükséges. <a href="/arak/" class="text-(--accent) underline">Vissza az árkalkulátorhoz.</a></p>
       </noscript>
 
       <!-- Empty state -->
       <div id="summary-empty" class="hidden text-center py-20" data-animate style="transition-delay: 120ms">
-        <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gray-100 dark:bg-gray-800 mb-6">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-lg bg-gray-100 dark:bg-gray-800 mb-6">
           <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400 dark:text-gray-500"><path d="M9 14l-4-4 4-4"/><path d="M5 10h11a4 4 0 0 1 0 8h-1"/></svg>
         </div>
-        <p class="text-gray-600 dark:text-gray-300 mb-6 text-lg">{t.summary.empty}</p>
-        <a href="/arak/" class="inline-block px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-semibold transition-colors">
+        <p class="text-(--text-secondary) mb-6 text-lg">{t.summary.empty}</p>
+        <a href="/arak/" class="inline-block px-6 py-3 bg-(--accent) hover:bg-(--accent-bright) text-white rounded-md font-semibold transition-colors">
           {t.summary.backLink}
         </a>
       </div>
@@ -70,28 +70,28 @@ const SITE = "https://levikaldor.hu";
         <!-- Total card -->
         <!-- Total card -->
 <div
-  class="mb-6 p-8 bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl flex items-center justify-between gap-6"
+  class="mb-6 p-8 bg-(--accent-bg) border border-(--accent-border) rounded-lg flex items-center justify-between gap-6"
   data-animate
   style="transition-delay: 120ms"
 >
   <div>
-    <p class="text-lg font-bold text-gray-900 dark:text-white">{t.summary.totalLabel}</p>
-    <p class="text-sm text-gray-400 dark:text-gray-500 mt-0.5">{t.summary.disclaimer}</p>
+    <p class="text-lg font-bold text-(--text-primary)">{t.summary.totalLabel}</p>
+    <p class="text-sm text-(--text-tertiary) mt-0.5">{t.summary.disclaimer}</p>
   </div>
-  <p id="summary-total" class="text-3xl font-bold text-indigo-600 dark:text-indigo-400 shrink-0"></p>
+  <p id="summary-total" class="text-3xl font-bold text-(--accent) shrink-0"></p>
 </div>
 
         <!-- Project type -->
         <div
           id="project-type-row"
-          class="hidden mb-3 p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900"
+          class="hidden mb-3 p-4 rounded-md border border-(--border-subtle) bg-white dark:bg-(--bg-surface)"
           data-animate
           style="transition-delay: 180ms"
         >
           <p class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">{t.summary.projectTypeLabel}</p>
           <div class="flex items-center justify-between gap-4">
-            <span id="project-type-label" class="font-medium text-gray-800 dark:text-gray-100 text-sm"></span>
-            <span id="project-type-price" class="font-semibold text-indigo-600 dark:text-indigo-400 text-sm shrink-0"></span>
+            <span id="project-type-label" class="font-medium text-(--text-primary) text-sm"></span>
+            <span id="project-type-price" class="font-semibold text-(--accent) text-sm shrink-0"></span>
           </div>
         </div>
 
@@ -114,13 +114,13 @@ const SITE = "https://levikaldor.hu";
         >
           <a
             href="/#contact"
-            class="flex-1 text-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-xl font-semibold transition-colors shadow-md"
+            class="flex-1 text-center px-6 py-3 bg-(--accent) hover:bg-(--accent-bright) active:bg-(--accent-dim) text-white rounded-md font-semibold transition-colors shadow-md"
           >
             {t.summary.ctaLabel}
           </a>
           <a
             href="/arak/"
-            class="flex-1 text-center px-6 py-3 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-indigo-400 dark:hover:border-indigo-500 rounded-xl font-semibold transition-colors"
+            class="flex-1 text-center px-6 py-3 border border-(--border-subtle) text-(--text-secondary) hover:border-(--accent) hover:text-(--accent) rounded-md font-semibold transition-colors"
           >
             {t.summary.backLink}
           </a>
@@ -240,10 +240,11 @@ const SITE = "https://levikaldor.hu";
           ids.forEach((id) => {
             const mod = MODULES[id];
             const row = document.createElement("div");
-            row.className = "flex items-center justify-between gap-4 px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900";
+            row.className = "flex items-center justify-between gap-4 px-4 py-3 rounded-md border border-(--border-subtle) bg-white dark:bg-(--bg-surface)";
+            row.style.cssText = "border-color: var(--border-subtle); background-color: var(--bg-base);";
             row.innerHTML = `
-              <span class="text-sm font-medium text-gray-800 dark:text-gray-100">${mod.label}</span>
-              <span class="text-sm font-semibold text-indigo-600 dark:text-indigo-400 shrink-0">+${formatHUF(mod.price)}</span>
+              <span style="font-size:0.875rem;font-weight:500;color:var(--text-primary)">${mod.label}</span>
+              <span style="font-size:0.875rem;font-weight:600;color:var(--accent);flex-shrink:0">+${formatHUF(mod.price)}</span>
             `;
             container.appendChild(row);
           });

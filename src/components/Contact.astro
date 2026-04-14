@@ -12,8 +12,8 @@ const t = useTranslations(lang);
 
 <section id="contact" class="py-20">
   <div class="max-w-5xl mx-auto px-4">
-    <h2 data-animate class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">{t.contact.title}</h2>
-    <p data-animate style="transition-delay: 80ms" class="text-gray-500 dark:text-gray-400 mb-10">{t.contact.subtitle}</p>
+    <h2 data-animate class="text-3xl md:text-4xl font-bold text-(--text-primary) mb-3">{t.contact.title}</h2>
+    <p data-animate style="transition-delay: 80ms" class="text-(--text-secondary) mb-10">{t.contact.subtitle}</p>
 
     <form
       id="contact-form"
@@ -24,8 +24,8 @@ const t = useTranslations(lang);
       novalidate
     >
       <div>
-        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-          {t.contact.name}<span aria-hidden="true" class="text-indigo-500 ml-0.5">*</span>
+        <label for="name" class="block text-sm font-medium text-(--text-secondary) mb-1.5">
+          {t.contact.name}<span aria-hidden="true" class="text-(--accent) ml-0.5">*</span>
         </label>
         <input
           type="text"
@@ -35,15 +35,15 @@ const t = useTranslations(lang);
           aria-required="true"
           autocomplete="name"
           placeholder={t.contact.namePlaceholder}
-          class="w-full px-4 py-3 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700
-                 text-gray-900 dark:text-white rounded-xl
-                 focus:outline-none focus:border-indigo-400 dark:focus:border-indigo-500
+          class="w-full px-4 py-3 bg-white dark:bg-(--bg-surface) border border-(--border-subtle)
+                 text-(--text-primary) rounded-md
+                 focus:outline-none focus:border-(--accent)
                  transition placeholder-gray-400 dark:placeholder-gray-600"
         />
       </div>
       <div>
-        <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-          {t.contact.email}<span aria-hidden="true" class="text-indigo-500 ml-0.5">*</span>
+        <label for="email" class="block text-sm font-medium text-(--text-secondary) mb-1.5">
+          {t.contact.email}<span aria-hidden="true" class="text-(--accent) ml-0.5">*</span>
         </label>
         <input
           type="email"
@@ -53,15 +53,15 @@ const t = useTranslations(lang);
           aria-required="true"
           autocomplete="email"
           placeholder={t.contact.emailPlaceholder}
-          class="w-full px-4 py-3 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700
-                 text-gray-900 dark:text-white rounded-xl
-                 focus:outline-none focus:border-indigo-400 dark:focus:border-indigo-500
+          class="w-full px-4 py-3 bg-white dark:bg-(--bg-surface) border border-(--border-subtle)
+                 text-(--text-primary) rounded-md
+                 focus:outline-none focus:border-(--accent)
                  transition placeholder-gray-400 dark:placeholder-gray-600"
         />
       </div>
       <div>
-        <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-          {t.contact.message}<span aria-hidden="true" class="text-indigo-500 ml-0.5">*</span>
+        <label for="message" class="block text-sm font-medium text-(--text-secondary) mb-1.5">
+          {t.contact.message}<span aria-hidden="true" class="text-(--accent) ml-0.5">*</span>
         </label>
         <textarea
           id="message"
@@ -70,9 +70,9 @@ const t = useTranslations(lang);
           aria-required="true"
           rows={5}
           placeholder={t.contact.messagePlaceholder}
-          class="w-full px-4 py-3 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700
-                 text-gray-900 dark:text-white rounded-xl
-                 focus:outline-none focus:border-indigo-400 dark:focus:border-indigo-500
+          class="w-full px-4 py-3 bg-white dark:bg-(--bg-surface) border border-(--border-subtle)
+                 text-(--text-primary) rounded-md
+                 focus:outline-none focus:border-(--accent)
                  transition placeholder-gray-400 dark:placeholder-gray-600 resize-none"
         ></textarea>
       </div>
@@ -82,21 +82,20 @@ const t = useTranslations(lang);
           disabled
           aria-disabled="true"
           aria-describedby="submit-hint"
-          class="px-6 py-3 bg-indigo-600 text-white rounded-xl font-medium opacity-50 cursor-not-allowed"
+          class="px-6 py-3 bg-(--accent) text-white rounded-md font-medium opacity-50 cursor-not-allowed"
         >
           {t.contact.send}
         </button>
         <span id="submit-hint" class="sr-only">{lang === "hu" ? "Hamarosan elérhető" : "Coming soon"}</span>
         <span class="hidden sm:flex items-center text-gray-300 dark:text-gray-600 text-sm select-none">—</span>
-        <span class="text-sm text-gray-400 dark:text-gray-500 sm:hidden">{t.contact.orEmail}</span>
+        <span class="text-sm text-(--text-tertiary) sm:hidden">{t.contact.orEmail}</span>
         <a
           id="email-copy-btn"
           data-e="yriragrynyqbe@tznvy.pbz"
           href="#"
-          class="inline-flex items-center gap-2 px-4 py-3 border border-gray-200 dark:border-gray-700
-                 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400
-                 hover:border-indigo-400 hover:text-indigo-600
-                 dark:hover:border-indigo-500 dark:hover:text-indigo-400
+          class="inline-flex items-center gap-2 px-4 py-3 border border-(--border-subtle)
+                 rounded-md text-sm font-medium text-(--text-secondary)
+                 hover:border-(--accent) hover:text-(--accent)
                  transition-all duration-200 group self-start sm:self-auto"
           aria-label="Email cím másolása"
         >
@@ -120,7 +119,7 @@ const t = useTranslations(lang);
   id="email-toast"
   class="fixed bottom-6 left-1/2 -translate-x-1/2 px-4 py-2
          bg-gray-900 dark:bg-white text-white dark:text-gray-900
-         text-sm rounded-xl shadow-lg
+         text-sm rounded-md shadow-lg
          opacity-0 translate-y-2
          transition-all duration-300 pointer-events-none z-100"
 >
@@ -146,7 +145,7 @@ const t = useTranslations(lang);
 
     let toastTimer: ReturnType<typeof setTimeout>;
     btn.addEventListener("click", async (e: Event) => {
-      if (isMobile()) return; // mailto fut natívan
+      if (isMobile()) return;
       e.preventDefault();
       try {
         await navigator.clipboard.writeText(email);

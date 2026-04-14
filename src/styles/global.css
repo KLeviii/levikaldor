@@ -3,8 +3,97 @@
 /* Tailwind v4 – class-alapú dark mode */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ── Design tokenek – Tailwind utility generálás ── */
+@theme {
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+  --color-accent:        #d97706;
+  --color-accent-bright: #f59e0b;
+  --color-accent-dim:    #92400e;
+}
+
+/* ── CSS Custom Properties – light mode ── */
+:root {
+  --bg-base:     #faf9f6;
+  --bg-surface:  #f0ede6;
+  --bg-elevated: #e8e4dc;
+
+  --accent:        #d97706;
+  --accent-bright: #f59e0b;
+  --accent-dim:    #92400e;
+  --accent-bg:     #fef3c7;
+  --accent-border: #fcd34d;
+
+  --border-subtle: #e2ddd3;
+  --border-medium: #c8c2b6;
+  --border-strong: #a09890;
+
+  --text-primary:   #111111;
+  --text-secondary: #6b6560;
+  --text-tertiary:  #9c958e;
+  --text-inverse:   #faf9f6;
+
+  --shadow-sm:  0 1px 2px rgba(17,11,4,0.06);
+  --shadow-md:  0 2px 8px rgba(17,11,4,0.08), 0 1px 2px rgba(17,11,4,0.04);
+  --shadow-lg:  0 8px 24px rgba(17,11,4,0.10), 0 2px 6px rgba(17,11,4,0.05);
+
+  --ease-spring:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out:     cubic-bezier(0.33, 1, 0.68, 1);
+  --duration-fast:   0.15s;
+  --duration-normal: 0.3s;
+  --duration-slow:   0.6s;
+}
+
+/* ── CSS Custom Properties – dark mode ── */
+.dark {
+  --bg-base:     #0c0c0c;
+  --bg-surface:  #161616;
+  --bg-elevated: #1f1f1f;
+
+  --accent:        #f59e0b;
+  --accent-bright: #fbbf24;
+  --accent-dim:    #d97706;
+  --accent-bg:     rgba(245, 158, 11, 0.10);
+  --accent-border: rgba(245, 158, 11, 0.30);
+
+  --border-subtle: #242424;
+  --border-medium: #2e2e2e;
+  --border-strong: #3a3a3a;
+
+  --text-primary:   #f0ede6;
+  --text-secondary: #8a8480;
+  --text-tertiary:  #5a5550;
+  --text-inverse:   #111111;
+
+  --shadow-sm:  0 1px 2px rgba(0,0,0,0.3);
+  --shadow-md:  0 2px 8px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.2);
+  --shadow-lg:  0 8px 24px rgba(0,0,0,0.5), 0 2px 6px rgba(0,0,0,0.25);
+}
+
 html {
   scroll-behavior: smooth;
+}
+
+/* ── Body ── */
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-base);
+  background-image: radial-gradient(circle, #d8d3cb 1px, transparent 1px);
+  background-size: 28px 28px;
+  color: var(--text-primary);
+}
+
+/* ── Dark mode – body ── */
+.dark body {
+  background-color: #0c0c0c;
+  background-image: radial-gradient(circle, #1e1e1e 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* ── Headings – Space Grotesk ── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  letter-spacing: -0.025em;
 }
 
 /* ── Skip link ── */
@@ -14,8 +103,8 @@ html {
   left: 1rem;
   z-index: 200;
   padding: 0.5rem 1rem;
-  background: #4f46e5;
-  color: white;
+  background: var(--text-primary);
+  color: var(--text-inverse);
   border-radius: 0 0 0.5rem 0.5rem;
   font-size: 0.875rem;
   font-weight: 600;
@@ -28,7 +117,7 @@ html {
 
 /* ── Focus visible – egységes gyűrű minden interaktív elemen ── */
 :focus-visible {
-  outline: 2px solid #6366f1;
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
@@ -71,20 +160,6 @@ select:focus-visible {
   z-index: 60;
 }
 
-body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background-color: white;
-  background-image: radial-gradient(circle, #d1d5db 1px, transparent 1px);
-  background-size: 28px 28px;
-}
-
-/* ── Dark mode – body ── */
-.dark body {
-  background-color: #020617;
-  background-image: radial-gradient(circle, #1e293b 1px, transparent 1px);
-  background-size: 28px 28px;
-}
-
 #constellation-canvas {
   position: absolute;
   inset: 0;
@@ -94,16 +169,16 @@ body {
   z-index: 1;
 }
 
-/* ── Section bg (korábban hex-bg) ── */
+/* ── Section bg (hex-bg) ── */
 .hex-bg {
   position: relative;
   background-color: #f1f5f9;
   background-image: none;
 }
 
-/* ── Dark mode ── */
+/* ── Dark mode – hex-bg ── */
 .dark .hex-bg {
-  background-color: #020617;
+  background-color: var(--bg-base);
 }
 
 .hex-bg > * {
@@ -142,10 +217,10 @@ body {
 /* ── Scroll-in animáció ── */
 [data-animate] {
   opacity: 0;
-  transform: translateY(28px);
+  transform: translateY(16px);
   transition:
-    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity var(--duration-slow) var(--ease-spring),
+    transform var(--duration-slow) var(--ease-spring);
 }
 
 [data-animate].is-visible {
@@ -153,12 +228,36 @@ body {
   transform: translateY(0);
 }
 
+/* Bal irányból (szöveg blokkok) */
+[data-animate="left"] {
+  transform: translateX(-20px);
+}
+[data-animate="left"].is-visible {
+  transform: translateX(0);
+}
+
+/* Jobb irányból (másodlagos tartalom) */
+[data-animate="right"] {
+  transform: translateX(20px);
+}
+[data-animate="right"].is-visible {
+  transform: translateX(0);
+}
+
+/* Csak fade – nincs mozgás */
+[data-animate="fade"] {
+  transform: none;
+}
+[data-animate="fade"].is-visible {
+  transform: none;
+}
+
 [data-stagger] > * {
   opacity: 0;
-  transform: translateY(28px);
+  transform: translateY(16px);
   transition:
-    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity var(--duration-slow) var(--ease-spring),
+    transform var(--duration-slow) var(--ease-spring);
 }
 
 [data-stagger].is-visible > * {
@@ -189,13 +288,28 @@ header.nav-top {
   box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.4);
 }
 
+/* ── Process timeline vonal ── */
+.process-list::before {
+  content: "";
+  position: absolute;
+  left: 23px;
+  top: 24px;
+  bottom: 24px;
+  width: 2px;
+  background: var(--accent-border);
+}
+
+.dark .process-list::before {
+  background: var(--accent-dim);
+}
+
 /* ── FAQ accordion ── */
 .faq-item.is-open {
-  border-color: #c7d2fe; /* indigo-200 */
+  border-color: var(--accent-border);
 }
 
 .dark .faq-item.is-open {
-  border-color: rgba(99, 102, 241, 0.3);
+  border-color: var(--accent-border);
 }
 
 .faq-body {
@@ -225,13 +339,13 @@ header.nav-top {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c7d2fe;
+  background: var(--accent-border);
   border-radius: 999px;
   transition: background 0.2s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #6366f1;
+  background: var(--accent);
 }
 
 ::-webkit-scrollbar-corner {
@@ -240,19 +354,19 @@ header.nav-top {
 
 /* Dark mode – webkit */
 .dark ::-webkit-scrollbar-thumb {
-  background: #3730a3;
+  background: var(--accent-dim);
 }
 
 .dark ::-webkit-scrollbar-thumb:hover {
-  background: #6366f1;
+  background: var(--accent);
 }
 
 /* Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #c7d2fe transparent;
+  scrollbar-color: var(--accent-border) transparent;
 }
 
 .dark * {
-  scrollbar-color: #3730a3 transparent;
+  scrollbar-color: var(--accent-dim) transparent;
 }

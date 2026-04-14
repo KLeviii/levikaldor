@@ -22,17 +22,17 @@ const imageMap: Record<string, ImageMetadata> = {
 
 <section id="portfolio" class="py-20 hex-bg">
   <div class="max-w-5xl mx-auto px-4">
-    <h2 data-animate class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">{t.portfolio.title}</h2>
-    <p data-animate style="transition-delay: 80ms" class="text-gray-500 dark:text-gray-400 mb-12">{t.portfolio.subtitle}</p>
+    <h2 data-animate class="text-3xl md:text-4xl font-bold text-(--text-primary) mb-3">{t.portfolio.title}</h2>
+    <p data-animate style="transition-delay: 80ms" class="text-(--text-secondary) mb-12">{t.portfolio.subtitle}</p>
     <div data-stagger class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
       {t.portfolio.items.map((item) => (
         <a
           href={item.link}
           target={item.link !== "#" ? "_blank" : undefined}
           rel={item.link !== "#" ? "noopener noreferrer" : undefined}
-          class="group block p-4 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl hover:border-indigo-300 dark:hover:border-indigo-600 hover:shadow-sm transition-all"
+          class="group block p-4 bg-white dark:bg-(--bg-surface) border border-(--border-subtle) rounded-lg hover:border-(--border-medium) hover:shadow-(--shadow-md) transition-all"
         >
-          <div class="w-full h-36 rounded-xl mb-4 overflow-hidden bg-linear-to-br from-indigo-50 to-indigo-100 dark:from-indigo-900/30 dark:to-indigo-900/20">
+          <div class="w-full h-36 rounded-md mb-4 overflow-hidden bg-(--bg-elevated)">
             {item.image && imageMap[item.image] && (
               <Image
                 src={imageMap[item.image]}
@@ -45,22 +45,22 @@ const imageMap: Record<string, ImageMetadata> = {
             )}
           </div>
           <div class="flex items-center gap-1.5 mb-1.5">
-            <h3 class="font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+            <h3 class="font-semibold text-(--text-primary) group-hover:text-(--accent) transition-colors">
               {item.title}
             </h3>
             {item.link !== "#" && (
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-gray-400 group-hover:text-indigo-500 transition-colors shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-(--text-tertiary) group-hover:text-(--accent) transition-colors shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
                 <polyline points="15 3 21 3 21 9"/>
                 <line x1="10" y1="14" x2="21" y2="3"/>
               </svg>
             )}
           </div>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mb-3 leading-relaxed">{item.description}</p>
+          <p class="text-sm text-(--text-secondary) mb-3 leading-relaxed">{item.description}</p>
           {item.tags.length > 0 && (
             <div class="flex flex-wrap gap-1.5">
               {item.tags.map((tag) => (
-                <span class="px-2 py-0.5 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 text-xs rounded-md font-medium">
+                <span class="px-2 py-0.5 bg-(--accent-bg) text-(--accent) text-xs rounded font-medium">
                   {tag}
                 </span>
               ))}

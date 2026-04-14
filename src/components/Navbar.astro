@@ -14,7 +14,7 @@ const otherLangHref = lang === "hu" ? "/en/" : "/";
 const base = home ? "" : (lang === "hu" ? "/" : "/en/");
 ---
 
-<header class={`fixed top-0 left-0 right-0 z-60 bg-white/90 dark:bg-gray-950/90 backdrop-blur border-b border-gray-100 dark:border-gray-800 transition-all duration-300${home ? " nav-top" : ""}`}>
+<header class={`fixed top-0 left-0 right-0 z-60 bg-white/90 dark:bg-gray-950/90 backdrop-blur border-b border-(--border-subtle) transition-all duration-300${home ? " nav-top" : ""}`}>
   <nav class="px-4 py-4 flex items-center justify-between" aria-label={lang === "hu" ? "Főnavigáció" : "Main navigation"}>
     <a href={base + "#hero"} id="nav-logo" class="hover:opacity-80 transition-all duration-300">
       <img src="/favicon.svg" alt="KL" class="w-9 h-9 transition-all duration-300" id="nav-logo-img" />
@@ -25,12 +25,12 @@ const base = home ? "" : (lang === "hu" ? "/" : "/en/");
 
     <!-- Desktop nav -->
     <ul class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600 dark:text-gray-300">
-      <li><a href={base + "#about"} class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t.nav.about}</a></li>
-      <li><a href={base + "#services"} class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t.nav.services}</a></li>
-      <li><a href={base + "#portfolio"} class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t.nav.portfolio}</a></li>
-      <li><a href={base + "#contact"} class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t.nav.contact}</a></li>
-      <li><a href={lang === "hu" ? "/gyik/" : "/en/faq/"} class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t.nav.faq}</a></li>
-      <li><a href={lang === "hu" ? "/arak/" : "/en/pricing/"} class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t.nav.pricing}</a></li>
+      <li><a href={base + "#about"} class="hover:text-(--accent) transition-colors">{t.nav.about}</a></li>
+      <li><a href={base + "#services"} class="hover:text-(--accent) transition-colors">{t.nav.services}</a></li>
+      <li><a href={base + "#portfolio"} class="hover:text-(--accent) transition-colors">{t.nav.portfolio}</a></li>
+      <li><a href={base + "#contact"} class="hover:text-(--accent) transition-colors">{t.nav.contact}</a></li>
+      <li><a href={lang === "hu" ? "/gyik/" : "/en/faq/"} class="hover:text-(--accent) transition-colors">{t.nav.faq}</a></li>
+      <li><a href={lang === "hu" ? "/arak/" : "/en/pricing/"} class="hover:text-(--accent) transition-colors">{t.nav.pricing}</a></li>
     </ul>
 
     <div class="flex items-center gap-3">
@@ -39,8 +39,8 @@ const base = home ? "" : (lang === "hu" ? "/" : "/en/");
         id="theme-toggle"
         aria-label="Téma váltása"
         class="hidden md:flex items-center justify-center w-9 h-9 rounded-lg border border-gray-200 dark:border-gray-700
-               text-gray-600 dark:text-gray-300 hover:border-indigo-400 hover:text-indigo-600
-               dark:hover:border-indigo-500 dark:hover:text-indigo-400 transition-all"
+               text-gray-600 dark:text-gray-300 hover:border-(--accent) hover:text-(--accent)
+               transition-all"
       >
         <svg id="icon-moon" class="w-4 h-4 dark:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
@@ -63,8 +63,8 @@ const base = home ? "" : (lang === "hu" ? "/" : "/en/");
         href={otherLangHref}
         aria-label={lang === "hu" ? "Switch to English" : "Váltás magyarra"}
         class="hidden md:inline-block text-sm font-medium px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700
-               text-gray-600 dark:text-gray-300 hover:border-indigo-400 hover:text-indigo-600
-               dark:hover:border-indigo-500 dark:hover:text-indigo-400 transition-all"
+               text-gray-600 dark:text-gray-300 hover:border-(--accent) hover:text-(--accent)
+               transition-all"
       >
         {otherLang.toUpperCase()}
       </a>
@@ -100,24 +100,23 @@ const base = home ? "" : (lang === "hu" ? "/" : "/en/");
 
   <!-- Links: vertically centered in remaining space -->
   <nav class="flex flex-col items-center justify-center gap-1 flex-1" aria-label={lang === "hu" ? "Mobilnavigáció" : "Mobile navigation"}>
-    <a href={base + "#about"}   class="drawer-link w-full text-center py-4 text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t.nav.about}</a>
-    <a href={base + "#services"} class="drawer-link w-full text-center py-4 text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t.nav.services}</a>
-    <a href={base + "#portfolio"} class="drawer-link w-full text-center py-4 text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t.nav.portfolio}</a>
-    <a href={base + "#contact"}  class="drawer-link w-full text-center py-4 text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t.nav.contact}</a>
-    <a href={lang === "hu" ? "/gyik/" : "/en/faq/"} class="drawer-link w-full text-center py-4 text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t.nav.faq}</a>
-    <a href={lang === "hu" ? "/arak/" : "/en/pricing/"} class="drawer-link w-full text-center py-4 text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">{t.nav.pricing}</a>
+    <a href={base + "#about"}   class="drawer-link w-full text-center py-4 text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-(--accent) transition-colors">{t.nav.about}</a>
+    <a href={base + "#services"} class="drawer-link w-full text-center py-4 text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-(--accent) transition-colors">{t.nav.services}</a>
+    <a href={base + "#portfolio"} class="drawer-link w-full text-center py-4 text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-(--accent) transition-colors">{t.nav.portfolio}</a>
+    <a href={base + "#contact"}  class="drawer-link w-full text-center py-4 text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-(--accent) transition-colors">{t.nav.contact}</a>
+    <a href={lang === "hu" ? "/gyik/" : "/en/faq/"} class="drawer-link w-full text-center py-4 text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-(--accent) transition-colors">{t.nav.faq}</a>
+    <a href={lang === "hu" ? "/arak/" : "/en/pricing/"} class="drawer-link w-full text-center py-4 text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-(--accent) transition-colors">{t.nav.pricing}</a>
   </nav>
 
   <!-- Drawer footer: theme + lang + credit -->
-  <div class="px-6 py-6 border-t border-gray-100 dark:border-gray-800 flex flex-col items-center gap-4">
+  <div class="px-6 py-6 border-t border-(--border-subtle) flex flex-col items-center gap-4">
     <div class="flex items-center gap-3">
       <!-- Mobile theme toggle -->
       <button
         id="theme-toggle-mobile"
         aria-label="Téma váltása"
         class="flex items-center justify-center w-10 h-10 rounded-lg border border-gray-200 dark:border-gray-700
-               text-gray-600 dark:text-gray-300 hover:border-indigo-400 hover:text-indigo-600
-               dark:hover:border-indigo-500 dark:hover:text-indigo-400 transition-all"
+               text-gray-600 dark:text-gray-300 hover:border-(--accent) hover:text-(--accent) transition-all"
       >
         <svg class="w-5 h-5 dark:hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
@@ -139,8 +138,7 @@ const base = home ? "" : (lang === "hu" ? "/" : "/en/");
         href={otherLangHref}
         aria-label={lang === "hu" ? "Switch to English" : "Váltás magyarra"}
         class="text-sm font-medium px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700
-               text-gray-600 dark:text-gray-300 hover:border-indigo-400 hover:text-indigo-600
-               dark:hover:border-indigo-500 dark:hover:text-indigo-400 transition-all"
+               text-gray-600 dark:text-gray-300 hover:border-(--accent) hover:text-(--accent) transition-all"
       >
         {otherLang.toUpperCase()}
       </a>

@@ -47,42 +47,23 @@ function formatHUF(amount: number) {
     <div class="max-w-3xl mx-auto px-4">
       <!-- Breadcrumb -->
       <nav aria-label="Breadcrumb" class="mb-10">
-        <ol
-          class="flex items-center gap-2 text-sm text-gray-400 dark:text-gray-500"
-        >
+        <ol class="flex items-center gap-2 text-sm text-gray-400 dark:text-gray-500">
           <li>
-            <a
-              href="/"
-              class="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
-              >Főoldal</a
-            >
+            <a href="/" class="hover:text-(--accent) transition-colors">Főoldal</a>
           </li>
           <li aria-hidden="true">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"><path d="M9 18l6-6-6-6"></path></svg
-            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"></path></svg>
           </li>
           <li>
-            <span
-              class="text-gray-600 dark:text-gray-300 font-medium"
-              aria-current="page">{t.pricing.title}</span
-            >
+            <span class="text-(--text-primary) font-medium" aria-current="page">{t.pricing.title}</span>
           </li>
         </ol>
       </nav>
 
-      <h1 data-animate class="text-4xl font-bold text-gray-900 dark:text-white mb-3">
+      <h1 data-animate class="text-4xl font-bold text-(--text-primary) mb-3">
         {t.pricing.title}
       </h1>
-      <p data-animate style="transition-delay: 80ms" class="text-lg text-gray-600 dark:text-gray-300 mb-10">
+      <p data-animate style="transition-delay: 80ms" class="text-lg text-(--text-secondary) mb-10">
         {t.pricing.subtitle}
       </p>
 
@@ -90,61 +71,43 @@ function formatHUF(amount: number) {
       <div
         data-animate
         style="transition-delay: 140ms"
-        class="mb-10 p-8 bg-indigo-50 dark:bg-indigo-900/20 rounded-2xl flex items-center justify-between gap-6"
+        class="mb-10 p-8 bg-(--accent-bg) border border-(--accent-border) rounded-lg flex items-center justify-between gap-6"
       >
         <div>
-          <p class="text-lg font-bold text-gray-900 dark:text-white">
-            {t.pricing.baselineLabel}
-          </p>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-            {t.pricing.baselineNote}
-          </p>
+          <p class="text-lg font-bold text-(--text-primary)">{t.pricing.baselineLabel}</p>
+          <p class="text-sm text-(--text-secondary) mt-0.5">{t.pricing.baselineNote}</p>
         </div>
-        <p
-          class="text-3xl font-bold text-indigo-600 dark:text-indigo-400 shrink-0"
-        >
-          {formatHUF(t.pricing.baselineAmount)}
-        </p>
+        <p class="text-3xl font-bold text-(--accent) shrink-0">{formatHUF(t.pricing.baselineAmount)}</p>
       </div>
 
       <!-- Projekt típus -->
       <fieldset data-animate style="transition-delay: 200ms" data-stagger-section class="mb-10">
-        <legend class="text-xl font-semibold text-gray-900 dark:text-white mb-4"
-          >{t.pricing.projectTypeLabel}</legend
-        >
+        <legend class="text-xl font-semibold text-(--text-primary) mb-4">{t.pricing.projectTypeLabel}</legend>
         <div class="grid sm:grid-cols-2 gap-3 mb-4" id="project-type-group">
-          {
-            t.pricing.projectTypes.map((type) => (
-              <label class="project-type-card stagger-card cursor-pointer flex items-center justify-between gap-3 p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 hover:border-indigo-400 dark:hover:border-indigo-500 transition-all">
-                <div class="flex items-center gap-3">
-                  <input
-                    type="radio"
-                    name="project-type"
-                    value={type.id}
-                    data-price={type.price}
-                    data-flat={type.isFlat ? "true" : "false"}
-                    class="accent-indigo-600 w-4 h-4 shrink-0"
-                  />
-                  <span class="font-medium text-gray-800 dark:text-gray-100">
-                    {type.label}
-                  </span>
-                </div>
-                <span class="text-sm font-semibold text-indigo-600 dark:text-indigo-400 shrink-0">
-                  {type.isFlat
-                    ? formatHUF(type.price)
-                    : type.price === 0
-                      ? "Alap"
-                      : `+${formatHUF(type.price)}`}
-                </span>
-              </label>
-            ))
-          }
+          {t.pricing.projectTypes.map((type) => (
+            <label class="project-type-card stagger-card cursor-pointer flex items-center justify-between gap-3 p-4 rounded-md border border-(--border-subtle) bg-white dark:bg-(--bg-surface) hover:border-(--accent-border) transition-all">
+              <div class="flex items-center gap-3">
+                <input
+                  type="radio"
+                  name="project-type"
+                  value={type.id}
+                  data-price={type.price}
+                  data-flat={type.isFlat ? "true" : "false"}
+                  class="w-4 h-4 shrink-0"
+                />
+                <span class="font-medium text-(--text-primary)">{type.label}</span>
+              </div>
+              <span class="text-sm font-semibold text-(--accent) shrink-0">
+                {type.isFlat ? formatHUF(type.price) : (type.price === 0 ? "Alap" : `+${formatHUF(type.price)}`)}
+              </span>
+            </label>
+          ))}
         </div>
 
         <!-- Flat notice – slide animációval -->
         <div id="flat-notice" class="flat-notice">
           <div>
-            <p class="text-sm text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-xl px-4 py-3">
+            <p class="text-sm text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-md px-4 py-3">
               {t.pricing.flatNote}
             </p>
           </div>
@@ -153,88 +116,64 @@ function formatHUF(amount: number) {
 
       <!-- Modul kategóriák -->
       <div id="modules-section">
-        {
-          t.pricing.categories.map((cat, i) => (
-            <section
-              data-animate
-              style={`transition-delay: ${260 + i * 60}ms`}
-              data-stagger-section
-              class="mb-8"
-            >
-              <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                {cat.label}
-              </h2>
-              <div class="grid sm:grid-cols-2 gap-3">
-                {cat.items.map((mod) => (
-                  <label class="module-card stagger-card cursor-pointer flex items-center justify-between gap-3 p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 hover:border-indigo-400 dark:hover:border-indigo-500 transition-all">
-                    <div class="flex items-center gap-3">
-                      <input
-                        type="checkbox"
-                        name="module"
-                        value={mod.id}
-                        data-price={mod.price}
-                        data-cat={cat.id}
-                        class="accent-indigo-600 w-4 h-4 shrink-0"
-                      />
-                      <span class="font-medium text-gray-800 dark:text-gray-100 text-sm">
-                        {mod.label}
-                      </span>
-                    </div>
-                    <span class="text-sm font-semibold text-indigo-600 dark:text-indigo-400 shrink-0">
-                      +{formatHUF(mod.price)}
-                    </span>
-                  </label>
-                ))}
-              </div>
-            </section>
-          ))
-        }
+        {t.pricing.categories.map((cat, i) => (
+          <section
+            data-animate
+            style={`transition-delay: ${260 + i * 60}ms`}
+            data-stagger-section
+            class="mb-8"
+          >
+            <h2 class="text-lg font-semibold text-(--text-primary) mb-3">{cat.label}</h2>
+            <div class="grid sm:grid-cols-2 gap-3">
+              {cat.items.map((mod) => (
+                <label class="module-card stagger-card cursor-pointer flex items-center justify-between gap-3 p-4 rounded-md border border-(--border-subtle) bg-white dark:bg-(--bg-surface) hover:border-(--accent-border) transition-all">
+                  <div class="flex items-center gap-3">
+                    <input
+                      type="checkbox"
+                      name="module"
+                      value={mod.id}
+                      data-price={mod.price}
+                      data-cat={cat.id}
+                      class="w-4 h-4 shrink-0"
+                    />
+                    <span class="font-medium text-(--text-primary) text-sm">{mod.label}</span>
+                  </div>
+                  <span class="text-sm font-semibold text-(--accent) shrink-0">+{formatHUF(mod.price)}</span>
+                </label>
+              ))}
+            </div>
+          </section>
+        ))}
       </div>
 
       <!-- Felár figyelmeztetés -->
       <div
         data-animate
         style="transition-delay: 500ms"
-        class="mt-4 mb-12 p-4 bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-200 dark:border-amber-700"
+        class="mt-4 mb-12 p-4 bg-amber-50 dark:bg-amber-900/20 rounded-md border border-amber-200 dark:border-amber-700"
       >
-        <p class="text-sm text-amber-800 dark:text-amber-200">
-          {t.pricing.surchargeNotice}
-        </p>
+        <p class="text-sm text-amber-800 dark:text-amber-200">{t.pricing.surchargeNotice}</p>
       </div>
     </div>
   </main>
 
   <!-- Sticky total bar -->
-  <div
-    id="total-bar"
-    class="fixed bottom-0 left-0 right-0 z-30 border-t border-gray-200 dark:border-gray-700 px-4 py-4 total-bar-bg"
-  >
+  <div id="total-bar" class="fixed bottom-0 left-0 right-0 z-30 border-t border-(--border-subtle) px-4 py-4 total-bar-bg">
     <div class="max-w-3xl mx-auto flex items-center justify-between gap-4">
       <div class="min-w-0">
-        <p class="text-xs text-gray-500 dark:text-gray-400">
-          {t.pricing.totalLabel}
-        </p>
-        <p
-          id="total-display"
-          class="text-2xl font-bold text-indigo-600 dark:text-indigo-400 leading-tight"
-        >
-          150 000 Ft
-        </p>
-        <p class="text-xs text-gray-400 dark:text-gray-500 truncate">
-          {t.pricing.totalBaseline}
-        </p>
+        <p class="text-xs text-(--text-secondary)">{t.pricing.totalLabel}</p>
+        <p id="total-display" class="text-2xl font-bold text-(--accent) leading-tight">150 000 Ft</p>
+        <p class="text-xs text-(--text-tertiary) truncate">{t.pricing.totalBaseline}</p>
       </div>
       <a
         id="cta-btn"
         href="/osszegzes/"
-        class="shrink-0 self-center px-6 py-3 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-xl font-semibold text-sm transition-colors shadow-lg whitespace-nowrap"
+        class="shrink-0 self-center px-6 py-3 bg-(--accent) hover:bg-(--accent-bright) active:bg-(--accent-dim) text-white rounded-md font-semibold text-sm transition-colors shadow-lg whitespace-nowrap"
       >
         {t.pricing.cta}
       </a>
     </div>
-    <p class="max-w-3xl mx-auto text-xs text-gray-400 dark:text-gray-500 mt-2">
-      {t.pricing.disclaimer}
-    </p>
+    <p class="max-w-3xl mx-auto text-xs text-(--text-tertiary) mt-2">{t.pricing.disclaimer}</p>
   </div>
 
   <Footer lang="hu" />
@@ -244,7 +183,7 @@ function formatHUF(amount: number) {
   /* ── Checkbox és radio ── */
   input[type="checkbox"],
   input[type="radio"] {
-    accent-color: #6366f1;
+    accent-color: var(--accent);
     cursor: pointer;
   }
 
@@ -282,12 +221,12 @@ function formatHUF(amount: number) {
       transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .module-card:has(input:checked) {
-    border-color: #6366f1;
-    background-color: #eef2ff;
+    border-color: var(--accent-border);
+    background-color: var(--accent-bg);
   }
   :global(.dark) .module-card:has(input:checked) {
-    background-color: rgba(99, 102, 241, 0.12);
-    border-color: #6366f1;
+    background-color: var(--accent-bg);
+    border-color: var(--accent-border);
   }
   .module-card:has(input:disabled) {
     opacity: 0.35;
@@ -303,12 +242,12 @@ function formatHUF(amount: number) {
       background-color 0.15s;
   }
   .project-type-card:has(input:checked) {
-    border-color: #6366f1;
-    background-color: #eef2ff;
+    border-color: var(--accent-border);
+    background-color: var(--accent-bg);
   }
   :global(.dark) .project-type-card:has(input:checked) {
-    background-color: rgba(99, 102, 241, 0.12);
-    border-color: #6366f1;
+    background-color: var(--accent-bg);
+    border-color: var(--accent-border);
   }
 
   /* ── Flat notice slide ── */
@@ -370,13 +309,13 @@ function formatHUF(amount: number) {
 
   /* ── Total bar üveges háttér ── */
   .total-bar-bg {
-    background: rgba(255, 255, 255, 0.75);
+    background: rgba(250, 249, 246, 0.80);
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
     box-shadow: 0 -1px 24px 0 rgba(0, 0, 0, 0.08);
   }
   :global(.dark) .total-bar-bg {
-    background: rgba(2, 6, 23, 0.75);
+    background: rgba(12, 12, 12, 0.80);
     box-shadow: 0 -1px 24px 0 rgba(0, 0, 0, 0.4);
   }
 
@@ -394,39 +333,28 @@ function formatHUF(amount: number) {
     isFlat: boolean;
   }
 
-  let selectedProjectType: ProjectType | null = {
-    id: "landing",
-    price: 0,
-    isFlat: false,
-  };
+  let selectedProjectType: ProjectType | null = { id: "landing", price: 0, isFlat: false };
   const selectedModules = new Map<string, number>();
   let currentTotal = BASE;
 
-  // ── Formázás ────────────────────────────────────────────────────────────────
   function formatHUF(n: number): string {
     return n.toLocaleString("hu-HU") + " Ft";
   }
 
-  // ── Animated counter ────────────────────────────────────────────────────────
   function animateCounter(newTotal: number) {
     const display = document.getElementById("total-display");
     if (!display) return;
-
     const direction = newTotal > currentTotal ? "roll-up" : "roll-down";
     currentTotal = newTotal;
-
     display.classList.remove("roll-up", "roll-down");
-    // force reflow
     void (display as HTMLElement).offsetWidth;
     display.textContent = formatHUF(newTotal);
     display.classList.add(direction);
-
     display.addEventListener("animationend", () => {
       display.classList.remove("roll-up", "roll-down");
     }, { once: true });
   }
 
-  // ── Total számítás ──────────────────────────────────────────────────────────
   function calculateTotal(): number {
     if (selectedProjectType?.isFlat) return selectedProjectType.price;
     const projectAdd = selectedProjectType?.price ?? 0;
@@ -436,67 +364,44 @@ function formatHUF(amount: number) {
 
   function updateDisplay() {
     const newTotal = calculateTotal();
-    if (newTotal !== currentTotal) {
-      animateCounter(newTotal);
-    }
-
+    if (newTotal !== currentTotal) animateCounter(newTotal);
     const params = new URLSearchParams();
     if (selectedProjectType) params.set("type", selectedProjectType.id);
     selectedModules.forEach((_, id) => params.append("m", id));
     params.set("total", String(newTotal));
-
     const btn = document.getElementById("cta-btn") as HTMLAnchorElement | null;
     if (btn) btn.href = "/osszegzes/?" + params.toString();
   }
 
-  // ── Modulok letiltása/engedélyezése ────────────────────────────────────────
   function setModulesDisabled(disabled: boolean) {
-    document
-      .querySelectorAll<HTMLInputElement>("input[name='module']")
-      .forEach((el) => {
-        el.disabled = disabled;
-        if (disabled) el.checked = false;
-      });
+    document.querySelectorAll<HTMLInputElement>("input[name='module']").forEach((el) => {
+      el.disabled = disabled;
+      if (disabled) el.checked = false;
+    });
     if (disabled) selectedModules.clear();
-
     const notice = document.getElementById("flat-notice");
-    if (notice) {
-      if (disabled) {
-        notice.classList.add("is-visible");
-      } else {
-        notice.classList.remove("is-visible");
-      }
-    }
+    if (notice) notice.classList.toggle("is-visible", disabled);
   }
 
-  // ── Card pop animáció ────────────────────────────────────────────────────────
   function triggerCardPop(label: HTMLElement, input: HTMLInputElement) {
     label.classList.remove("card-popping");
     void label.offsetWidth;
     label.classList.add("card-popping");
-    label.addEventListener("animationend", () => {
-      label.classList.remove("card-popping");
-    }, { once: true });
-
+    label.addEventListener("animationend", () => label.classList.remove("card-popping"), { once: true });
     input.classList.remove("just-checked");
     void input.offsetWidth;
     input.classList.add("just-checked");
-    input.addEventListener("animationend", () => {
-      input.classList.remove("just-checked");
-    }, { once: true });
+    input.addEventListener("animationend", () => input.classList.remove("just-checked"), { once: true });
   }
 
-  // ── Event handlers ──────────────────────────────────────────────────────────
   function onProjectTypeChange(e: Event) {
     const input = e.target as HTMLInputElement;
     const label = input.closest("label") as HTMLElement;
-
     selectedProjectType = {
       id: input.value,
       price: parseInt(input.dataset.price ?? "0", 10),
       isFlat: input.dataset.flat === "true",
     };
-
     triggerCardPop(label, input);
     setModulesDisabled(selectedProjectType.isFlat);
     updateDisplay();
@@ -506,7 +411,6 @@ function formatHUF(amount: number) {
     const input = e.target as HTMLInputElement;
     const label = input.closest("label") as HTMLElement;
     const price = parseInt(input.dataset.price ?? "0", 10);
-
     if (input.checked) {
       selectedModules.set(input.value, price);
       triggerCardPop(label, input);
@@ -516,25 +420,17 @@ function formatHUF(amount: number) {
     updateDisplay();
   }
 
-  // ── Wire up events ──────────────────────────────────────────────────────────
-  document
-    .querySelectorAll<HTMLInputElement>("input[name='project-type']")
+  document.querySelectorAll<HTMLInputElement>("input[name='project-type']")
     .forEach((el) => el.addEventListener("change", onProjectTypeChange));
-
-  document
-    .querySelectorAll<HTMLInputElement>("input[name='module']")
+  document.querySelectorAll<HTMLInputElement>("input[name='module']")
     .forEach((el) => el.addEventListener("change", onModuleChange));
 
-  // ── Init: landing alapértelmezett ────────────────────────────────────────────
-  const firstRadio = document.querySelector<HTMLInputElement>(
-    "input[name='project-type'][value='landing']",
-  );
+  const firstRadio = document.querySelector<HTMLInputElement>("input[name='project-type'][value='landing']");
   if (firstRadio) firstRadio.checked = true;
   currentTotal = BASE;
   const display = document.getElementById("total-display");
   if (display) display.textContent = formatHUF(BASE);
 
-  // ── Scroll-to-top gomb felemelése mobilon ────────────────────────────────────
   const scrollBtn = document.getElementById("scroll-top");
   const totalBar = document.getElementById("total-bar");
   if (scrollBtn && totalBar) {
@@ -551,7 +447,6 @@ function formatHUF(amount: number) {
     }, { passive: true });
   }
 
-  // ── Scroll-in animáció (data-animate) ────────────────────────────────────────
   const animObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -565,16 +460,13 @@ function formatHUF(amount: number) {
   );
   document.querySelectorAll("[data-animate]").forEach((el) => animObserver.observe(el));
 
-  // ── Staggered kártyák ────────────────────────────────────────────────────────
   const sectionObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         const cards = entry.target.querySelectorAll<HTMLElement>(".stagger-card");
         cards.forEach((card, i) => {
-          setTimeout(() => {
-            card.classList.add("card-visible");
-          }, i * 60);
+          setTimeout(() => card.classList.add("card-visible"), i * 60);
         });
         sectionObserver.unobserve(entry.target);
       });

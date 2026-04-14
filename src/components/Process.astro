@@ -14,14 +14,14 @@ const t = useTranslations(lang);
   <div class="max-w-3xl mx-auto px-4">
     <h2
       data-animate
-      class="text-3xl font-bold text-gray-900 dark:text-white mb-3"
+      class="text-3xl font-bold text-(--text-primary) mb-3"
     >
       {t.process.title}
     </h2>
     <p
       data-animate
       style="transition-delay:80ms"
-      class="text-gray-600 dark:text-gray-300 mb-12 text-lg"
+      class="text-(--text-secondary) mb-12 text-lg"
     >
       {t.process.subtitle}
     </p>
@@ -34,14 +34,14 @@ const t = useTranslations(lang);
             style={`transition-delay: ${i * 100}ms`}
             class="flex gap-6 pb-10 last:pb-0 relative"
           >
-            <div class="shrink-0 w-12 h-12 rounded-full bg-indigo-600 dark:bg-indigo-500 text-white flex items-center justify-center font-bold text-base z-10 shadow-md">
+            <div class="shrink-0 w-12 h-12 rounded-full bg-(--accent) text-white flex items-center justify-center font-bold text-base z-10 shadow-md">
               {step.number}
             </div>
             <div class="pt-2">
-              <h3 class="font-semibold text-gray-900 dark:text-white mb-1 text-lg">
+              <h3 class="font-semibold text-(--text-primary) mb-1 text-lg">
                 {step.title}
               </h3>
-              <p class="text-gray-600 dark:text-gray-300">{step.description}</p>
+              <p class="text-(--text-secondary)">{step.description}</p>
             </div>
           </li>
         ))
@@ -58,10 +58,10 @@ const t = useTranslations(lang);
     top: 24px;
     bottom: 24px;
     width: 2px;
-    background: #c7d2fe;
+    background: var(--accent-border) !important;
   }
 
   :global(.dark) .process-list::before {
-    background: #3730a3;
+    background: var(--accent-dim);
   }
 </style>
