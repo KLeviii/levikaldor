@@ -1,0 +1,433 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar.astro";
+import Footer from "../../components/Footer.astro";
+import { cities } from "../../data/cities";
+
+export function getStaticPaths() {
+  return cities.map((city) => ({
+    params: { slug: city.slug },
+    props: { city },
+  }));
+}
+
+const { city } = Astro.props;
+const SITE = "https://levikaldor.hu";
+const pageUrl = `${SITE}/varos/${city.slug}/`;
+
+const title = `Honlapkészítés ${city.name} – Profi weboldal készítés | Káldor Levente`;
+const description = `Honlapkészítés ${city.name} – egyedi, gyors és keresőoptimalizált weboldal vállalkozásoknak. Személyes konzultáció, átlátható árak, határidőgarancia. Kérj ajánlatot!`;
+
+const jsonld = [
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Főoldal", item: `${SITE}/` },
+      { "@type": "ListItem", position: 2, name: `Honlapkészítés ${city.name}`, item: pageUrl },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: "Káldor Levente – Webfejlesztő",
+    description: `Egyedi weboldal és webshop fejlesztés ${city.locative} működő vállalkozásoknak.`,
+    url: SITE,
+    areaServed: [
+      { "@type": "City", name: city.name },
+      { "@type": "AdministrativeArea", name: `${city.county} megye` },
+    ],
+    serviceType: ["Weboldal készítés", "Webshop fejlesztés", "SEO optimalizálás", "Karbantartás"],
+    priceRange: "$$",
+    currenciesAccepted: "HUF",
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: `Mennyi idő alatt készül el egy weboldal ${city.locative} működő vállalkozásnak?`,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Landing page esetén 1–2 hét, portfólió oldalnál 2–3 hét, webshopnál 4–8 hét. A pontos határidőt az egyeztetés során közösen határozzuk meg.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Mennyibe kerül egy weboldal készítés?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Az alap díj 150 000 Ft, erre épülnek a választott modulok. A részletes árak az árkalkulátorban tekinthetők meg, a végleges ajánlat egyeztetés alapján készül.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Kell-e személyesen találkoznunk?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Nem kötelező – az egyeztetés és a fejlesztés teljes folyamata online is lebonyolítható. Amennyiben szeretnél személyes konzultációt, arra is van lehetőség.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Tartalmaz-e SEO optimalizálást az alap csomag?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Minden oldal technikai SEO-val készül (gyors betöltés, mobilbarát, helyes meta tagek, strukturált adatok). Mélyebb kulcsszókutatást és tartalmi SEO-t az SEO modul tartalmaz.",
+        },
+      },
+    ],
+  },
+];
+---
+
+<Layout
+  lang="hu"
+  title={title}
+  description={description}
+  canonical={pageUrl}
+  ogImage={`/og/varos-${city.slug}.png`}
+  jsonld={jsonld}
+>
+  <Navbar lang="hu" />
+
+  <main class="pt-32 pb-20">
+    <article class="max-w-3xl mx-auto px-4">
+
+      <!-- Breadcrumb -->
+      <nav aria-label="Breadcrumb" class="mb-10">
+        <ol class="flex items-center gap-2 text-sm text-(--text-tertiary)">
+          <li><a href="/" class="hover:text-(--text-primary) transition-colors">Főoldal</a></li>
+          <li aria-hidden="true" class="opacity-40">›</li>
+          <li class="text-(--text-secondary)">Honlapkészítés {city.name}</li>
+        </ol>
+      </nav>
+
+      <!-- H1 -->
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
+        Honlapkészítés {city.name}
+      </h1>
+      <p class="text-lg text-(--text-secondary) mb-12 leading-relaxed">
+        Profi, egyedi weboldal és webshop készítés {city.locative} és {city.county} megyében működő vállalkozásoknak –
+        modern technológiákkal, keresőoptimalizáltan, átlátható áron.
+      </p>
+
+      <!-- Sekció 1: Miért fontos -->
+      <section class="mb-14">
+        <h2 class="text-2xl font-semibold mb-4">Miért fontos a profi weboldal {city.locative}?</h2>
+        <p class="text-(--text-secondary) mb-4 leading-relaxed">
+          A {city.locative} működő vállalkozások számára ma már elengedhetetlen az erős online jelenlét.
+          Ügyfeleid először a Google-ön keresnek – ha ott nem találnak meg, a versenytársad fogja megszerezni
+          őket. Egy jól felépített, gyors és mobilbarát weboldal nem csupán digitális névjegy: ez az egyik
+          leghatékonyabb ügyfélszerzési eszközöd.
+        </p>
+        <p class="text-(--text-secondary) mb-4 leading-relaxed">
+          {city.name} piacon a helyi keresések aránya egyre növekszik – az emberek „közelben" keresnek
+          szolgáltatókat, éttermet, ügyvédet, fodrászt, mesterembert. Ha weboldalad helyileg optimalizált
+          és Googleben előkelő helyen szerepel, folyamatosan új ügyfeleket szerezhetsz anélkül, hogy
+          fizetett hirdetésekre kellene támaszkodnod.
+        </p>
+        <p class="text-(--text-secondary) leading-relaxed">
+          Káldor Levente webfejlesztőként pontosan azt szállítom, amire szükséged van: egyedi dizájn,
+          villámgyors betöltés, technikai SEO és – ami a legfontosabb – egy oldal, amely valóban
+          konvertál látogatóból ügyfelet.
+        </p>
+      </section>
+
+      <!-- Sekció 2: Szolgáltatások -->
+      <section class="mb-14">
+        <h2 class="text-2xl font-semibold mb-6">Elérhető szolgáltatások</h2>
+        <div class="space-y-5">
+          <div class="border border-(--border-subtle) rounded-xl p-5">
+            <h3 class="font-semibold mb-1">Weboldal készítés</h3>
+            <p class="text-sm text-(--text-secondary) leading-relaxed">
+              Egyedi, reszponzív weboldal fejlesztése modern technológiákkal. Az oldal mobilon és asztali
+              gépen egyaránt tökéletesen jelenik meg, gyorsan tölt be és megfelel a legújabb Google
+              irányelveknek. Minden projekt egyedi dizájnnal és testreszabott funkcionalitással készül.
+            </p>
+          </div>
+          <div class="border border-(--border-subtle) rounded-xl p-5">
+            <h3 class="font-semibold mb-1">Webshop fejlesztés</h3>
+            <p class="text-sm text-(--text-secondary) leading-relaxed">
+              Teljes körű webáruház: termékkezelés, online fizetés (Barion, Stripe, utánvét), szállítói
+              integráció, adminfelület. Legyen szó kis webshoptól nagyobb katalógusig – a megoldás méretezhetőn,
+              biztonságosan és megbízhatóan működik.
+            </p>
+          </div>
+          <div class="border border-(--border-subtle) rounded-xl p-5">
+            <h3 class="font-semibold mb-1">SEO optimalizálás és sebességjavítás</h3>
+            <p class="text-sm text-(--text-secondary) leading-relaxed">
+              Google Core Web Vitals optimalizálás, technikai SEO audit, kulcsszókutatás, meta tagek,
+              strukturált adatok (schema markup), belső linkelési struktúra. Ha már van weboldalad, de
+              nem hoz elég látogatót – ez a csomag segít.
+            </p>
+          </div>
+          <div class="border border-(--border-subtle) rounded-xl p-5">
+            <h3 class="font-semibold mb-1">Karbantartás és technikai support</h3>
+            <p class="text-sm text-(--text-secondary) leading-relaxed">
+              Rendszeres biztonsági frissítések, hibaelhárítás, kisebb módosítások elvégzése, teljesítmény
+              figyelése. Az oldal átadása után sem maradsz magadra – elérhető vagyok, ha probléma adódik.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sekció 3: Folyamat -->
+      <section class="mb-14">
+        <h2 class="text-2xl font-semibold mb-6">Hogyan dolgozom? – A folyamat lépései</h2>
+        <p class="text-(--text-secondary) mb-6 leading-relaxed">
+          Átlátható, lépésről lépésre felépített munkamenet – tudod mindig, hogy éppen hol tart a projekt.
+        </p>
+        <ol class="space-y-5">
+          <li class="flex gap-4">
+            <span class="shrink-0 w-8 h-8 rounded-full bg-(--accent) text-white flex items-center justify-center text-sm font-bold">1</span>
+            <div>
+              <p class="font-semibold mb-1">Ingyenes konzultáció</p>
+              <p class="text-sm text-(--text-secondary) leading-relaxed">
+                Megbeszéljük az igényeket, célokat, határidőket és az elvárt funkciókat. Ez az egyeztetés
+                kötelezettségmentes – teljesen ingyenes. Online vagy emailen is lebonyolítható.
+              </p>
+            </div>
+          </li>
+          <li class="flex gap-4">
+            <span class="shrink-0 w-8 h-8 rounded-full bg-(--accent) text-white flex items-center justify-center text-sm font-bold">2</span>
+            <div>
+              <p class="font-semibold mb-1">Árajánlat és tervezés</p>
+              <p class="text-sm text-(--text-secondary) leading-relaxed">
+                Az egyeztetés alapján részletes, tételes ajánlatot készítek. A megállapodás után következik
+                a dizájn vázlatok, oldaltérkép és technikai stack meghatározása.
+              </p>
+            </div>
+          </li>
+          <li class="flex gap-4">
+            <span class="shrink-0 w-8 h-8 rounded-full bg-(--accent) text-white flex items-center justify-center text-sm font-bold">3</span>
+            <div>
+              <p class="font-semibold mb-1">Fejlesztés</p>
+              <p class="text-sm text-(--text-secondary) leading-relaxed">
+                Iteratív fejlesztés, folyamatos visszajelzési lehetőséggel. Menet közben is láthatsz
+                részeredményeket – nem kell vakon várni a végeredményre.
+              </p>
+            </div>
+          </li>
+          <li class="flex gap-4">
+            <span class="shrink-0 w-8 h-8 rounded-full bg-(--accent) text-white flex items-center justify-center text-sm font-bold">4</span>
+            <div>
+              <p class="font-semibold mb-1">Tesztelés</p>
+              <p class="text-sm text-(--text-secondary) leading-relaxed">
+                Böngésző- és eszközkompatibilitás ellenőrzés, teljesítmény mérés, SEO audit, akadálymentességi
+                ellenőrzés. Az oldal csak akkor kerül élesbe, ha minden rendben van.
+              </p>
+            </div>
+          </li>
+          <li class="flex gap-4">
+            <span class="shrink-0 w-8 h-8 rounded-full bg-(--accent) text-white flex items-center justify-center text-sm font-bold">5</span>
+            <div>
+              <p class="font-semibold mb-1">Átadás és indulás</p>
+              <p class="text-sm text-(--text-secondary) leading-relaxed">
+                Domain és tárhely beállítás, az oldal éles indítása, dokumentáció átadása. Szükség esetén
+                a tartalom feltöltésében is segítek.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- Sekció 4: Árak -->
+      <section class="mb-14">
+        <h2 class="text-2xl font-semibold mb-3">Árak és határidők</h2>
+        <p class="text-(--text-secondary) mb-6 leading-relaxed">
+          Átlátható, moduláris árazás – fizess csak azért, amire valóban szükséged van.
+          Az alábbi táblázat tájékoztató jellegű; a végleges ajánlat az egyeztetés alapján készül.
+        </p>
+
+        <div class="overflow-x-auto mb-4">
+          <table class="w-full text-sm border-collapse">
+            <thead>
+              <tr class="border-b border-(--border-subtle)">
+                <th class="text-left py-3 pr-4 font-semibold">Csomag</th>
+                <th class="text-left py-3 pr-4 font-semibold">Ártól</th>
+                <th class="text-left py-3 font-semibold">Határidő</th>
+              </tr>
+            </thead>
+            <tbody class="text-(--text-secondary)">
+              <tr class="border-b border-(--border-subtle)">
+                <td class="py-3 pr-4 font-medium text-(--text-primary)">Landing page</td>
+                <td class="py-3 pr-4">150 000 Ft</td>
+                <td class="py-3">1–2 hét</td>
+              </tr>
+              <tr class="border-b border-(--border-subtle)">
+                <td class="py-3 pr-4 font-medium text-(--text-primary)">Portfólió oldal</td>
+                <td class="py-3 pr-4">200 000 Ft</td>
+                <td class="py-3">2–3 hét</td>
+              </tr>
+              <tr class="border-b border-(--border-subtle)">
+                <td class="py-3 pr-4 font-medium text-(--text-primary)">Webshop</td>
+                <td class="py-3 pr-4">300 000 Ft</td>
+                <td class="py-3">4–8 hét</td>
+              </tr>
+              <tr>
+                <td class="py-3 pr-4 font-medium text-(--text-primary)">SEO / Optimalizálás</td>
+                <td class="py-3 pr-4">80 000 Ft</td>
+                <td class="py-3">1–2 hét</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="text-xs text-(--text-tertiary) mb-3">
+          Az árak az alap projektet tartalmazzák. A funkcionális, design és biztonsági modulok felárral
+          adhatók hozzá – a részletes árkalkulátor az
+          <a href="/arak" class="text-(--accent) hover:underline">Árak oldalon</a> érhető el.
+        </p>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm border-collapse">
+            <thead>
+              <tr class="border-b border-(--border-subtle)">
+                <th class="text-left py-3 pr-4 font-semibold">Modul</th>
+                <th class="text-left py-3 font-semibold">Felárak (tájékoztató)</th>
+              </tr>
+            </thead>
+            <tbody class="text-(--text-secondary)">
+              <tr class="border-b border-(--border-subtle)">
+                <td class="py-3 pr-4">Kapcsolatfelvételi űrlap</td>
+                <td class="py-3">+ 25 000 Ft</td>
+              </tr>
+              <tr class="border-b border-(--border-subtle)">
+                <td class="py-3 pr-4">Blog rendszer</td>
+                <td class="py-3">+ 60 000 Ft</td>
+              </tr>
+              <tr class="border-b border-(--border-subtle)">
+                <td class="py-3 pr-4">Képgaléria</td>
+                <td class="py-3">+ 30 000 Ft</td>
+              </tr>
+              <tr class="border-b border-(--border-subtle)">
+                <td class="py-3 pr-4">Foglalási rendszer</td>
+                <td class="py-3">+ 90 000 Ft</td>
+              </tr>
+              <tr class="border-b border-(--border-subtle)">
+                <td class="py-3 pr-4">Többnyelvűsítés (i18n)</td>
+                <td class="py-3">+ 50 000 Ft</td>
+              </tr>
+              <tr class="border-b border-(--border-subtle)">
+                <td class="py-3 pr-4">GDPR megfelelőség</td>
+                <td class="py-3">+ 35 000 Ft</td>
+              </tr>
+              <tr>
+                <td class="py-3 pr-4">Sötét mód</td>
+                <td class="py-3">+ 20 000 Ft</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="text-xs text-(--text-tertiary) mt-3">
+          Figyelem: a modulok csak a projekt megkezdése előtt állíthatók össze. A megkezdés utáni
+          módosítások felárral járnak.
+        </p>
+      </section>
+
+      <!-- Sekció 5: Helyi SEO tájékoztató -->
+      <section class="mb-14">
+        <h2 class="text-2xl font-semibold mb-4">Helyi SEO – Hogyan találnak meg {city.locative}?</h2>
+        <p class="text-(--text-secondary) mb-4 leading-relaxed">
+          A helyi keresőoptimalizálás (Local SEO) célja, hogy vállalkozásod előkelő helyen jelenjen meg
+          azoknál, akik {city.locative} vagy {city.county} megyében keresnek az adott szolgáltatásra.
+          Ez különösen fontos, ha fizikai üzleted vagy helyi ügyfélkörrel dolgozol.
+        </p>
+        <p class="text-(--text-secondary) mb-4 leading-relaxed">
+          A helyi SEO legfontosabb elemei:
+        </p>
+        <ul class="list-disc list-inside space-y-2 text-(--text-secondary) text-sm mb-4">
+          <li>Google Business Profile (Google Cégem) fiók létrehozása és optimalizálása</li>
+          <li>Helyi kulcsszavak beépítése a weboldal szövegébe és meta adataiba</li>
+          <li>Strukturált adatok (LocalBusiness schema) a kiemelkedő megjelenésért</li>
+          <li>NAP konzisztencia (cégnév, cím, telefonszám) az összes online felületen</li>
+          <li>Helyi visszahivatkozások (lokális céglisták, kamarák, sajtó)</li>
+          <li>Értékelések gyűjtése Google és más platformokon</li>
+        </ul>
+        <p class="text-(--text-secondary) leading-relaxed">
+          Ha kérsz SEO modult a csomaghoz, a fenti pontokat mind elvégzem – így az oldalad nemcsak
+          szép és gyors lesz, hanem {city.locative} is megtalálható.
+        </p>
+      </section>
+
+      <!-- Sekció 6: GYIK -->
+      <section class="mb-14">
+        <h2 class="text-2xl font-semibold mb-6">Gyakori kérdések</h2>
+        <div class="space-y-5">
+          <div>
+            <h3 class="font-semibold mb-1 text-base">Mennyi idő alatt készül el a weboldal?</h3>
+            <p class="text-sm text-(--text-secondary) leading-relaxed">
+              Landing page esetén 1–2 hét, portfólió oldalnál 2–3 hét, webshopnál 4–8 hét.
+              A pontos határidőt az egyeztetés során közösen rögzítjük, és betartom.
+            </p>
+          </div>
+          <div>
+            <h3 class="font-semibold mb-1 text-base">Kell-e hogy legyen saját tárhelyem?</h3>
+            <p class="text-sm text-(--text-secondary) leading-relaxed">
+              Nem feltétlenül. Segítek a tárhely és domain kiválasztásában, beállításában.
+              Ha már van saját tárhelyed, az oldalat oda is telepítem.
+            </p>
+          </div>
+          <div>
+            <h3 class="font-semibold mb-1 text-base">Kell-e személyesen találkoznunk?</h3>
+            <p class="text-sm text-(--text-secondary) leading-relaxed">
+              Nem kötelező – az egyeztetés és a fejlesztés online is teljesen lebonyolítható.
+              Amennyiben szeretnél személyes konzultációt, arra is van lehetőség.
+            </p>
+          </div>
+          <div>
+            <h3 class="font-semibold mb-1 text-base">Mi az alap csomag ára?</h3>
+            <p class="text-sm text-(--text-secondary) leading-relaxed">
+              Az alap díj 150 000 Ft, erre épülnek rá az opcionális modulok. A pontos, tételes
+              ajánlatot az egyeztetés után küldöm – meglepetések nélkül.
+            </p>
+          </div>
+          <div>
+            <h3 class="font-semibold mb-1 text-base">Mi az, ami beleszámít az árba?</h3>
+            <p class="text-sm text-(--text-secondary) leading-relaxed">
+              Minden projekt tartalmazza az alapvető technikai SEO-t (gyors betöltés, mobilbarát
+              kialakítás, helyes meta tagek, Google Analytics integráció), a dizájnt és a fejlesztést,
+              az éles indítást, valamint az átadást követő 30 napos garanciát.
+            </p>
+          </div>
+          <div>
+            <h3 class="font-semibold mb-1 text-base">Kapok-e jótállást az elkészült oldalra?</h3>
+            <p class="text-sm text-(--text-secondary) leading-relaxed">
+              Igen. Az átadástól számított 30 napig ingyenesen javítom az esetleges hibákat.
+              Ezt követően karbantartási csomag keretében folytathatjuk az együttműködést.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sekció 7: CTA -->
+      <section class="border border-(--border-subtle) rounded-2xl p-8 text-center">
+        <h2 class="text-2xl font-semibold mb-3">Kérj ajánlatot – ingyenes, kötelezettségmentes</h2>
+        <p class="text-(--text-secondary) mb-6 leading-relaxed max-w-xl mx-auto">
+          Írj egy rövid üzenetet a projektedről, és 24 órán belül visszajelzek részletes ajánlattal.
+          {city.name} és {city.county} megye területén is szívesen dolgozom.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+          <a
+            href="/#contact"
+            class="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-(--accent) hover:bg-(--accent-bright) text-white font-semibold transition-colors"
+          >
+            Ajánlatot kérek
+          </a>
+          <a
+            href="/arak"
+            class="inline-flex items-center justify-center px-6 py-3 rounded-xl border border-(--border-subtle) hover:border-(--accent) font-semibold transition-colors"
+          >
+            Árkalkulátor megnyitása
+          </a>
+        </div>
+      </section>
+
+    </article>
+  </main>
+
+  <Footer lang="hu" />
+</Layout>
