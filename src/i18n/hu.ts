@@ -41,6 +41,11 @@ export const hu = {
         description: "Google Core Web Vitals optimalizálás, technikai SEO, oldalsebességi audit – hogy magasabban jelenj meg a találati listán és több látogatót szerezz.",
       },
       {
+        icon: "palette",
+        title: "UI/UX Dizájn",
+        description: "Prototípus, wireframe és vizuális tervezés – hogy az oldalad ne csak működjön, hanem első látásra megnyerje a látogatókat.",
+      },
+      {
         icon: "wrench",
         title: "Karbantartás & support",
         description: "Rendszeres biztonsági frissítések, hibaelhárítás és technikai támogatás – hogy az oldalad mindig megbízhatóan és biztonságosan működjön.",

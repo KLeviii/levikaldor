@@ -41,6 +41,11 @@ export const en = {
         description: "Google Core Web Vitals optimisation, technical SEO, page speed audit – to rank higher in search results and attract more visitors.",
       },
       {
+        icon: "palette",
+        title: "UI/UX Design",
+        description: "Prototypes, wireframes and visual design – so your site doesn't just work, but wins visitors over at first glance.",
+      },
+      {
         icon: "wrench",
         title: "Maintenance & Support",
         description: "Regular security updates, bug fixes and technical support – so your website always runs reliably and securely.",
