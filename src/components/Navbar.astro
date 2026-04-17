@@ -62,11 +62,15 @@ const base = home ? "" : (lang === "hu" ? "/" : "/en/");
       <a
         href={otherLangHref}
         aria-label={lang === "hu" ? "Switch to English" : "Váltás magyarra"}
-        class="hidden md:inline-block text-sm font-medium px-3 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700
-               text-gray-600 dark:text-gray-300 hover:border-(--accent) hover:text-(--accent)
-               transition-all"
+        class="hidden md:inline-flex items-center justify-center w-9 h-9 rounded-lg border border-gray-200 dark:border-gray-700
+               hover:border-(--accent) transition-all"
       >
-        {otherLang.toUpperCase()}
+        <img
+          src={lang === "hu" ? "/flag-en.svg" : "/flag-hu.svg"}
+          alt={lang === "hu" ? "English" : "Magyar"}
+          width="22" height="14"
+          class="block rounded-sm"
+        />
       </a>
 
       <!-- Hamburger / Close -->
@@ -137,10 +141,15 @@ const base = home ? "" : (lang === "hu" ? "/" : "/en/");
       <a
         href={otherLangHref}
         aria-label={lang === "hu" ? "Switch to English" : "Váltás magyarra"}
-        class="text-sm font-medium px-4 py-2 rounded-lg border border-gray-200 dark:border-gray-700
-               text-gray-600 dark:text-gray-300 hover:border-(--accent) hover:text-(--accent) transition-all"
+        class="inline-flex items-center justify-center w-10 h-10 rounded-lg border border-gray-200 dark:border-gray-700
+               hover:border-(--accent) transition-all"
       >
-        {otherLang.toUpperCase()}
+        <img
+          src={lang === "hu" ? "/flag-en.svg" : "/flag-hu.svg"}
+          alt={lang === "hu" ? "English" : "Magyar"}
+          width="24" height="16"
+          class="block rounded-sm"
+        />
       </a>
     </div>
     <p class="text-xs text-gray-400 dark:text-gray-500">{new Date().getFullYear()} {t.footer.name} © {t.footer.rights}</p>
