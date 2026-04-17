@@ -139,33 +139,90 @@ const SITE = "https://levikaldor.hu";
   const PROJECT_TYPES: Record<string, { label: string; price: number; isFlat: boolean }> = {
     landing:      { label: "Landing page",           price: 0,      isFlat: false },
     portfolio:    { label: "Portfólió oldal",         price: 50000,  isFlat: false },
-    webshop:      { label: "Webshop",                price: 150000, isFlat: false },
-    optimization: { label: "Weboldal optimalizálás", price: 80000,  isFlat: true  },
+    corporate:    { label: "Céges bemutatkozó",       price: 80000,  isFlat: false },
+    "blog-site":  { label: "Blog / magazin",          price: 60000,  isFlat: false },
+    event:        { label: "Esemény / rendezvény",    price: 30000,  isFlat: false },
+    webshop:      { label: "Webshop",                 price: 150000, isFlat: false },
+    optimization: { label: "Weboldal optimalizálás",  price: 80000,  isFlat: true  },
   };
 
-  const MODULES: Record<string, { label: string; price: number; cat: string }> = {
-    "contact-form":     { label: "Kapcsolatfelvételi űrlap",                price: 25000, cat: "Funkcionális modulok" },
-    "blog":             { label: "Blog rendszer",                            price: 60000, cat: "Funkcionális modulok" },
-    "gallery":          { label: "Képgaléria",                               price: 30000, cat: "Funkcionális modulok" },
-    "webshop-cart":     { label: "Kosár és checkout",                        price: 80000, cat: "Funkcionális modulok" },
-    "search":           { label: "Keresés",                                  price: 35000, cat: "Funkcionális modulok" },
-    "auth":             { label: "Felhasználói regisztráció / bejelentkezés",price: 70000, cat: "Funkcionális modulok" },
-    "booking":          { label: "Foglalási rendszer",                       price: 90000, cat: "Funkcionális modulok" },
-    "newsletter":       { label: "Hírlevél feliratkozás",                    price: 20000, cat: "Funkcionális modulok" },
-    "animations":       { label: "Egyedi animációk",                         price: 30000, cat: "Design modulok" },
-    "dark-mode":        { label: "Sötét mód",                                price: 20000, cat: "Design modulok" },
-    "typography":       { label: "Egyedi tipográfia",                        price: 15000, cat: "Design modulok" },
-    "illustrations":    { label: "Egyedi illusztrációk",                     price: 50000, cat: "Design modulok" },
-    "parallax":         { label: "Parallax effektek",                        price: 25000, cat: "Design modulok" },
-    "seo":              { label: "SEO optimalizálás",                        price: 40000, cat: "Nem-funkcionális modulok" },
-    "performance":      { label: "Teljesítmény optimalizálás",               price: 35000, cat: "Nem-funkcionális modulok" },
-    "accessibility":    { label: "Akadálymentességi audit",                  price: 30000, cat: "Nem-funkcionális modulok" },
-    "i18n":             { label: "Többnyelvűsítés (i18n)",                   price: 50000, cat: "Nem-funkcionális modulok" },
-    "ssl":              { label: "SSL beállítás",                            price: 15000, cat: "Biztonságkritikus modulok" },
-    "gdpr":             { label: "GDPR megfelelőség",                        price: 35000, cat: "Biztonságkritikus modulok" },
-    "spam-protection":  { label: "Spam védelem",                             price: 20000, cat: "Biztonságkritikus modulok" },
-    "security-headers": { label: "Biztonsági fejlécek",                      price: 15000, cat: "Biztonságkritikus modulok" },
-    "backup":           { label: "Backup rendszer",                          price: 25000, cat: "Biztonságkritikus modulok" },
+  const MODULES: Record<string, { label: string; cat: string }> = {
+    "contact-form":        { label: "Kapcsolatfelvételi űrlap",                 cat: "Funkcionális modulok" },
+    "blog":                { label: "Blog rendszer",                             cat: "Funkcionális modulok" },
+    "gallery":             { label: "Képgaléria",                                cat: "Funkcionális modulok" },
+    "webshop-cart":        { label: "Kosár és checkout",                         cat: "Funkcionális modulok" },
+    "search":              { label: "Keresés",                                   cat: "Funkcionális modulok" },
+    "auth":                { label: "Felhasználói regisztráció / bejelentkezés", cat: "Funkcionális modulok" },
+    "booking":             { label: "Foglalási rendszer",                        cat: "Funkcionális modulok" },
+    "newsletter":          { label: "Hírlevél feliratkozás",                     cat: "Funkcionális modulok" },
+    "reviews":             { label: "Értékelés / vélemény rendszer",             cat: "Funkcionális modulok" },
+    "payment":             { label: "Fizetési integráció",                       cat: "Funkcionális modulok" },
+    "chatbot":             { label: "Chatbot / live chat integráció",            cat: "Funkcionális modulok" },
+    "animations":          { label: "Egyedi animációk",                          cat: "Design modulok" },
+    "dark-mode":           { label: "Sötét mód",                                 cat: "Design modulok" },
+    "typography":          { label: "Egyedi tipográfia",                         cat: "Design modulok" },
+    "illustrations":       { label: "Egyedi illusztrációk",                      cat: "Design modulok" },
+    "parallax":            { label: "Parallax effektek",                         cat: "Design modulok" },
+    "video-hero":          { label: "Videó hero szekció",                        cat: "Design modulok" },
+    "map":                 { label: "Interaktív térkép",                         cat: "Design modulok" },
+    "seo":                 { label: "SEO optimalizálás",                         cat: "Nem-funkcionális modulok" },
+    "performance":         { label: "Teljesítmény optimalizálás",                cat: "Nem-funkcionális modulok" },
+    "accessibility":       { label: "Akadálymentességi audit",                   cat: "Nem-funkcionális modulok" },
+    "i18n":                { label: "Többnyelvűsítés (i18n)",                    cat: "Nem-funkcionális modulok" },
+    "analytics":           { label: "Analytics integráció",                      cat: "Nem-funkcionális modulok" },
+    "email-notifications": { label: "E-mail értesítések",                        cat: "Nem-funkcionális modulok" },
+    "ssl":                 { label: "SSL beállítás",                             cat: "Biztonságkritikus modulok" },
+    "gdpr":                { label: "GDPR megfelelőség",                         cat: "Biztonságkritikus modulok" },
+    "spam-protection":     { label: "Spam védelem",                              cat: "Biztonságkritikus modulok" },
+    "security-headers":    { label: "Biztonsági fejlécek",                       cat: "Biztonságkritikus modulok" },
+    "backup":              { label: "Backup rendszer",                           cat: "Biztonságkritikus modulok" },
+    "cookie-banner":       { label: "Cookie banner",                             cat: "Biztonságkritikus modulok" },
+  };
+
+  const OPTIONS: Record<string, string> = {
+    "contact-basic":         "Alap form",
+    "contact-multi":         "Többlépéses form",
+    "contact-upload":        "Fájlfeltöltéssel",
+    "blog-basic":            "Egyszerű blog",
+    "blog-cats":             "Kategóriák + tagek",
+    "blog-comments":         "Kommentrendszer",
+    "blog-cms":              "Teljes CMS + szerkesztő",
+    "gallery-basic":         "Alap galéria",
+    "gallery-lightbox":      "Lightbox animációval",
+    "gallery-portfolio":     "Portfolio + szűrő",
+    "search-basic":          "Alap szöveges keresés",
+    "search-filters":        "Szűrők + rendezés",
+    "search-full":           "Teljes szöveges motor",
+    "auth-email":            "Email / jelszó",
+    "auth-social":           "Email + Social login",
+    "booking-basic":         "Egyszerű foglalás",
+    "booking-calendar":      "Naptár integrációval",
+    "booking-payment":       "Fizetéssel integrálva",
+    "newsletter-basic":      "Alap form",
+    "newsletter-provider":   "Mailchimp / Brevo integrált",
+    "payment-stripe":        "Stripe",
+    "payment-barion":        "Barion",
+    "payment-simplepay":     "SimplePay",
+    "anim-subtle":           "Subtle – hover, fade",
+    "anim-medium":           "Közepes – scroll, entrance",
+    "anim-rich":             "Gazdag – micro-animations",
+    "illus-icons":           "Ikon készlet",
+    "illus-illus":           "Illusztrációk",
+    "illus-identity":        "Vizuális identitás",
+    "video-embed":           "Beágyazott (YouTube/Vimeo)",
+    "video-custom":          "Egyedi háttérvideó",
+    "seo-onpage":            "Alap on-page SEO",
+    "seo-tech":              "Technikai SEO + schema.org",
+    "seo-full":              "Teljes SEO audit + stratégia",
+    "i18n-2":                "2 nyelv",
+    "i18n-3":                "3 nyelv",
+    "i18n-4":                "4+ nyelv",
+    "analytics-ga4":         "GA4",
+    "analytics-plausible":   "Plausible",
+    "analytics-matomo":      "Matomo",
+    "backup-weekly":         "Heti mentés",
+    "backup-daily":          "Napi mentés",
+    "backup-realtime":       "Valós idejű mentés",
   };
 
   const BASE = 150000;
@@ -176,22 +233,33 @@ const SITE = "https://levikaldor.hu";
 
   // ── URL paraméterek feldolgozása ────────────────────────────────────────────
   const params = new URLSearchParams(window.location.search);
-  const typeId = params.get("type");
-  const moduleIds = params.getAll("m");
+  const typeIds = params.getAll("type");
+  const rawModules = params.getAll("m");
 
-  const projectType = typeId ? PROJECT_TYPES[typeId] : null;
-  const validModules = moduleIds.filter((id) => MODULES[id] && !(projectType?.isFlat));
+  interface ParsedModule { id: string; optionId: string | null; price: number; }
 
-  let total: number;
-  if (projectType?.isFlat) {
-    total = projectType.price;
-  } else {
-    const projectAdd = projectType?.price ?? 0;
-    const modulesSum = validModules.reduce((sum, id) => sum + MODULES[id].price, 0);
-    total = BASE + projectAdd + modulesSum;
-  }
+  const projectTypes = typeIds.map(id => PROJECT_TYPES[id]).filter(Boolean);
+  const hasFlat = projectTypes.some(t => t.isFlat);
 
-  const hasContent = projectType || validModules.length > 0;
+  // Parse "moduleId:optionId" or just "moduleId"; derive price from URL total
+  const totalFromUrl = parseInt(params.get("total") ?? "0", 10);
+
+  const parsedModules: ParsedModule[] = rawModules
+    .map((raw) => {
+      const [id, optionId = null] = raw.split(":");
+      return { id, optionId };
+    })
+    .filter(({ id }) => MODULES[id] && !hasFlat)
+    .map(({ id, optionId }) => ({
+      id,
+      optionId,
+      price: 0,
+    }));
+
+  // Re-derive total from URL param (already computed by calc page)
+  const total = totalFromUrl || BASE;
+
+  const hasContent = projectTypes.length > 0 || parsedModules.length > 0;
 
   // ── Megjelenítés ────────────────────────────────────────────────────────────
   if (!hasContent) {
@@ -203,48 +271,52 @@ const SITE = "https://levikaldor.hu";
     const totalEl = document.getElementById("summary-total");
     if (totalEl) totalEl.textContent = formatHUF(total);
 
-    // Project type
-    if (projectType) {
+    // Project types
+    if (projectTypes.length > 0) {
       const row = document.getElementById("project-type-row");
       const labelEl = document.getElementById("project-type-label");
       const priceEl = document.getElementById("project-type-price");
       row?.classList.remove("hidden");
-      if (labelEl) labelEl.textContent = projectType.label;
+      if (labelEl) labelEl.textContent = projectTypes.map(t => t.label).join(", ");
       if (priceEl) {
-        priceEl.textContent = projectType.isFlat
-          ? formatHUF(projectType.price) + " (fix ár)"
-          : projectType.price === 0
-            ? "Alap díj"
-            : `+${formatHUF(projectType.price)}`;
+        if (hasFlat) {
+          priceEl.textContent = formatHUF(projectTypes[0].price) + " (fix ár)";
+        } else {
+          const typesSum = projectTypes.reduce((a, t) => a + t.price, 0);
+          priceEl.textContent = typesSum === 0 ? "Alap díj" : `+${formatHUF(typesSum)}`;
+        }
       }
     }
 
     // Modules list
-    if (validModules.length > 0) {
+    if (parsedModules.length > 0) {
       document.getElementById("modules-list")?.classList.remove("hidden");
       const container = document.getElementById("modules-rows");
       if (container) {
-        const grouped = new Map<string, string[]>();
-        validModules.forEach((id) => {
-          const cat = MODULES[id].cat;
+        const grouped = new Map<string, ParsedModule[]>();
+        parsedModules.forEach((pm) => {
+          const cat = MODULES[pm.id].cat;
           if (!grouped.has(cat)) grouped.set(cat, []);
-          grouped.get(cat)!.push(id);
+          grouped.get(cat)!.push(pm);
         });
 
-        grouped.forEach((ids, catLabel) => {
+        grouped.forEach((items, catLabel) => {
           const catHeader = document.createElement("p");
           catHeader.className = "text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mt-5 mb-2 first:mt-0";
           catHeader.textContent = catLabel;
           container.appendChild(catHeader);
 
-          ids.forEach((id) => {
+          items.forEach(({ id, optionId }) => {
             const mod = MODULES[id];
+            const optionLabel = optionId ? OPTIONS[optionId] : null;
             const row = document.createElement("div");
-            row.className = "flex items-center justify-between gap-4 px-4 py-3 rounded-md border border-(--border-subtle) bg-white dark:bg-(--bg-surface)";
+            row.className = "px-4 py-3 rounded-md border border-(--border-subtle) bg-white dark:bg-(--bg-surface)";
             row.style.cssText = "border-color: var(--border-subtle); background-color: var(--bg-base);";
             row.innerHTML = `
-              <span style="font-size:0.875rem;font-weight:500;color:var(--text-primary)">${mod.label}</span>
-              <span style="font-size:0.875rem;font-weight:600;color:var(--accent);flex-shrink:0">+${formatHUF(mod.price)}</span>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem">
+                <span style="font-size:0.875rem;font-weight:500;color:var(--text-primary)">${mod.label}</span>
+              </div>
+              ${optionLabel ? `<p style="font-size:0.75rem;color:var(--text-secondary);margin-top:2px">↳ ${optionLabel}</p>` : ""}
             `;
             container.appendChild(row);
           });

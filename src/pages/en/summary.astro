@@ -136,35 +136,92 @@ const SITE = "https://levikaldor.hu";
 <script>
   // ── Data ────────────────────────────────────────────────────────────────────
   const PROJECT_TYPES: Record<string, { label: string; price: number; isFlat: boolean }> = {
-    landing:      { label: "Landing page",         price: 0,      isFlat: false },
-    portfolio:    { label: "Portfolio website",    price: 50000,  isFlat: false },
-    webshop:      { label: "Webshop",              price: 150000, isFlat: false },
-    optimization: { label: "Website optimisation", price: 80000,  isFlat: true  },
+    landing:      { label: "Landing page",          price: 0,      isFlat: false },
+    portfolio:    { label: "Portfolio website",      price: 50000,  isFlat: false },
+    corporate:    { label: "Company website",        price: 80000,  isFlat: false },
+    "blog-site":  { label: "Blog / magazine",        price: 60000,  isFlat: false },
+    event:        { label: "Event / conference",     price: 30000,  isFlat: false },
+    webshop:      { label: "Webshop",                price: 150000, isFlat: false },
+    optimization: { label: "Website optimisation",  price: 80000,  isFlat: true  },
   };
 
-  const MODULES: Record<string, { label: string; price: number; cat: string }> = {
-    "contact-form":     { label: "Contact form",                   price: 25000, cat: "Functional modules" },
-    "blog":             { label: "Blog system",                    price: 60000, cat: "Functional modules" },
-    "gallery":          { label: "Image gallery",                  price: 30000, cat: "Functional modules" },
-    "webshop-cart":     { label: "Cart & checkout",                price: 80000, cat: "Functional modules" },
-    "search":           { label: "Search",                         price: 35000, cat: "Functional modules" },
-    "auth":             { label: "User registration / login",      price: 70000, cat: "Functional modules" },
-    "booking":          { label: "Booking system",                 price: 90000, cat: "Functional modules" },
-    "newsletter":       { label: "Newsletter subscription",        price: 20000, cat: "Functional modules" },
-    "animations":       { label: "Custom animations",              price: 30000, cat: "Design modules" },
-    "dark-mode":        { label: "Dark mode",                      price: 20000, cat: "Design modules" },
-    "typography":       { label: "Custom typography",              price: 15000, cat: "Design modules" },
-    "illustrations":    { label: "Custom illustrations",           price: 50000, cat: "Design modules" },
-    "parallax":         { label: "Parallax effects",               price: 25000, cat: "Design modules" },
-    "seo":              { label: "SEO optimisation",               price: 40000, cat: "Non-functional modules" },
-    "performance":      { label: "Performance optimisation",       price: 35000, cat: "Non-functional modules" },
-    "accessibility":    { label: "Accessibility audit",            price: 30000, cat: "Non-functional modules" },
-    "i18n":             { label: "Multilingual (i18n)",            price: 50000, cat: "Non-functional modules" },
-    "ssl":              { label: "SSL setup",                      price: 15000, cat: "Security-critical modules" },
-    "gdpr":             { label: "GDPR compliance",                price: 35000, cat: "Security-critical modules" },
-    "spam-protection":  { label: "Spam protection",                price: 20000, cat: "Security-critical modules" },
-    "security-headers": { label: "Security headers",               price: 15000, cat: "Security-critical modules" },
-    "backup":           { label: "Backup system",                  price: 25000, cat: "Security-critical modules" },
+  const MODULES: Record<string, { label: string; cat: string }> = {
+    "contact-form":        { label: "Contact form",                   cat: "Functional modules" },
+    "blog":                { label: "Blog system",                    cat: "Functional modules" },
+    "gallery":             { label: "Image gallery",                  cat: "Functional modules" },
+    "webshop-cart":        { label: "Cart & checkout",                cat: "Functional modules" },
+    "search":              { label: "Search",                         cat: "Functional modules" },
+    "auth":                { label: "User registration / login",      cat: "Functional modules" },
+    "booking":             { label: "Booking system",                 cat: "Functional modules" },
+    "newsletter":          { label: "Newsletter subscription",        cat: "Functional modules" },
+    "reviews":             { label: "Reviews / testimonials system",  cat: "Functional modules" },
+    "payment":             { label: "Payment integration",            cat: "Functional modules" },
+    "chatbot":             { label: "Chatbot / live chat",            cat: "Functional modules" },
+    "animations":          { label: "Custom animations",              cat: "Design modules" },
+    "dark-mode":           { label: "Dark mode",                      cat: "Design modules" },
+    "typography":          { label: "Custom typography",              cat: "Design modules" },
+    "illustrations":       { label: "Custom illustrations",           cat: "Design modules" },
+    "parallax":            { label: "Parallax effects",               cat: "Design modules" },
+    "video-hero":          { label: "Video hero section",             cat: "Design modules" },
+    "map":                 { label: "Interactive map",                cat: "Design modules" },
+    "seo":                 { label: "SEO optimisation",               cat: "Non-functional modules" },
+    "performance":         { label: "Performance optimisation",       cat: "Non-functional modules" },
+    "accessibility":       { label: "Accessibility audit",            cat: "Non-functional modules" },
+    "i18n":                { label: "Multilingual (i18n)",            cat: "Non-functional modules" },
+    "analytics":           { label: "Analytics integration",          cat: "Non-functional modules" },
+    "email-notifications": { label: "Email notifications",            cat: "Non-functional modules" },
+    "ssl":                 { label: "SSL setup",                      cat: "Security-critical modules" },
+    "gdpr":                { label: "GDPR compliance",                cat: "Security-critical modules" },
+    "spam-protection":     { label: "Spam protection",                cat: "Security-critical modules" },
+    "security-headers":    { label: "Security headers",               cat: "Security-critical modules" },
+    "backup":              { label: "Backup system",                  cat: "Security-critical modules" },
+    "cookie-banner":       { label: "Cookie banner",                  cat: "Security-critical modules" },
+  };
+
+  const OPTIONS: Record<string, string> = {
+    "contact-basic":         "Basic form",
+    "contact-multi":         "Multi-step form",
+    "contact-upload":        "With file upload",
+    "blog-basic":            "Simple blog",
+    "blog-cats":             "Categories + tags",
+    "blog-comments":         "Comment system",
+    "blog-cms":              "Full CMS + editor",
+    "gallery-basic":         "Basic gallery",
+    "gallery-lightbox":      "Lightbox animated",
+    "gallery-portfolio":     "Portfolio + filter",
+    "search-basic":          "Basic text search",
+    "search-filters":        "Filters + sorting",
+    "search-full":           "Full-text engine",
+    "auth-email":            "Email / password",
+    "auth-social":           "Email + Social login",
+    "booking-basic":         "Simple booking",
+    "booking-calendar":      "With calendar",
+    "booking-payment":       "With payment",
+    "newsletter-basic":      "Basic form",
+    "newsletter-provider":   "Mailchimp / Brevo integrated",
+    "payment-stripe":        "Stripe",
+    "payment-barion":        "Barion",
+    "payment-simplepay":     "SimplePay",
+    "anim-subtle":           "Subtle – hover, fade",
+    "anim-medium":           "Medium – scroll, entrance",
+    "anim-rich":             "Rich – micro-animations",
+    "illus-icons":           "Icon set",
+    "illus-illus":           "Illustrations",
+    "illus-identity":        "Visual identity",
+    "video-embed":           "Embedded (YouTube/Vimeo)",
+    "video-custom":          "Custom background video",
+    "seo-onpage":            "Basic on-page SEO",
+    "seo-tech":              "Technical SEO + schema.org",
+    "seo-full":              "Full SEO audit + strategy",
+    "i18n-2":                "2 languages",
+    "i18n-3":                "3 languages",
+    "i18n-4":                "4+ languages",
+    "analytics-ga4":         "GA4",
+    "analytics-plausible":   "Plausible",
+    "analytics-matomo":      "Matomo",
+    "backup-weekly":         "Weekly backup",
+    "backup-daily":          "Daily backup",
+    "backup-realtime":       "Real-time backup",
   };
 
   const BASE = 150000;
@@ -175,22 +232,24 @@ const SITE = "https://levikaldor.hu";
 
   // ── Parse URL params ────────────────────────────────────────────────────────
   const params = new URLSearchParams(window.location.search);
-  const typeId = params.get("type");
-  const moduleIds = params.getAll("m");
+  const typeIds = params.getAll("type");
+  const rawModules = params.getAll("m");
 
-  const projectType = typeId ? PROJECT_TYPES[typeId] : null;
-  const validModules = moduleIds.filter((id) => MODULES[id] && !(projectType?.isFlat));
+  interface ParsedModule { id: string; optionId: string | null; }
 
-  let total: number;
-  if (projectType?.isFlat) {
-    total = projectType.price;
-  } else {
-    const projectAdd = projectType?.price ?? 0;
-    const modulesSum = validModules.reduce((sum, id) => sum + MODULES[id].price, 0);
-    total = BASE + projectAdd + modulesSum;
-  }
+  const projectTypes = typeIds.map(id => PROJECT_TYPES[id]).filter(Boolean);
+  const hasFlat = projectTypes.some(t => t.isFlat);
+  const totalFromUrl = parseInt(params.get("total") ?? "0", 10);
 
-  const hasContent = projectType || validModules.length > 0;
+  const parsedModules: ParsedModule[] = rawModules
+    .map((raw) => {
+      const [id, optionId = null] = raw.split(":");
+      return { id, optionId };
+    })
+    .filter(({ id }) => MODULES[id] && !hasFlat);
+
+  const total = totalFromUrl || BASE;
+  const hasContent = projectTypes.length > 0 || parsedModules.length > 0;
 
   // ── Render ──────────────────────────────────────────────────────────────────
   if (!hasContent) {
@@ -201,46 +260,50 @@ const SITE = "https://levikaldor.hu";
     const totalEl = document.getElementById("summary-total");
     if (totalEl) totalEl.textContent = formatHUF(total);
 
-    if (projectType) {
+    if (projectTypes.length > 0) {
       const row = document.getElementById("project-type-row");
       const labelEl = document.getElementById("project-type-label");
       const priceEl = document.getElementById("project-type-price");
       row?.classList.remove("hidden");
-      if (labelEl) labelEl.textContent = projectType.label;
+      if (labelEl) labelEl.textContent = projectTypes.map(t => t.label).join(", ");
       if (priceEl) {
-        priceEl.textContent = projectType.isFlat
-          ? formatHUF(projectType.price) + " (fixed price)"
-          : projectType.price === 0
-            ? "Base fee"
-            : `+${formatHUF(projectType.price)}`;
+        if (hasFlat) {
+          priceEl.textContent = formatHUF(projectTypes[0].price) + " (fixed price)";
+        } else {
+          const typesSum = projectTypes.reduce((a, t) => a + t.price, 0);
+          priceEl.textContent = typesSum === 0 ? "Base fee" : `+${formatHUF(typesSum)}`;
+        }
       }
     }
 
-    if (validModules.length > 0) {
+    if (parsedModules.length > 0) {
       document.getElementById("modules-list")?.classList.remove("hidden");
       const container = document.getElementById("modules-rows");
       if (container) {
-        const grouped = new Map<string, string[]>();
-        validModules.forEach((id) => {
-          const cat = MODULES[id].cat;
+        const grouped = new Map<string, ParsedModule[]>();
+        parsedModules.forEach((pm) => {
+          const cat = MODULES[pm.id].cat;
           if (!grouped.has(cat)) grouped.set(cat, []);
-          grouped.get(cat)!.push(id);
+          grouped.get(cat)!.push(pm);
         });
 
-        grouped.forEach((ids, catLabel) => {
+        grouped.forEach((items, catLabel) => {
           const catHeader = document.createElement("p");
           catHeader.className = "text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mt-5 mb-2 first:mt-0";
           catHeader.textContent = catLabel;
           container.appendChild(catHeader);
 
-          ids.forEach((id) => {
+          items.forEach(({ id, optionId }) => {
             const mod = MODULES[id];
+            const optionLabel = optionId ? OPTIONS[optionId] : null;
             const row = document.createElement("div");
-            row.className = "flex items-center justify-between gap-4 px-4 py-3 rounded-md";
+            row.className = "px-4 py-3 rounded-md";
             row.style.cssText = "border: 1px solid var(--border-subtle); background-color: var(--bg-base);";
             row.innerHTML = `
-              <span style="font-size:0.875rem;font-weight:500;color:var(--text-primary)">${mod.label}</span>
-              <span style="font-size:0.875rem;font-weight:600;color:var(--accent);flex-shrink:0">+${formatHUF(mod.price)}</span>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem">
+                <span style="font-size:0.875rem;font-weight:500;color:var(--text-primary)">${mod.label}</span>
+              </div>
+              ${optionLabel ? `<p style="font-size:0.75rem;color:var(--text-secondary);margin-top:2px">↳ ${optionLabel}</p>` : ""}
             `;
             container.appendChild(row);
           });

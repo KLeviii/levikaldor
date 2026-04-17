@@ -89,7 +89,7 @@ function formatHUF(amount: number) {
             <label class="project-type-card stagger-card cursor-pointer flex items-center justify-between gap-3 p-4 rounded-md border border-(--border-subtle) bg-white dark:bg-(--bg-surface) hover:border-(--accent-border) transition-all">
               <div class="flex items-center gap-3">
                 <input
-                  type="radio"
+                  type="checkbox"
                   name="project-type"
                   value={type.id}
                   data-price={type.price}
@@ -97,6 +97,14 @@ function formatHUF(amount: number) {
                   class="w-4 h-4 shrink-0"
                 />
                 <span class="font-medium text-(--text-primary)">{type.label}</span>
+                {(type as any).tooltip && (
+                  <span class="tip-wrap" onclick="(e=>e.preventDefault())(event)">
+                    <button type="button" class="tip-btn" tabindex="-1" aria-label="Details">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    </button>
+                    <span class="tip-box" role="tooltip">{(type as any).tooltip}</span>
+                  </span>
+                )}
               </div>
               <span class="text-sm font-semibold text-(--accent) shrink-0">
                 {type.isFlat ? formatHUF(type.price) : (type.price === 0 ? "Base" : `+${formatHUF(type.price)}`)}
@@ -125,25 +133,135 @@ function formatHUF(amount: number) {
             class="mb-8"
           >
             <h2 class="text-lg font-semibold text-(--text-primary) mb-3">{cat.label}</h2>
-            <div class="grid sm:grid-cols-2 gap-3">
-              {cat.items.map((mod) => (
-                <label class="module-card stagger-card cursor-pointer flex items-center justify-between gap-3 p-4 rounded-md border border-(--border-subtle) bg-white dark:bg-(--bg-surface) hover:border-(--accent-border) transition-all">
-                  <div class="flex items-center gap-3">
-                    <input
-                      type="checkbox"
-                      name="module"
-                      value={mod.id}
-                      data-price={mod.price}
-                      data-cat={cat.id}
-                      class="w-4 h-4 shrink-0"
-                    />
-                    <span class="font-medium text-(--text-primary) text-sm">{mod.label}</span>
+            <div class="grid sm:grid-cols-2 gap-3 items-start">
+              {cat.items.map((mod) => {
+                const hasOptions = mod.options && mod.options.length > 0;
+                const minPrice = hasOptions ? Math.min(...mod.options!.map(o => o.price)) : mod.price;
+                const maxPrice = hasOptions ? Math.max(...mod.options!.map(o => o.price)) : mod.price;
+                const priceDisplay = hasOptions && minPrice !== maxPrice
+                  ? `+${minPrice.toLocaleString("hu-HU")}–${maxPrice.toLocaleString("hu-HU")} Ft`
+                  : `+${formatHUF(mod.price)}`;
+                return (
+                  <div
+                    class="module-card stagger-card block p-4 rounded-md border border-(--border-subtle) bg-white dark:bg-(--bg-surface) hover:border-(--accent-border) transition-all"
+                    data-module-id={mod.id}
+                  >
+                    <div class="flex items-center justify-between gap-2">
+                      <label class="flex items-center gap-2 min-w-0 cursor-pointer flex-1">
+                        <input
+                          type="checkbox"
+                          name="module"
+                          value={mod.id}
+                          data-price={mod.price}
+                          data-cat={cat.id}
+                          class="w-4 h-4 shrink-0"
+                        />
+                        <span class="font-medium text-(--text-primary) text-sm">{mod.label}</span>
+                        {(mod as any).tooltip && (
+                          <span class="tip-wrap" onclick="(e=>e.preventDefault())(event)">
+                            <button type="button" class="tip-btn" tabindex="-1" aria-label="Details">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                            </button>
+                            <span class="tip-box tip-box--left" role="tooltip">{(mod as any).tooltip}</span>
+                          </span>
+                        )}
+                      </label>
+                      <div class="flex items-center shrink-0">
+                        <span class="mod-price-display text-sm font-semibold text-(--accent)">{priceDisplay}</span>
+                      </div>
+                    </div>
+                    {hasOptions && mod.optionType === "select" && (
+                      <div class="mod-options-wrap">
+                        <div class="mod-options-inner">
+                          <div class="flex items-center justify-between mt-3">
+                            <span class="text-xs text-(--text-secondary)">{mod.optionLabel}</span>
+                            <button type="button" class="csel-trigger" data-module={mod.id} aria-haspopup="listbox" aria-expanded="false">
+                              <span class="csel-cur-label">{mod.options![0].label}</span>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="csel-chev"><path d="M6 9l6 6 6-6"/></svg>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    {hasOptions && mod.optionType === "pills" && (
+                      <div class="mod-options-wrap">
+                        <div class="mod-options-inner">
+                          <p class="text-xs text-(--text-secondary) mt-3 mb-1.5">{mod.optionLabel}</p>
+                          <div class="flex gap-1.5 flex-wrap">
+                            {mod.options!.map((opt, oi) => (
+                              <span class="tip-wrap">
+                                <label class="pill-option">
+                                  <input
+                                    type="radio"
+                                    name={`opt-${mod.id}`}
+                                    value={opt.id}
+                                    data-price={opt.price}
+                                    data-module={mod.id}
+                                    checked={oi === 0}
+                                    class="sr-only"
+                                  />
+                                  <span>{opt.label}</span>
+                                </label>
+                                {(opt as any).tooltip && (
+                                  <span class="tip-box tip-box--pill" role="tooltip">{(opt as any).tooltip}</span>
+                                )}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    {hasOptions && mod.optionType === "toggle" && (
+                      <div class="mod-options-wrap">
+                        <div class="mod-options-inner">
+                          <div class="flex items-center justify-between mt-3">
+                            <span class="text-xs text-(--text-secondary)">{mod.optionLabel}</span>
+                            <button
+                              type="button"
+                              role="switch"
+                              aria-checked="false"
+                              class="mod-toggle shrink-0"
+                              data-module={mod.id}
+                              data-off-price={mod.options![0].price}
+                              data-on-price={mod.options![1].price}
+                              data-off-id={mod.options![0].id}
+                              data-on-id={mod.options![1].id}
+                            >
+                              <span class="mod-toggle-thumb"></span>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  <span class="text-sm font-semibold text-(--accent) shrink-0">+{formatHUF(mod.price)}</span>
-                </label>
-              ))}
+                );
+              })}
             </div>
           </section>
+        ))}
+      </div>
+
+      <!-- Floating select portals -->
+      <div id="csel-portals" aria-hidden="true">
+        {t.pricing.categories.flatMap(cat => cat.items).filter(mod => mod.optionType === "select").map(mod => (
+          <div class="csel-portal" data-module={mod.id} role="listbox">
+            {mod.options!.map((opt, oi) => (
+              <div class="csel-option" role="option" data-value={opt.id} data-price={opt.price} aria-selected={oi === 0 ? "true" : "false"}>
+                <span class="csel-opt-label">{opt.label}</span>
+                <div class="csel-opt-right">
+                  {(opt as any).tooltip && (
+                    <span class="tip-wrap">
+                      <button type="button" class="tip-btn" tabindex="-1" aria-label="Details">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                      </button>
+                      <span class="tip-box tip-box--portal" role="tooltip">{(opt as any).tooltip}</span>
+                    </span>
+                  )}
+                  <span class="csel-opt-price">{formatHUF(opt.price)}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         ))}
       </div>
 
@@ -218,20 +336,206 @@ function formatHUF(amount: number) {
       opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
       transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   }
-  .module-card:has(input:checked) {
+  .module-card:has(input[name='module']:checked) {
     border-color: var(--accent-border);
     background-color: var(--accent-bg);
   }
-  :global(.dark) .module-card:has(input:checked) {
+  :global(.dark) .module-card:has(input[name='module']:checked) {
     background-color: var(--accent-bg);
     border-color: var(--accent-border);
   }
-  .module-card:has(input:disabled) {
+  .module-card:not(:has(input[name='module']:checked)):not(:has(input[name='module']:disabled)) {
+    cursor: pointer;
+  }
+  .module-card:has(input[name='module']:disabled) {
     opacity: 0.35;
     cursor: not-allowed;
     pointer-events: none;
     transform: scale(0.985);
   }
+
+  /* ── Modul opciók slide ── */
+  .mod-options-wrap {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .mod-options-inner { overflow: hidden; }
+  .module-card:has(input[name='module']:checked) .mod-options-wrap {
+    grid-template-rows: 1fr;
+  }
+
+  /* ── Inline select trigger ── */
+  .csel-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    padding: 2px 6px 2px 8px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    max-width: 100px;
+    overflow: hidden;
+    transition: border-color 0.15s, color 0.15s, background-color 0.15s;
+  }
+  .csel-cur-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .csel-chev { flex-shrink: 0; transition: transform 0.2s; }
+  .csel-trigger:hover, .csel-trigger.is-active {
+    border-color: var(--accent-border);
+    color: var(--accent);
+    background-color: var(--accent-bg);
+  }
+  .csel-trigger.is-active .csel-chev { transform: rotate(180deg); }
+
+  /* ── Floating portal dropdown ── */
+  .csel-portal {
+    position: fixed;
+    z-index: 9999;
+    display: none;
+    padding: 4px;
+    background: var(--bg-base);
+    border: 1px solid var(--accent-border);
+    border-radius: 10px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.14), 0 2px 8px rgba(0,0,0,0.06);
+    min-width: 200px;
+  }
+  :global(.dark) .csel-portal { box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3); }
+  .csel-portal.is-open { display: block; }
+
+  .csel-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8125rem;
+    color: var(--text-primary);
+    transition: background-color 0.1s;
+  }
+  .csel-option:hover { background-color: var(--accent-bg); }
+  .csel-option[aria-selected="true"] { color: var(--accent); font-weight: 600; background-color: var(--accent-bg); }
+  .csel-opt-label { flex: 1; }
+  .csel-opt-right { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+  .csel-opt-price { font-size: 0.75rem; font-weight: 600; }
+  .csel-option[aria-selected="true"] .csel-opt-price { color: var(--accent); }
+  .csel-option:not([aria-selected="true"]) .csel-opt-price { color: var(--text-secondary); }
+
+  /* ── Tooltip ── */
+  .tip-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+  .tip-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--text-tertiary);
+    cursor: default;
+    line-height: 1;
+    transition: color 0.15s;
+  }
+  .tip-btn:hover { color: var(--accent); }
+  .tip-box {
+    position: absolute;
+    bottom: calc(100% + 7px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 220px;
+    padding: 8px 10px;
+    background: var(--bg-base);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.06);
+    font-size: 0.75rem;
+    line-height: 1.45;
+    color: var(--text-secondary);
+    font-weight: 400;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 100;
+    white-space: normal;
+    text-align: left;
+  }
+  :global(.dark) .tip-box {
+    box-shadow: 0 8px 24px rgba(0,0,0,0.45), 0 2px 6px rgba(0,0,0,0.3);
+  }
+  .tip-wrap:hover .tip-box,
+  .tip-btn:focus + .tip-box { opacity: 1; }
+  .tip-box--left {
+    left: auto;
+    right: 0;
+    transform: none;
+  }
+  .tip-box--pill {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 180px;
+  }
+  .tip-box--portal {
+    left: auto;
+    right: calc(100% + 6px);
+    bottom: 50%;
+    transform: translateY(50%);
+    width: 180px;
+  }
+
+  /* ── Pill radio gombok ── */
+  .pill-option { cursor: pointer; display: inline-flex; }
+  .pill-option span {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: 1px solid var(--border-subtle);
+    background: transparent;
+    color: var(--text-secondary);
+    transition: border-color 0.15s, background-color 0.15s, color 0.15s;
+    white-space: nowrap;
+  }
+  .pill-option:has(input:checked) span {
+    border-color: var(--accent-border);
+    background-color: var(--accent-bg);
+    color: var(--accent);
+  }
+
+  /* ── Toggle switch ── */
+  .mod-toggle {
+    position: relative;
+    width: 36px;
+    height: 20px;
+    border-radius: 999px;
+    background-color: var(--border-subtle);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    flex-shrink: 0;
+  }
+  .mod-toggle[aria-checked="true"] { background-color: var(--accent); }
+  .mod-toggle-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: white;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+  }
+  .mod-toggle[aria-checked="true"] .mod-toggle-thumb { transform: translateX(16px); }
 
   .project-type-card {
     transition:
@@ -309,9 +613,11 @@ function formatHUF(amount: number) {
   const BASE = 150000;
 
   interface ProjectType { id: string; price: number; isFlat: boolean; }
+  interface ModuleData  { price: number; optionId: string | null; }
 
-  let selectedProjectType: ProjectType | null = { id: "landing", price: 0, isFlat: false };
-  const selectedModules = new Map<string, number>();
+  const selectedProjectTypes = new Map<string, ProjectType>();
+  selectedProjectTypes.set("landing", { id: "landing", price: 0, isFlat: false });
+  const selectedModules = new Map<string, ModuleData>();
   let currentTotal = BASE;
 
   function formatHUF(n: number): string { return n.toLocaleString("hu-HU") + " Ft"; }
@@ -329,18 +635,50 @@ function formatHUF(amount: number) {
   }
 
   function calculateTotal(): number {
-    if (selectedProjectType?.isFlat) return selectedProjectType.price;
-    const projectAdd = selectedProjectType?.price ?? 0;
-    const modulesSum = [...selectedModules.values()].reduce((a, b) => a + b, 0);
-    return BASE + projectAdd + modulesSum;
+    const flatType = [...selectedProjectTypes.values()].find(t => t.isFlat);
+    if (flatType) return flatType.price;
+    const projectSum = [...selectedProjectTypes.values()].reduce((a, t) => a + t.price, 0);
+    const modulesSum = [...selectedModules.values()].reduce((a, b) => a + b.price, 0);
+    return BASE + projectSum + modulesSum;
+  }
+
+  function getActiveOptionData(moduleId: string): { price: number; optionId: string | null } {
+    const portal = document.querySelector<HTMLElement>(`.csel-portal[data-module="${moduleId}"]`);
+    if (portal) {
+      const sel = portal.querySelector<HTMLElement>('.csel-option[aria-selected="true"]');
+      if (sel) return { price: parseInt(sel.dataset.price ?? "0", 10), optionId: sel.dataset.value ?? null };
+    }
+    const card = document.querySelector<HTMLElement>(`[data-module-id="${moduleId}"]`);
+    if (!card) return { price: 0, optionId: null };
+    const checkedPill = card.querySelector<HTMLInputElement>(".pill-option input:checked");
+    if (checkedPill) return { price: parseInt(checkedPill.dataset.price ?? "0", 10), optionId: checkedPill.value };
+    const toggle = card.querySelector<HTMLButtonElement>(".mod-toggle");
+    if (toggle) {
+      const isOn = toggle.getAttribute("aria-checked") === "true";
+      return {
+        price: parseInt((isOn ? toggle.dataset.onPrice : toggle.dataset.offPrice) ?? "0", 10),
+        optionId: isOn ? (toggle.dataset.onId ?? null) : (toggle.dataset.offId ?? null),
+      };
+    }
+    const checkbox = card.querySelector<HTMLInputElement>("input[name='module']");
+    return { price: parseInt(checkbox?.dataset.price ?? "0", 10), optionId: null };
+  }
+
+  function updatePriceDisplay(moduleId: string) {
+    const card = document.querySelector<HTMLElement>(`[data-module-id="${moduleId}"]`);
+    const display = card?.querySelector<HTMLElement>(".mod-price-display");
+    if (!display) return;
+    display.textContent = `+${formatHUF(getActiveOptionData(moduleId).price)}`;
   }
 
   function updateDisplay() {
     const newTotal = calculateTotal();
     if (newTotal !== currentTotal) animateCounter(newTotal);
     const params = new URLSearchParams();
-    if (selectedProjectType) params.set("type", selectedProjectType.id);
-    selectedModules.forEach((_, id) => params.append("m", id));
+    selectedProjectTypes.forEach((_, id) => params.append("type", id));
+    selectedModules.forEach((data, id) => {
+      params.append("m", data.optionId ? `${id}:${data.optionId}` : id);
+    });
     params.set("total", String(newTotal));
     const btn = document.getElementById("cta-btn") as HTMLAnchorElement | null;
     if (btn) btn.href = "/en/summary/?" + params.toString();
@@ -356,11 +694,11 @@ function formatHUF(amount: number) {
     if (notice) notice.classList.toggle("is-visible", disabled);
   }
 
-  function triggerCardPop(label: HTMLElement, input: HTMLInputElement) {
-    label.classList.remove("card-popping");
-    void label.offsetWidth;
-    label.classList.add("card-popping");
-    label.addEventListener("animationend", () => label.classList.remove("card-popping"), { once: true });
+  function triggerCardPop(card: HTMLElement, input: HTMLInputElement) {
+    card.classList.remove("card-popping");
+    void card.offsetWidth;
+    card.classList.add("card-popping");
+    card.addEventListener("animationend", () => card.classList.remove("card-popping"), { once: true });
     input.classList.remove("just-checked");
     void input.offsetWidth;
     input.classList.add("just-checked");
@@ -370,22 +708,52 @@ function formatHUF(amount: number) {
   function onProjectTypeChange(e: Event) {
     const input = e.target as HTMLInputElement;
     const label = input.closest("label") as HTMLElement;
-    selectedProjectType = {
+    const typeData: ProjectType = {
       id: input.value,
       price: parseInt(input.dataset.price ?? "0", 10),
       isFlat: input.dataset.flat === "true",
     };
+    if (input.checked) {
+      if (typeData.isFlat) {
+        selectedProjectTypes.clear();
+        document.querySelectorAll<HTMLInputElement>("input[name='project-type']").forEach((el) => {
+          if (el !== input) el.checked = false;
+        });
+      } else {
+        selectedProjectTypes.forEach((t, id) => {
+          if (t.isFlat) {
+            selectedProjectTypes.delete(id);
+            const el = document.querySelector<HTMLInputElement>(`input[name='project-type'][value='${id}']`);
+            if (el) el.checked = false;
+          }
+        });
+      }
+      selectedProjectTypes.set(typeData.id, typeData);
+    } else {
+      selectedProjectTypes.delete(typeData.id);
+    }
     triggerCardPop(label, input);
-    setModulesDisabled(selectedProjectType.isFlat);
+    const hasFlat = [...selectedProjectTypes.values()].some(t => t.isFlat);
+    setModulesDisabled(hasFlat);
     updateDisplay();
   }
 
   function onModuleChange(e: Event) {
     const input = e.target as HTMLInputElement;
-    const label = input.closest("label") as HTMLElement;
-    const price = parseInt(input.dataset.price ?? "0", 10);
-    if (input.checked) { selectedModules.set(input.value, price); triggerCardPop(label, input); }
-    else selectedModules.delete(input.value);
+    const card = input.closest<HTMLElement>(".module-card")!;
+    if (input.checked) {
+      selectedModules.set(input.value, getActiveOptionData(input.value));
+      triggerCardPop(card, input);
+    } else {
+      selectedModules.delete(input.value);
+    }
+    updateDisplay();
+  }
+
+  function onOptionChange(moduleId: string) {
+    if (!selectedModules.has(moduleId)) return;
+    selectedModules.set(moduleId, getActiveOptionData(moduleId));
+    updatePriceDisplay(moduleId);
     updateDisplay();
   }
 
@@ -393,6 +761,78 @@ function formatHUF(amount: number) {
     .forEach((el) => el.addEventListener("change", onProjectTypeChange));
   document.querySelectorAll<HTMLInputElement>("input[name='module']")
     .forEach((el) => el.addEventListener("change", onModuleChange));
+
+  // whole-card click (only when card is collapsed)
+  document.querySelectorAll<HTMLElement>(".module-card").forEach((card) => {
+    card.addEventListener("click", (e) => {
+      const checkbox = card.querySelector<HTMLInputElement>("input[name='module']")!;
+      if (checkbox.checked || checkbox.disabled) return;
+      if ((e.target as HTMLElement).closest("label, input, button, .tip-wrap")) return;
+      checkbox.click();
+    });
+  });
+
+  // floating portal selects
+  let activePortal: HTMLElement | null = null;
+  let activeTrigger: HTMLElement | null = null;
+
+  function closePortal() {
+    activePortal?.classList.remove("is-open");
+    activeTrigger?.classList.remove("is-active");
+    activeTrigger?.setAttribute("aria-expanded", "false");
+    activePortal = null;
+    activeTrigger = null;
+  }
+
+  document.querySelectorAll<HTMLElement>(".csel-trigger").forEach((trigger) => {
+    trigger.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const moduleId = trigger.dataset.module!;
+      const portal = document.querySelector<HTMLElement>(`.csel-portal[data-module="${moduleId}"]`);
+      if (!portal) return;
+      if (portal === activePortal) { closePortal(); return; }
+      closePortal();
+      const rect = trigger.getBoundingClientRect();
+      const portalW = 240;
+      let left = rect.left;
+      if (left + portalW > window.innerWidth - 12) left = window.innerWidth - portalW - 12;
+      portal.style.top  = (rect.bottom + 6) + "px";
+      portal.style.left = left + "px";
+      portal.style.minWidth = Math.max(rect.width + 40, portalW) + "px";
+      portal.classList.add("is-open");
+      trigger.classList.add("is-active");
+      trigger.setAttribute("aria-expanded", "true");
+      activePortal = portal;
+      activeTrigger = trigger;
+    });
+  });
+
+  document.querySelectorAll<HTMLElement>(".csel-option").forEach((opt) => {
+    opt.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const portal = opt.closest<HTMLElement>(".csel-portal")!;
+      const moduleId = portal.dataset.module!;
+      portal.querySelectorAll(".csel-option").forEach((o) => o.setAttribute("aria-selected", "false"));
+      opt.setAttribute("aria-selected", "true");
+      const trigger = document.querySelector<HTMLElement>(`.csel-trigger[data-module="${moduleId}"]`);
+      if (trigger) trigger.querySelector<HTMLElement>(".csel-cur-label")!.textContent = opt.querySelector(".csel-opt-label")!.textContent;
+      closePortal();
+      onOptionChange(moduleId);
+    });
+  });
+
+  document.addEventListener("click", closePortal);
+  window.addEventListener("scroll", closePortal, { passive: true });
+
+  document.querySelectorAll<HTMLInputElement>(".pill-option input[type='radio']")
+    .forEach((r) => r.addEventListener("change", () => onOptionChange(r.dataset.module!)));
+  document.querySelectorAll<HTMLButtonElement>(".mod-toggle").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      btn.setAttribute("aria-checked", btn.getAttribute("aria-checked") === "true" ? "false" : "true");
+      onOptionChange(btn.dataset.module!);
+    });
+  });
 
   const firstRadio = document.querySelector<HTMLInputElement>("input[name='project-type'][value='landing']");
   if (firstRadio) firstRadio.checked = true;
