@@ -35,10 +35,25 @@ const base = home ? "" : (lang === "hu" ? "/" : "/en/");
     </ul>
 
     <div class="flex items-center gap-3">
+      <!-- Admin gyorsgomb (csak bejelentkezett állapotban látható) -->
+      <a
+        id="admin-quick-btn"
+        href="/admin/blog/"
+        aria-label="Dashboard"
+        data-tooltip="Dashboard"
+        class="hidden items-center justify-center w-9 h-9 rounded-lg border border-(--accent-border) bg-(--accent-bg) text-(--accent) hover:bg-(--accent) hover:text-(--on-accent) transition-all"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+        </svg>
+      </a>
+
       <!-- Dark mode toggle (desktop only in header) -->
       <button
         id="theme-toggle"
         aria-label="Téma váltása"
+        data-tooltip={lang === "hu" ? "Téma váltása" : "Toggle theme"}
         class="hidden md:flex items-center justify-center w-9 h-9 rounded-lg border border-gray-200 dark:border-gray-700
                text-gray-600 dark:text-gray-300 hover:border-(--accent) hover:text-(--accent)
                transition-all"
@@ -63,6 +78,7 @@ const base = home ? "" : (lang === "hu" ? "/" : "/en/");
       <a
         href={otherLangHref}
         aria-label={lang === "hu" ? "Switch to English" : "Váltás magyarra"}
+        data-tooltip={lang === "hu" ? "Switch to English" : "Váltás magyarra"}
         class="hidden md:inline-flex items-center justify-center w-9 h-9 rounded-lg border border-gray-200 dark:border-gray-700
                hover:border-(--accent) transition-all"
       >
@@ -258,4 +274,15 @@ const base = home ? "" : (lang === "hu" ? "/" : "/en/");
       localStorage.setItem("kl-theme", isDark ? "dark" : "light");
     });
   });
+</script>
+
+<script>
+  // Admin gyorsgomb: @supabase/ssr cookie-ban tárolja a sessiont
+  const hasAdminSession = document.cookie.split(';').some(c => {
+    const trimmed = c.trim();
+    return trimmed.startsWith('sb-') && trimmed.includes('auth-token');
+  });
+  if (hasAdminSession) {
+    document.getElementById('admin-quick-btn')?.classList.replace('hidden', 'flex');
+  }
 </script>

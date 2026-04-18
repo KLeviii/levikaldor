@@ -5,11 +5,11 @@ import type { AstroCookies } from 'astro';
 const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL as string;
 const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY as string;
 
-export function createSupabaseServerClient(cookies: AstroCookies) {
+export function createSupabaseServerClient(cookies: AstroCookies, request?: Request) {
   return createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {
       getAll() {
-        return parseCookieHeader(cookies.toString() ?? '');
+        return parseCookieHeader(request?.headers.get('cookie') ?? '');
       },
       setAll(cookiesToSet) {
         cookiesToSet.forEach(({ name, value, options }) => {

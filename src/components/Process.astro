@@ -34,7 +34,7 @@ const t = useTranslations(lang);
             style={`transition-delay: ${i * 100}ms`}
             class="flex gap-6 pb-10 last:pb-0 relative"
           >
-            <div class="shrink-0 w-12 h-12 rounded-full bg-(--accent) text-white flex items-center justify-center font-bold text-base z-10 shadow-md">
+            <div class="shrink-0 w-12 h-12 rounded-full bg-(--accent) text-(--on-accent) flex items-center justify-center font-bold text-base z-10 shadow-md">
               {step.number}
             </div>
             <div class="pt-2">
@@ -43,6 +43,12 @@ const t = useTranslations(lang);
               </h3>
               <p class="text-(--text-secondary)">{step.description}</p>
             </div>
+            {i < t.process.steps.length - 1 && (
+              <div
+                class="process-connector"
+                style="position:absolute;left:23px;top:48px;bottom:0;width:2px;transform:scaleY(0);transform-origin:top center;transition:transform 0.6s ease;"
+              />
+            )}
           </li>
         ))
       }
@@ -51,17 +57,50 @@ const t = useTranslations(lang);
 </section>
 
 <style>
-  .process-list::before {
-    content: "";
+  .process-connector {
     position: absolute;
     left: 23px;
-    top: 24px;
-    bottom: 24px;
+    top: 48px;
+    bottom: 0;
     width: 2px;
-    background: var(--accent-border) !important;
+    background: var(--accent-border);
+    transform-origin: top;
+    transform: scaleY(0);
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  :global(.dark) .process-list::before {
+  .process-connector.visible {
+    transform: scaleY(1);
+  }
+
+  :global(.dark) .process-connector {
     background: var(--accent-dim);
   }
 </style>
+
+<script>
+  const list = document.querySelector<HTMLElement>("#process .process-list");
+  if (list) {
+    const connectors = Array.from(
+      list.querySelectorAll<HTMLElement>(".process-connector")
+    );
+
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          connectors.forEach((el, i) => {
+            setTimeout(
+              () => el.classList.add("visible"),
+              (i + 1) * 100
+            );
+          });
+          obs.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    obs.observe(list);
+  }
+</script>

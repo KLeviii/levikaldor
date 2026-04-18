@@ -22,7 +22,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       return new Response(JSON.stringify({ error: 'Az üzenet túl rövid.' }), { status: 400, headers });
     }
 
-    const supabase = createSupabaseServerClient(cookies);
+    const supabase = createSupabaseServerClient(cookies, request);
     const { error } = await supabase
       .from('contact_messages')
       .insert({

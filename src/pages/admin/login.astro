@@ -4,7 +4,7 @@ export const prerender = false;
 import '../../styles/global.css';
 import { createSupabaseServerClient } from '../../lib/supabase';
 
-const supabase = createSupabaseServerClient(Astro.cookies);
+const supabase = createSupabaseServerClient(Astro.cookies, Astro.request);
 const { data: { user } } = await supabase.auth.getUser();
 if (user) return Astro.redirect('/admin/blog/');
 
@@ -73,7 +73,7 @@ if (Astro.request.method === 'POST') {
           class="w-full px-4 py-3 bg-white dark:bg-(--bg-elevated) border border-(--border-subtle) text-(--text-primary) rounded-md focus:outline-none focus:border-(--accent) transition" />
       </div>
       <button type="submit"
-        class="w-full py-3 bg-(--accent) hover:bg-(--accent-bright) active:bg-(--accent-dim) text-white font-semibold rounded-md transition-colors">
+        class="w-full py-3 bg-(--accent) hover:bg-(--accent-bright) active:bg-(--accent-dim) text-(--on-accent) font-semibold rounded-md transition-colors">
         Bejelentkezés
       </button>
     </form>

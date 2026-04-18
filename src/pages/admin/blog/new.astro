@@ -25,7 +25,7 @@ if (Astro.request.method === 'POST') {
   if (!slug || !title_hu || !content_hu) {
     formError = 'Slug, cím (HU) és tartalom (HU) kötelező.';
   } else {
-    const supabase = createSupabaseServerClient(Astro.cookies);
+    const supabase = createSupabaseServerClient(Astro.cookies, Astro.request);
     const { error } = await supabase.from('blog_posts').insert({
       slug, status, title_hu, excerpt_hu, content_hu,
       title_en, excerpt_en, content_en, cover_url, tags, reading_time_min,

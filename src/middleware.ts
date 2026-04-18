@@ -9,7 +9,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const isLoginPage = pathname === '/admin/login' || pathname === '/admin/login/';
 
   if (isAdminRoute && !isLoginPage) {
-    const supabase = createSupabaseServerClient(cookies);
+    const supabase = createSupabaseServerClient(cookies, context.request);
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
       return redirect('/admin/login');

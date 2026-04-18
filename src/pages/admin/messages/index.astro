@@ -4,7 +4,7 @@ export const prerender = false;
 import AdminLayout from '../../../components/admin/AdminLayout.astro';
 import { createSupabaseServerClient } from '../../../lib/supabase';
 
-const supabase = createSupabaseServerClient(Astro.cookies);
+const supabase = createSupabaseServerClient(Astro.cookies, Astro.request);
 
 const readId = Astro.url.searchParams.get('read');
 if (readId) {

@@ -40,7 +40,7 @@ const ogLocaleAlt = lang === "hu" ? "en_US" : "hu_HU";
 <html lang={lang}>
   <head>
     <meta charset="UTF-8" />
-    <!-- Anti-FOUC: dark mode class alkalmazása JS bundle előtt -->
+<!-- Anti-FOUC: dark mode class alkalmazása JS bundle előtt -->
     <script is:inline>
       (function() {
         const stored = localStorage.getItem('kl-theme');
@@ -95,13 +95,21 @@ const ogLocaleAlt = lang === "hu" ? "en_US" : "hu_HU";
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <!-- Google Fonts: Space Grotesk + DM Sans -->
+    <!-- Google Fonts: Space Grotesk + DM Sans (non-render-blocking) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
+      rel="preload"
+      as="style"
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;1,9..40,400&display=swap"
-      rel="stylesheet"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
+    <noscript>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;1,9..40,400&display=swap"
+      />
+    </noscript>
   </head>
   <body class="text-(--text-primary) antialiased">
     <a href="#main-content" class="skip-link">{lang === "hu" ? "Ugrás a tartalomra" : "Skip to content"}</a>
@@ -119,7 +127,7 @@ const ogLocaleAlt = lang === "hu" ? "en_US" : "hu_HU";
       id="scroll-top"
       aria-label="Vissza a tetejére"
       class="fixed bottom-6 right-6 z-50 w-10 h-10 flex items-center justify-center
-             bg-(--accent) hover:bg-(--accent-bright) text-white rounded-full shadow-lg
+             bg-(--accent) hover:bg-(--accent-bright) text-(--on-accent) rounded-full shadow-lg
              opacity-0 translate-y-2 scale-90 pointer-events-none
              transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
     >
