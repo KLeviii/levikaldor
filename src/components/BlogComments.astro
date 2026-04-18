@@ -141,8 +141,8 @@ const count = comments?.length ?? 0;
       <div class="cf-turnstile" data-sitekey={import.meta.env.PUBLIC_TURNSTILE_SITE_KEY} data-theme="auto"></div>
 
       <div class="flex justify-end">
-        <button type="submit" id="comment-submit"
-          class="px-5 py-2.5 bg-(--accent) hover:bg-(--accent-bright) active:bg-(--accent-dim) text-(--on-accent) text-sm font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+        <button type="submit" id="comment-submit" disabled aria-disabled="true"
+          class="px-5 py-2.5 bg-(--accent) text-(--on-accent) text-sm font-semibold rounded-lg opacity-50 cursor-not-allowed flex items-center gap-2">
           <span id="submit-label">{t.submit}</span>
           <svg id="submit-spinner" class="hidden w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>

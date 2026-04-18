@@ -82,8 +82,11 @@ const t = useTranslations(lang);
         <button
           id="contact-submit"
           type="submit"
+          disabled
+          aria-disabled="true"
           data-lang={lang}
-          class="px-6 py-3 bg-(--accent) hover:bg-(--accent-bright) text-(--on-accent) rounded-md font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          data-tooltip={lang === "hu" ? "Hamarosan elérhető" : "Coming soon"}
+          class="px-6 py-3 bg-(--accent) text-(--on-accent) rounded-md font-medium opacity-50 cursor-not-allowed"
         >
           {t.contact.send}
         </button>
