@@ -6,6 +6,7 @@ import Navbar from '../../../components/Navbar.astro';
 import Footer from '../../../components/Footer.astro';
 import { createSupabaseServerClient } from '../../../lib/supabase';
 import { marked } from 'marked';
+import BlogComments from '../../../components/BlogComments.astro';
 
 const { slug } = Astro.params;
 const supabase = createSupabaseServerClient(Astro.cookies, Astro.request);
@@ -97,6 +98,7 @@ const similarPosts = (allPosts ?? [])
         </header>
 
         <article class="blog-content" set:html={htmlContent} />
+        <BlogComments postSlug={post.slug} lang="en" />
       </div>
 
       <!-- Sidebar -->

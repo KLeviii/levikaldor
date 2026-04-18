@@ -1,0 +1,261 @@
+---
+import { createSupabaseServerClient } from '../lib/supabase';
+
+interface Props {
+  postSlug: string;
+  lang: 'hu' | 'en';
+}
+
+const { postSlug, lang } = Astro.props;
+
+const supabase = createSupabaseServerClient(Astro.cookies, Astro.request);
+const { data: comments } = await supabase
+  .from('blog_comments')
+  .select('id, name, content, created_at')
+  .eq('post_slug', postSlug)
+  .eq('is_approved', true)
+  .order('created_at', { ascending: true });
+
+const t = {
+  hu: {
+    title: 'Hozzászólások',
+    none: 'Még nincsenek hozzászólások. Legyél az első!',
+    formTitle: 'Írj hozzászólást',
+    name: 'Név',
+    namePh: 'Pl. Nagy János',
+    email: 'Email (opcionális)',
+    emailPh: 'nem jelenik meg nyilvánosan',
+    message: 'Üzenet',
+    messagePh: 'Mit gondolsz erről a cikkről?',
+    submit: 'Elküldés',
+    successTitle: 'Köszönjük a hozzászólást!',
+    successMsg: 'Moderáció után jelenik meg az oldalon.',
+    errorGeneric: 'Hiba történt. Próbáld újra.',
+    chars: 'karakter',
+  },
+  en: {
+    title: 'Comments',
+    none: 'No comments yet. Be the first!',
+    formTitle: 'Leave a comment',
+    name: 'Name',
+    namePh: 'e.g. John Smith',
+    email: 'Email (optional)',
+    emailPh: 'won\'t be shown publicly',
+    message: 'Message',
+    messagePh: 'What do you think about this article?',
+    submit: 'Submit',
+    successTitle: 'Thank you for your comment!',
+    successMsg: 'It will appear after moderation.',
+    errorGeneric: 'Something went wrong. Please try again.',
+    chars: 'characters',
+  },
+}[lang];
+
+const count = comments?.length ?? 0;
+---
+
+<section id="comments" class="mt-16 pt-10 border-t border-(--border-subtle)">
+
+  <h2 class="text-xl font-bold text-(--text-primary) mb-8 font-display">
+    {t.title}
+    {count > 0 && <span class="ml-2 text-sm font-normal text-(--text-tertiary)">({count})</span>}
+  </h2>
+
+  <!-- Comment list -->
+  {count === 0 ? (
+    <p class="text-(--text-tertiary) text-sm mb-10">{t.none}</p>
+  ) : (
+    <div class="space-y-6 mb-12">
+      {(comments ?? []).map(c => {
+        const letter = c.name.charAt(0).toUpperCase();
+        const date = new Date(c.created_at).toLocaleDateString(
+          lang === 'hu' ? 'hu-HU' : 'en-GB',
+          { year: 'numeric', month: 'long', day: 'numeric' }
+        );
+        return (
+          <div class="flex gap-3.5">
+            <span class="w-9 h-9 rounded-full bg-(--accent) text-(--on-accent) text-sm font-bold flex items-center justify-center shrink-0 select-none mt-0.5">
+              {letter}
+            </span>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-baseline gap-2 mb-1.5">
+                <span class="text-sm font-semibold text-(--text-primary)">{c.name}</span>
+                <time class="text-xs text-(--text-tertiary)">{date}</time>
+              </div>
+              <p class="text-sm text-(--text-secondary) leading-relaxed whitespace-pre-wrap wrap-break-word">{c.content}</p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  )}
+
+  <!-- Submit form -->
+  <div class="bg-(--bg-surface) border border-(--border-subtle) rounded-xl p-6">
+    <h3 id="comment-form-title" class="text-base font-semibold text-(--text-primary) mb-5 transition-opacity duration-500">{t.formTitle}</h3>
+    <div class="relative">
+
+    <!-- Success state (hidden by default) -->
+    <div id="comment-success" class="opacity-0 pointer-events-none absolute inset-0 flex flex-col items-center justify-center py-6 transition-opacity duration-500">
+      <div class="w-12 h-12 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center mb-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-green-600 dark:text-green-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <p class="font-semibold text-(--text-primary)">{t.successTitle}</p>
+      <p class="text-sm text-(--text-secondary) mt-1 mb-5">{t.successMsg}</p>
+      <!-- Timer bar -->
+      <div class="w-40 h-1 rounded-full bg-(--border-subtle) overflow-hidden">
+        <div id="comment-timer-bar" class="h-full bg-green-500 rounded-full" style="width:0%"></div>
+      </div>
+    </div>
+
+    <form id="comment-form" class="space-y-4" novalidate data-error={t.errorGeneric}>
+      <input type="hidden" name="post_slug" value={postSlug} />
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-medium text-(--text-secondary) mb-1.5">{t.name} <span class="text-red-500">*</span></label>
+          <input type="text" name="name" required maxlength="100" placeholder={t.namePh}
+            class="w-full px-3 py-2.5 bg-white dark:bg-(--bg-elevated) border border-(--border-subtle) text-(--text-primary) rounded-lg text-sm focus:outline-none focus:border-(--accent) transition placeholder:text-(--text-tertiary)" />
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-(--text-secondary) mb-1.5">{t.email}</label>
+          <input type="email" name="email" maxlength="200" placeholder={t.emailPh}
+            class="w-full px-3 py-2.5 bg-white dark:bg-(--bg-elevated) border border-(--border-subtle) text-(--text-primary) rounded-lg text-sm focus:outline-none focus:border-(--accent) transition placeholder:text-(--text-tertiary)" />
+        </div>
+      </div>
+
+      <div>
+        <div class="flex items-center justify-between mb-1.5">
+          <label class="block text-xs font-medium text-(--text-secondary)">{t.message} <span class="text-red-500">*</span></label>
+          <span id="char-count" class="text-xs text-(--text-tertiary)">0 / 2000 {t.chars}</span>
+        </div>
+        <textarea name="content" required maxlength="2000" rows="4" placeholder={t.messagePh}
+          class="w-full px-3 py-2.5 bg-white dark:bg-(--bg-elevated) border border-(--border-subtle) text-(--text-primary) rounded-lg text-sm focus:outline-none focus:border-(--accent) transition resize-none placeholder:text-(--text-tertiary)"></textarea>
+      </div>
+
+      <!-- Error -->
+      <div id="comment-error" class="hidden px-3 py-2.5 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 text-sm rounded-lg"></div>
+
+      <div class="cf-turnstile" data-sitekey={import.meta.env.PUBLIC_TURNSTILE_SITE_KEY} data-theme="auto"></div>
+
+      <div class="flex justify-end">
+        <button type="submit" id="comment-submit"
+          class="px-5 py-2.5 bg-(--accent) hover:bg-(--accent-bright) active:bg-(--accent-dim) text-(--on-accent) text-sm font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
+          <span id="submit-label">{t.submit}</span>
+          <svg id="submit-spinner" class="hidden w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+          </svg>
+        </button>
+      </div>
+    </form>
+    </div>
+  </div>
+</section>
+
+<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script>
+  const form = document.getElementById('comment-form') as HTMLFormElement | null;
+  if (!form) throw new Error('comment-form not found');
+
+  const errorMsg = form.dataset.error ?? 'Hiba történt.';
+  const success    = document.getElementById('comment-success')    as HTMLElement;
+  const errorBox   = document.getElementById('comment-error')      as HTMLElement;
+  const submitBtn  = document.getElementById('comment-submit')     as HTMLButtonElement;
+  const submitLabel = document.getElementById('submit-label')      as HTMLElement;
+  const spinner    = document.getElementById('submit-spinner')     as HTMLElement;
+  const charCount  = document.getElementById('char-count')         as HTMLElement;
+  const textarea   = form.querySelector('textarea[name="content"]') as HTMLTextAreaElement;
+
+  const charUnit = charCount.textContent?.split('2000')[1]?.trim() ?? '';
+  textarea.addEventListener('input', () => {
+    charCount.textContent = `${textarea.value.length} / 2000 ${charUnit}`;
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errorBox.classList.add('hidden');
+
+    const data = Object.fromEntries(new FormData(form));
+    if (!data.name?.toString().trim() || !data.content?.toString().trim()) return;
+
+    submitBtn.disabled = true;
+    submitLabel.classList.add('hidden');
+    spinner.classList.remove('hidden');
+
+    try {
+      const res = await fetch('/api/comments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      const json = await res.json();
+
+      if (!res.ok) {
+        errorBox.textContent = json.error ?? errorMsg;
+        errorBox.classList.remove('hidden');
+        (window as any).turnstile?.reset();
+      } else {
+        showSuccess();
+      }
+    } catch {
+      errorBox.textContent = errorMsg;
+      errorBox.classList.remove('hidden');
+      (window as any).turnstile?.reset();
+    } finally {
+      submitBtn.disabled = false;
+      submitLabel.classList.remove('hidden');
+      spinner.classList.add('hidden');
+    }
+  });
+
+  function showSuccess() {
+    const DURATION = 4000;
+    const formTitle = document.getElementById('comment-form-title') as HTMLElement;
+    const timerBar  = document.getElementById('comment-timer-bar')  as HTMLElement;
+
+    form.style.transition = 'opacity 400ms';
+    form.style.opacity = '0';
+    form.style.pointerEvents = 'none';
+
+    const wrapper = form.parentElement as HTMLElement;
+    wrapper.style.minHeight = wrapper.offsetHeight + 'px';
+
+    setTimeout(() => {
+      form.style.visibility = 'hidden';
+      formTitle.style.opacity = '0';
+
+      success.style.pointerEvents = 'auto';
+      success.style.opacity = '1';
+
+      timerBar.style.transition = `width ${DURATION}ms linear`;
+      timerBar.style.width = '100%';
+
+      setTimeout(() => {
+        success.style.opacity = '0';
+        success.style.pointerEvents = 'none';
+
+        setTimeout(() => {
+          form.reset();
+          (window as any).turnstile?.reset();
+          charCount.textContent = `0 / 2000 ${charUnit}`;
+          errorBox.classList.add('hidden');
+          form.style.visibility = '';
+          form.style.opacity = '0';
+          formTitle.style.opacity = '1';
+          wrapper.style.minHeight = '';
+
+          requestAnimationFrame(() => {
+            form.style.opacity = '1';
+            form.style.pointerEvents = '';
+          });
+
+          timerBar.style.transition = 'none';
+          timerBar.style.width = '0%';
+        }, 450);
+      }, DURATION);
+    }, 400);
+  }
+</script>
