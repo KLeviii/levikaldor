@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import CookieBanner from "../components/CookieBanner.astro";
 
 interface Alternate {
   lang: string;
@@ -128,6 +129,8 @@ const ogLocaleAlt = lang === "hu" ? "en_US" : "hu_HU";
         <polyline points="18 15 12 9 6 15"/>
       </svg>
     </button>
+
+    <CookieBanner lang={lang} />
 
     <main id="main-content">
       <slot />

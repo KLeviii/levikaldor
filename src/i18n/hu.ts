@@ -6,6 +6,7 @@ export const hu = {
     contact: "Kapcsolat",
     faq: "GYIK",
     pricing: "Árak",
+    blog: "Blog",
     menu: "Menü",
   },
   hero: {

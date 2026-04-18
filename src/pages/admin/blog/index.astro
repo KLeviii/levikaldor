@@ -1,0 +1,68 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../../components/admin/AdminLayout.astro';
+import { createSupabaseServerClient } from '../../../lib/supabase';
+
+const supabase = createSupabaseServerClient(Astro.cookies);
+const { data: posts } = await supabase
+  .from('blog_posts')
+  .select('id, slug, title_hu, status, published_at, updated_at')
+  .order('updated_at', { ascending: false });
+---
+
+<AdminLayout title="Blog bejegyzések" activePage="blog">
+  <div class="flex items-center justify-between mb-6">
+    <p class="text-sm text-(--text-secondary)">{posts?.length ?? 0} bejegyzés</p>
+    <a href="/admin/blog/new"
+      class="inline-flex items-center gap-2 px-4 py-2 bg-(--accent) hover:bg-(--accent-bright) text-white text-sm font-medium rounded-md transition-colors">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+      Új bejegyzés
+    </a>
+  </div>
+
+  <div class="bg-(--bg-surface) border border-(--border-subtle) rounded-lg overflow-hidden">
+    {!posts?.length ? (
+      <p class="px-6 py-12 text-center text-(--text-tertiary) text-sm">
+        Még nincs bejegyzés. Hozd létre az elsőt!
+      </p>
+    ) : (
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-(--border-subtle) bg-(--bg-elevated)">
+            <th class="text-left px-4 py-3 font-medium text-(--text-secondary)">Cím (HU)</th>
+            <th class="text-left px-4 py-3 font-medium text-(--text-secondary)">Státusz</th>
+            <th class="text-left px-4 py-3 font-medium text-(--text-secondary) hidden md:table-cell">Módosítva</th>
+            <th class="px-4 py-3"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {posts.map((post) => (
+            <tr class="border-b border-(--border-subtle) last:border-0 hover:bg-(--bg-elevated) transition-colors">
+              <td class="px-4 py-3 font-medium text-(--text-primary) max-w-xs truncate">{post.title_hu}</td>
+              <td class="px-4 py-3">
+                <span class={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium
+                  ${post.status === 'published'
+                    ? 'bg-(--accent-bg) text-(--accent)'
+                    : 'bg-(--bg-elevated) text-(--text-secondary) border border-(--border-subtle)'}`}>
+                  {post.status === 'published' ? 'Publikált' : 'Vázlat'}
+                </span>
+              </td>
+              <td class="px-4 py-3 text-(--text-secondary) hidden md:table-cell">
+                {new Date(post.updated_at).toLocaleDateString('hu-HU')}
+              </td>
+              <td class="px-4 py-3 text-right">
+                <a href={`/admin/blog/${post.id}`}
+                  class="text-(--accent) hover:text-(--accent-bright) font-medium transition-colors text-sm">
+                  Szerkesztés →
+                </a>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )}
+  </div>
+</AdminLayout>

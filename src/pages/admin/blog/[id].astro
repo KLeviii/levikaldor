@@ -1,0 +1,87 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../../components/admin/AdminLayout.astro';
+import PostForm from '../../../components/admin/PostForm.astro';
+import { createSupabaseServerClient } from '../../../lib/supabase';
+import type { BlogPost } from '../../../lib/supabase';
+
+const { id } = Astro.params;
+const supabase = createSupabaseServerClient(Astro.cookies);
+
+const { data: post } = await supabase
+  .from('blog_posts')
+  .select('*')
+  .eq('id', id)
+  .single();
+
+if (!post) return Astro.redirect('/admin/blog/');
+
+let formError = '';
+let currentPost: BlogPost = post;
+
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  const action = form.get('_action')?.toString();
+
+  if (action === 'delete') {
+    await supabase.from('blog_posts').delete().eq('id', id);
+    return Astro.redirect('/admin/blog/');
+  }
+
+  const slug = form.get('slug')?.toString().trim() ?? '';
+  const status = (form.get('status')?.toString() ?? 'draft') as 'draft' | 'published';
+  const title_hu = form.get('title_hu')?.toString().trim() ?? '';
+  const excerpt_hu = form.get('excerpt_hu')?.toString().trim() || null;
+  const content_hu = form.get('content_hu')?.toString().trim() ?? '';
+  const title_en = form.get('title_en')?.toString().trim() || null;
+  const excerpt_en = form.get('excerpt_en')?.toString().trim() || null;
+  const content_en = form.get('content_en')?.toString().trim() || null;
+  const cover_url = form.get('cover_url')?.toString().trim() || null;
+  const tagsRaw = form.get('tags')?.toString() ?? '';
+  const tags = tagsRaw.split(',').map(t => t.trim()).filter(Boolean);
+  const reading_time_min = parseInt(form.get('reading_time_min')?.toString() ?? '') || null;
+
+  if (!slug || !title_hu || !content_hu) {
+    formError = 'Slug, cím (HU) és tartalom (HU) kötelező.';
+  } else {
+    const wasPublished = post.status === 'published';
+    const nowPublished = status === 'published';
+
+    const { error } = await supabase.from('blog_posts').update({
+      slug, status, title_hu, excerpt_hu, content_hu,
+      title_en, excerpt_en, content_en, cover_url, tags, reading_time_min,
+      published_at: nowPublished && !wasPublished ? new Date().toISOString() : post.published_at,
+    }).eq('id', id);
+
+    if (error) {
+      formError = error.code === '23505'
+        ? 'Ez a slug már létezik. Válassz másikat.'
+        : `Hiba: ${error.message}`;
+    } else {
+      return Astro.redirect('/admin/blog/');
+    }
+  }
+
+  currentPost = { ...post, slug, status,
+    title_hu, excerpt_hu, content_hu,
+    title_en, excerpt_en, content_en, cover_url, tags, reading_time_min,
+    published_at: post.published_at, created_at: post.created_at, updated_at: post.updated_at
+  };
+}
+---
+
+<AdminLayout title="Szerkesztés" activePage="blog">
+  <div class="mb-6 flex items-center justify-between">
+    <a href="/admin/blog/" class="text-sm text-(--text-secondary) hover:text-(--accent) transition-colors">
+      ← Vissza a listához
+    </a>
+    {post.status === 'published' && (
+      <a href={`/blog/${post.slug}/`} target="_blank"
+        class="text-sm text-(--accent) hover:text-(--accent-bright) transition-colors">
+        Poszt megtekintése →
+      </a>
+    )}
+  </div>
+  <PostForm post={currentPost} error={formError} />
+</AdminLayout>

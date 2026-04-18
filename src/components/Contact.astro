@@ -114,7 +114,7 @@ const t = useTranslations(lang);
   </div>
 </section>
 
-<!-- Toast -->
+<!-- Email copy toast -->
 <div
   id="email-toast"
   class="fixed bottom-6 left-1/2 -translate-x-1/2 px-4 py-2
@@ -125,6 +125,66 @@ const t = useTranslations(lang);
 >
   {lang === "hu" ? "Vágólapra másolva!" : "Copied to clipboard!"}
 </div>
+
+<!-- Contact form success toast -->
+<div
+  id="contact-toast"
+  class="fixed bottom-6 left-1/2 -translate-x-1/2 px-5 py-3
+         bg-gray-900 dark:bg-white text-white dark:text-gray-900
+         text-sm rounded-md shadow-lg
+         opacity-0 translate-y-2
+         transition-all duration-300 pointer-events-none z-100"
+>
+  {lang === "hu" ? "Üzeneted megérkezett! Hamarosan visszajelzek." : "Message received! I'll get back to you soon."}
+</div>
+
+<script>
+  // Contact form submission
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const submitBtn = document.getElementById('contact-submit') as HTMLButtonElement | null;
+  const contactToast = document.getElementById('contact-toast');
+  const lang = submitBtn?.dataset.lang ?? 'hu';
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+
+    const originalText = submitBtn!.textContent ?? '';
+    submitBtn!.disabled = true;
+    submitBtn!.textContent = lang === 'hu' ? 'Küldés...' : 'Sending...';
+
+    const fd = new FormData(form);
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: fd.get('name'),
+          email: fd.get('email'),
+          message: fd.get('message'),
+          lang,
+        }),
+      });
+
+      if (res.ok) {
+        form.reset();
+        if (contactToast) {
+          contactToast.classList.remove('opacity-0', 'translate-y-2');
+          setTimeout(() => contactToast.classList.add('opacity-0', 'translate-y-2'), 5000);
+        }
+        submitBtn!.textContent = originalText;
+      } else {
+        submitBtn!.textContent = lang === 'hu' ? 'Hiba – próbáld újra' : 'Error – try again';
+        setTimeout(() => { submitBtn!.textContent = originalText; }, 3000);
+      }
+    } catch {
+      submitBtn!.textContent = lang === 'hu' ? 'Hiba – próbáld újra' : 'Error – try again';
+      setTimeout(() => { submitBtn!.textContent = originalText; }, 3000);
+    } finally {
+      submitBtn!.disabled = false;
+    }
+  });
+</script>
 
 <script>
   function rot13(s: string): string {

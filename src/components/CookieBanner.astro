@@ -1,0 +1,76 @@
+---
+interface Props {
+  lang?: string;
+}
+const { lang = "hu" } = Astro.props;
+const isHu = lang === "hu";
+---
+
+<div
+  id="cookie-banner"
+  role="dialog"
+  aria-modal="false"
+  aria-label={isHu ? "Süti tájékoztató" : "Cookie notice"}
+  class="fixed bottom-6 left-1/2 -translate-x-1/2 z-200 w-[calc(100%-2rem)] max-w-xl
+         bg-white/90 dark:bg-gray-950/90 backdrop-blur border border-(--border-subtle) rounded-xl shadow-2xl
+         px-5 py-4 flex flex-col sm:flex-row items-start sm:items-center gap-4
+         opacity-0 translate-y-4 pointer-events-none transition-all duration-300 ease-out"
+>
+  <div class="flex-1 min-w-0">
+    <p class="text-sm text-(--text-primary) font-medium mb-0.5">
+      {isHu ? "Sütik" : "Cookies"}
+    </p>
+    <p class="text-xs text-(--text-secondary) leading-relaxed">
+      {isHu
+        ? <>Ez az oldal sütiket használ a megfelelő működés érdekében. <a href="/sutik/" class="underline underline-offset-2 hover:text-(--accent) transition-colors">Süti tájékoztató</a></>
+        : <>This site uses cookies to ensure proper functionality. <a href="/sutik/" class="underline underline-offset-2 hover:text-(--accent) transition-colors">Cookie policy</a></>
+      }
+    </p>
+  </div>
+  <div class="flex items-center gap-2 shrink-0">
+    <button
+      id="cookie-decline"
+      class="text-xs px-3 py-2 rounded-lg border border-(--border-subtle) text-(--text-secondary)
+             hover:border-(--text-tertiary) transition-colors"
+    >
+      {isHu ? "Elutasítom" : "Decline"}
+    </button>
+    <button
+      id="cookie-accept"
+      class="text-xs px-4 py-2 rounded-lg bg-(--accent) text-white font-medium
+             hover:bg-(--accent-bright) transition-colors"
+    >
+      {isHu ? "Elfogadom" : "Accept"}
+    </button>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = "kl-cookies";
+  const banner = document.getElementById("cookie-banner") as HTMLElement | null;
+
+  function hideBanner() {
+    if (!banner) return;
+    banner.classList.add("opacity-0", "translate-y-4", "pointer-events-none");
+  }
+
+  function showBanner() {
+    if (!banner) return;
+    banner.classList.remove("opacity-0", "translate-y-4", "pointer-events-none");
+  }
+
+  if (!localStorage.getItem(STORAGE_KEY)) {
+    // kis késleltetés hogy ne villanjon be azonnal
+    setTimeout(showBanner, 600);
+  }
+
+  document.getElementById("cookie-accept")?.addEventListener("click", () => {
+    localStorage.setItem(STORAGE_KEY, "accepted");
+    hideBanner();
+  });
+
+  document.getElementById("cookie-decline")?.addEventListener("click", () => {
+    localStorage.setItem(STORAGE_KEY, "declined");
+    hideBanner();
+  });
+</script>

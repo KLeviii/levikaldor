@@ -31,6 +31,7 @@ const base = home ? "" : (lang === "hu" ? "/" : "/en/");
       <li><a href={base + "#contact"} class="hover:text-(--accent) transition-colors">{t.nav.contact}</a></li>
       <li><a href={lang === "hu" ? "/gyik/" : "/en/faq/"} class="hover:text-(--accent) transition-colors">{t.nav.faq}</a></li>
       <li><a href={lang === "hu" ? "/arak/" : "/en/pricing/"} class="hover:text-(--accent) transition-colors">{t.nav.pricing}</a></li>
+      <li><a href={lang === "hu" ? "/blog/" : "/en/blog/"} class="hover:text-(--accent) transition-colors">{t.nav.blog}</a></li>
     </ul>
 
     <div class="flex items-center gap-3">
@@ -110,6 +111,7 @@ const base = home ? "" : (lang === "hu" ? "/" : "/en/");
     <a href={base + "#contact"}  class="drawer-link w-full text-center py-4 text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-(--accent) transition-colors">{t.nav.contact}</a>
     <a href={lang === "hu" ? "/gyik/" : "/en/faq/"} class="drawer-link w-full text-center py-4 text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-(--accent) transition-colors">{t.nav.faq}</a>
     <a href={lang === "hu" ? "/arak/" : "/en/pricing/"} class="drawer-link w-full text-center py-4 text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-(--accent) transition-colors">{t.nav.pricing}</a>
+    <a href={lang === "hu" ? "/blog/" : "/en/blog/"} class="drawer-link w-full text-center py-4 text-2xl font-semibold text-gray-800 dark:text-gray-100 hover:text-(--accent) transition-colors">{t.nav.blog}</a>
   </nav>
 
   <!-- Drawer footer: theme + lang + credit -->

@@ -1,0 +1,132 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout
+  lang="hu"
+  title="Impresszum | Káldor Levente"
+  description="Impresszum – Káldor Levente webfejlesztő."
+  canonical="https://levikaldor.hu/impresszum/"
+>
+  <Navbar lang="hu" />
+
+  <main class="pt-32 pb-20">
+    <div class="max-w-3xl mx-auto px-4">
+      <nav aria-label="Breadcrumb" class="mb-10">
+        <ol class="flex items-center gap-2 text-sm text-gray-400 dark:text-gray-500">
+          <li>
+            <a href="/" class="hover:text-(--accent) transition-colors">Főoldal</a>
+          </li>
+          <li aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </li>
+          <li>
+            <span class="text-gray-600 dark:text-gray-300 font-medium" aria-current="page">Impresszum</span>
+          </li>
+        </ol>
+      </nav>
+
+      <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 mb-12">
+        <div>
+          <h1 class="text-4xl md:text-5xl font-bold text-(--text-primary) mb-4">
+            Impresszum
+          </h1>
+          <p class="text-(--text-secondary) text-lg">
+            A weboldal üzemeltetőjének adatai.
+          </p>
+        </div>
+        <a
+          href="/docs/impresszum.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 shrink-0 px-5 py-3 border border-(--border-subtle) rounded-lg text-(--text-secondary) hover:text-(--accent) hover:border-(--accent) transition-colors text-sm font-medium"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="12" y1="18" x2="12" y2="12"/>
+            <line x1="9" y1="15" x2="15" y2="15"/>
+          </svg>
+          PDF letöltése
+        </a>
+      </div>
+
+      <div class="space-y-8 text-(--text-secondary) leading-relaxed">
+
+        <section class="border border-(--border-subtle) rounded-lg p-6 space-y-3">
+          <h2 class="text-lg font-semibold text-(--text-primary)">Üzemeltető</h2>
+          <dl class="space-y-2 text-sm">
+            <div class="flex gap-3">
+              <dt class="text-(--text-tertiary) w-32 shrink-0">Név</dt>
+              <dd class="text-(--text-primary)">Káldor Levente</dd>
+            </div>
+            <div class="flex gap-3">
+              <dt class="text-(--text-tertiary) w-32 shrink-0">Cím</dt>
+              <dd class="text-(--text-primary)">[Cím placeholder]</dd>
+            </div>
+            <div class="flex gap-3">
+              <dt class="text-(--text-tertiary) w-32 shrink-0">E-mail</dt>
+              <dd class="text-(--text-primary)">[placeholder@email.hu]</dd>
+            </div>
+            <div class="flex gap-3">
+              <dt class="text-(--text-tertiary) w-32 shrink-0">Telefon</dt>
+              <dd class="text-(--text-primary)">[+36 XX XXX XXXX]</dd>
+            </div>
+            <div class="flex gap-3">
+              <dt class="text-(--text-tertiary) w-32 shrink-0">Adószám</dt>
+              <dd class="text-(--text-primary)">[placeholder]</dd>
+            </div>
+          </dl>
+        </section>
+
+        <section class="border border-(--border-subtle) rounded-lg p-6 space-y-3">
+          <h2 class="text-lg font-semibold text-(--text-primary)">Tárhelyszolgáltató</h2>
+          <dl class="space-y-2 text-sm">
+            <div class="flex gap-3">
+              <dt class="text-(--text-tertiary) w-32 shrink-0">Szolgáltató</dt>
+              <dd class="text-(--text-primary)">[Tárhelyszolgáltató neve]</dd>
+            </div>
+            <div class="flex gap-3">
+              <dt class="text-(--text-tertiary) w-32 shrink-0">Cím</dt>
+              <dd class="text-(--text-primary)">[Tárhelyszolgáltató címe]</dd>
+            </div>
+            <div class="flex gap-3">
+              <dt class="text-(--text-tertiary) w-32 shrink-0">Weboldal</dt>
+              <dd class="text-(--text-primary)">[tarhely.hu]</dd>
+            </div>
+          </dl>
+        </section>
+
+        <section class="border border-(--border-subtle) rounded-lg p-6 space-y-3">
+          <h2 class="text-lg font-semibold text-(--text-primary)">Szerzői jogok</h2>
+          <p class="text-sm">
+            A weboldalon található tartalmak (szövegek, képek, grafikai elemek) szerzői jogi védelem
+            alatt állnak. Felhasználásuk kizárólag az üzemeltető előzetes írásbeli engedélyével lehetséges.
+          </p>
+        </section>
+
+        <section class="border border-(--border-subtle) rounded-lg p-6 space-y-3">
+          <h2 class="text-lg font-semibold text-(--text-primary)">Felelősség kizárása</h2>
+          <p class="text-sm">
+            Az üzemeltető törekszik a weboldalon található információk pontosságára és naprakészségére,
+            azonban azok helyességéért felelősséget nem vállal. A weboldal tartalma tájékoztató
+            jellegű és nem minősül jogi vagy szakmai tanácsadásnak.
+          </p>
+        </section>
+
+      </div>
+
+      <div class="mt-16 p-8 bg-(--accent-bg) border border-(--accent-border) rounded-lg text-center">
+        <h2 class="text-xl font-bold text-(--text-primary) mb-2">Kérdésed van?</h2>
+        <p class="text-(--text-secondary) mb-6">Írj nekem és személyesen válaszolok.</p>
+        <a href="/#contact" class="inline-block px-6 py-3 bg-(--accent) text-white rounded-md font-medium hover:bg-(--accent-bright) transition-colors">
+          Kapcsolatfelvétel
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <Footer lang="hu" />
+</Layout>

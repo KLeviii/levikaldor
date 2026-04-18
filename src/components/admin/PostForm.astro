@@ -1,0 +1,242 @@
+---
+import type { BlogPost } from '../../lib/supabase';
+
+interface Props {
+  post?: BlogPost;
+  error?: string;
+}
+
+const { post, error } = Astro.props;
+const isEdit = !!post;
+---
+
+<form method="POST" enctype="multipart/form-data" class="space-y-6 max-w-4xl" id="post-form">
+  {error && (
+    <div class="px-4 py-3 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 text-sm rounded-md">
+      {error}
+    </div>
+  )}
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="md:col-span-2">
+      <label class="block text-sm font-medium text-(--text-secondary) mb-1.5">
+        Slug <span class="text-(--text-tertiary) font-normal">(URL: /blog/slug/)</span>
+      </label>
+      <input type="text" name="slug" value={post?.slug ?? ''} required
+        placeholder="pl. astro-supabase-integralas"
+        class="w-full px-4 py-2.5 bg-white dark:bg-(--bg-elevated) border border-(--border-subtle) text-(--text-primary) rounded-md focus:outline-none focus:border-(--accent) transition font-mono text-sm" />
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-(--text-secondary) mb-1.5">Státusz</label>
+      <select name="status"
+        class="w-full px-4 py-2.5 bg-white dark:bg-(--bg-elevated) border border-(--border-subtle) text-(--text-primary) rounded-md focus:outline-none focus:border-(--accent) transition">
+        <option value="draft" selected={!post || post.status === 'draft'}>Vázlat</option>
+        <option value="published" selected={post?.status === 'published'}>Publikált</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Cover image upload -->
+  <div>
+    <label class="block text-sm font-medium text-(--text-secondary) mb-1.5">Borítókép</label>
+    {post?.cover_url && (
+      <div class="mb-3">
+        <img src={post.cover_url} alt="Jelenlegi borítókép" class="h-28 w-auto rounded-md border border-(--border-subtle) object-cover" />
+        <p class="text-xs text-(--text-tertiary) mt-1">Jelenlegi kép. Új fájl feltöltésével felülírható.</p>
+      </div>
+    )}
+    <input type="hidden" name="cover_url" id="cover_url_input" value={post?.cover_url ?? ''} />
+    <div class="flex items-center gap-3">
+      <label class="cursor-pointer inline-flex items-center gap-2 px-4 py-2.5 border border-(--border-subtle) hover:border-(--accent) text-(--text-secondary) hover:text-(--accent) rounded-md text-sm font-medium transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+        Kép kiválasztása
+        <input type="file" id="cover_file" accept="image/*" class="hidden" />
+      </label>
+      <span id="cover_filename" class="text-sm text-(--text-tertiary)">Nincs fájl kiválasztva</span>
+    </div>
+    <div id="upload_progress" class="hidden mt-2">
+      <div class="h-1.5 bg-(--bg-elevated) rounded-full overflow-hidden">
+        <div id="upload_bar" class="h-full bg-(--accent) transition-all duration-300" style="width: 0%"></div>
+      </div>
+      <p id="upload_status" class="text-xs text-(--text-tertiary) mt-1">Feltöltés...</p>
+    </div>
+  </div>
+
+  <!-- Tags -->
+  <div>
+    <label class="block text-sm font-medium text-(--text-secondary) mb-1.5">Tagek <span class="text-(--text-tertiary) font-normal">(vesszővel elválasztva)</span></label>
+    <input type="text" name="tags" value={post?.tags?.join(', ') ?? ''}
+      placeholder="astro, supabase, webfejlesztés"
+      class="w-full px-4 py-2.5 bg-white dark:bg-(--bg-elevated) border border-(--border-subtle) text-(--text-primary) rounded-md focus:outline-none focus:border-(--accent) transition" />
+  </div>
+
+  <!-- Reading time -->
+  <div class="w-40">
+    <label class="block text-sm font-medium text-(--text-secondary) mb-1.5">Olvasási idő (perc)</label>
+    <input type="number" name="reading_time_min" value={post?.reading_time_min ?? ''} min="1" max="60"
+      placeholder="5"
+      class="w-full px-4 py-2.5 bg-white dark:bg-(--bg-elevated) border border-(--border-subtle) text-(--text-primary) rounded-md focus:outline-none focus:border-(--accent) transition" />
+  </div>
+
+  <!-- Language tabs -->
+  <div class="border border-(--border-subtle) rounded-lg overflow-hidden">
+    <div class="flex border-b border-(--border-subtle) bg-(--bg-elevated)">
+      <button type="button" id="tab-hu"
+        class="px-5 py-3 text-sm font-medium text-(--accent) border-b-2 border-(--accent)">
+        🇭🇺 Magyar (HU)
+      </button>
+      <button type="button" id="tab-en"
+        class="px-5 py-3 text-sm font-medium text-(--text-secondary) hover:text-(--text-primary) border-b-2 border-transparent transition-colors">
+        🇬🇧 English (EN)
+      </button>
+    </div>
+
+    <div id="panel-hu" class="p-5 space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-(--text-secondary) mb-1.5">Cím (HU) <span class="text-(--accent)">*</span></label>
+        <input type="text" name="title_hu" value={post?.title_hu ?? ''} required
+          class="w-full px-4 py-2.5 bg-white dark:bg-(--bg-elevated) border border-(--border-subtle) text-(--text-primary) rounded-md focus:outline-none focus:border-(--accent) transition" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-(--text-secondary) mb-1.5">Kivonat (HU)</label>
+        <textarea name="excerpt_hu" rows={2}
+          class="w-full px-4 py-2.5 bg-white dark:bg-(--bg-elevated) border border-(--border-subtle) text-(--text-primary) rounded-md focus:outline-none focus:border-(--accent) transition resize-none">{post?.excerpt_hu ?? ''}</textarea>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-(--text-secondary) mb-1.5">Tartalom – Markdown (HU) <span class="text-(--accent)">*</span></label>
+        <textarea name="content_hu" rows={18} required
+          class="w-full px-4 py-2.5 bg-white dark:bg-(--bg-elevated) border border-(--border-subtle) text-(--text-primary) rounded-md focus:outline-none focus:border-(--accent) transition resize-y font-mono text-sm">{post?.content_hu ?? ''}</textarea>
+      </div>
+    </div>
+
+    <div id="panel-en" class="p-5 space-y-4 hidden">
+      <p class="text-xs text-(--text-tertiary) bg-(--accent-bg) border border-(--accent-border) rounded-md px-3 py-2">
+        Opcionális. Ha nincs kitöltve, az EN blog listán ez a poszt nem jelenik meg.
+      </p>
+      <div>
+        <label class="block text-sm font-medium text-(--text-secondary) mb-1.5">Title (EN)</label>
+        <input type="text" name="title_en" value={post?.title_en ?? ''}
+          class="w-full px-4 py-2.5 bg-white dark:bg-(--bg-elevated) border border-(--border-subtle) text-(--text-primary) rounded-md focus:outline-none focus:border-(--accent) transition" />
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-(--text-secondary) mb-1.5">Excerpt (EN)</label>
+        <textarea name="excerpt_en" rows={2}
+          class="w-full px-4 py-2.5 bg-white dark:bg-(--bg-elevated) border border-(--border-subtle) text-(--text-primary) rounded-md focus:outline-none focus:border-(--accent) transition resize-none">{post?.excerpt_en ?? ''}</textarea>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-(--text-secondary) mb-1.5">Content – Markdown (EN)</label>
+        <textarea name="content_en" rows={18}
+          class="w-full px-4 py-2.5 bg-white dark:bg-(--bg-elevated) border border-(--border-subtle) text-(--text-primary) rounded-md focus:outline-none focus:border-(--accent) transition resize-y font-mono text-sm">{post?.content_en ?? ''}</textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex items-center gap-3 pt-2">
+    <button type="submit"
+      class="px-6 py-2.5 bg-(--accent) hover:bg-(--accent-bright) text-white font-semibold rounded-md transition-colors">
+      {isEdit ? 'Mentés' : 'Létrehozás'}
+    </button>
+    <a href="/admin/blog/"
+      class="px-6 py-2.5 border border-(--border-subtle) hover:border-(--border-medium) text-(--text-secondary) font-medium rounded-md transition-colors">
+      Mégse
+    </a>
+    {isEdit && (
+      <button type="submit" name="_action" value="delete" formnovalidate
+        class="ml-auto px-4 py-2.5 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-md text-sm font-medium transition-colors"
+        onclick="return confirm('Biztosan törlöd ezt a bejegyzést?')">
+        Törlés
+      </button>
+    )}
+  </div>
+</form>
+
+<script>
+  // Tab switching
+  const tabHu = document.getElementById('tab-hu')!;
+  const tabEn = document.getElementById('tab-en')!;
+  const panelHu = document.getElementById('panel-hu')!;
+  const panelEn = document.getElementById('panel-en')!;
+
+  function activateTab(tab: 'hu' | 'en') {
+    if (tab === 'hu') {
+      tabHu.classList.add('text-(--accent)', 'border-(--accent)');
+      tabHu.classList.remove('text-(--text-secondary)', 'border-transparent');
+      tabEn.classList.remove('text-(--accent)', 'border-(--accent)');
+      tabEn.classList.add('text-(--text-secondary)', 'border-transparent');
+      panelHu.classList.remove('hidden');
+      panelEn.classList.add('hidden');
+    } else {
+      tabEn.classList.add('text-(--accent)', 'border-(--accent)');
+      tabEn.classList.remove('text-(--text-secondary)', 'border-transparent');
+      tabHu.classList.remove('text-(--accent)', 'border-(--accent)');
+      tabHu.classList.add('text-(--text-secondary)', 'border-transparent');
+      panelEn.classList.remove('hidden');
+      panelHu.classList.add('hidden');
+    }
+  }
+
+  tabHu.addEventListener('click', () => activateTab('hu'));
+  tabEn.addEventListener('click', () => activateTab('en'));
+
+  // Image upload to Supabase Storage
+  const fileInput = document.getElementById('cover_file') as HTMLInputElement;
+  const filenameEl = document.getElementById('cover_filename')!;
+  const coverUrlInput = document.getElementById('cover_url_input') as HTMLInputElement;
+  const uploadProgress = document.getElementById('upload_progress')!;
+  const uploadBar = document.getElementById('upload_bar') as HTMLElement;
+  const uploadStatus = document.getElementById('upload_status')!;
+
+  fileInput?.addEventListener('change', async () => {
+    const file = fileInput.files?.[0];
+    if (!file) return;
+
+    filenameEl.textContent = file.name;
+    uploadProgress.classList.remove('hidden');
+    uploadBar.style.width = '20%';
+    uploadStatus.textContent = 'Feltöltés...';
+
+    try {
+      const { createClient } = await import('@supabase/supabase-js');
+      const supabase = createClient(
+        import.meta.env.PUBLIC_SUPABASE_URL,
+        import.meta.env.PUBLIC_SUPABASE_ANON_KEY
+      );
+
+      const ext = file.name.split('.').pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+
+      uploadBar.style.width = '50%';
+
+      const { data, error } = await supabase.storage
+        .from('blog-covers')
+        .upload(fileName, file, { upsert: false });
+
+      if (error) throw error;
+
+      uploadBar.style.width = '90%';
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('blog-covers')
+        .getPublicUrl(data.path);
+
+      coverUrlInput.value = publicUrl;
+      uploadBar.style.width = '100%';
+      uploadStatus.textContent = 'Sikeresen feltöltve!';
+
+      setTimeout(() => {
+        uploadProgress.classList.add('hidden');
+        uploadBar.style.width = '0%';
+      }, 2000);
+    } catch (err) {
+      uploadBar.style.width = '100%';
+      uploadBar.classList.add('bg-red-500');
+      uploadBar.classList.remove('bg-(--accent)');
+      uploadStatus.textContent = 'Feltöltési hiba – próbáld újra.';
+      console.error(err);
+    }
+  });
+</script>

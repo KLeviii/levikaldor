@@ -1,0 +1,41 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout
+  lang="hu"
+  title="500 – Szerverhiba | Káldor Levente"
+  description="Váratlan szerverhiba történt. Kérjük próbáld újra később."
+  noindex={true}
+>
+  <Navbar lang="hu" />
+
+  <div class="min-h-[calc(100vh-65px)] flex items-center justify-center px-4 pt-32 pb-20">
+    <div class="text-center max-w-lg mx-auto" data-animate>
+      <p class="font-bold text-(--accent) mb-6 leading-none select-none" style="font-size: clamp(6rem, 15vw, 12rem);">500</p>
+      <h1 class="text-3xl font-bold text-(--text-primary) mb-4">Szerverhiba történt</h1>
+      <p class="text-(--text-secondary) mb-8 text-lg">
+        Valami hiba csúszott a rendszerbe.<br />Ez nem a te hibád – dolgozok rajta. Kérlek próbáld újra egy perc múlva.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <button
+          onclick="window.location.reload()"
+          class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-(--accent) hover:bg-(--accent-bright) text-white font-semibold rounded-xl transition-colors cursor-pointer"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+          Újratöltés
+        </button>
+        <a
+          href="/"
+          class="inline-flex items-center justify-center gap-2 px-6 py-3 border border-(--border) hover:border-(--accent) text-(--text-primary) font-semibold rounded-xl transition-colors"
+        >
+          Vissza a főoldalra
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <Footer lang="hu" />
+</Layout>

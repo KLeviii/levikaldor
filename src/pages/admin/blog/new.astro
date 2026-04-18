@@ -1,0 +1,53 @@
+---
+export const prerender = false;
+
+import AdminLayout from '../../../components/admin/AdminLayout.astro';
+import PostForm from '../../../components/admin/PostForm.astro';
+import { createSupabaseServerClient } from '../../../lib/supabase';
+
+let formError = '';
+
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  const slug = form.get('slug')?.toString().trim() ?? '';
+  const status = (form.get('status')?.toString() ?? 'draft') as 'draft' | 'published';
+  const title_hu = form.get('title_hu')?.toString().trim() ?? '';
+  const excerpt_hu = form.get('excerpt_hu')?.toString().trim() || null;
+  const content_hu = form.get('content_hu')?.toString().trim() ?? '';
+  const title_en = form.get('title_en')?.toString().trim() || null;
+  const excerpt_en = form.get('excerpt_en')?.toString().trim() || null;
+  const content_en = form.get('content_en')?.toString().trim() || null;
+  const cover_url = form.get('cover_url')?.toString().trim() || null;
+  const tagsRaw = form.get('tags')?.toString() ?? '';
+  const tags = tagsRaw.split(',').map(t => t.trim()).filter(Boolean);
+  const reading_time_min = parseInt(form.get('reading_time_min')?.toString() ?? '') || null;
+
+  if (!slug || !title_hu || !content_hu) {
+    formError = 'Slug, cím (HU) és tartalom (HU) kötelező.';
+  } else {
+    const supabase = createSupabaseServerClient(Astro.cookies);
+    const { error } = await supabase.from('blog_posts').insert({
+      slug, status, title_hu, excerpt_hu, content_hu,
+      title_en, excerpt_en, content_en, cover_url, tags, reading_time_min,
+      published_at: status === 'published' ? new Date().toISOString() : null,
+    });
+
+    if (error) {
+      formError = error.code === '23505'
+        ? 'Ez a slug már létezik. Válassz másikat.'
+        : `Hiba: ${error.message}`;
+    } else {
+      return Astro.redirect('/admin/blog/');
+    }
+  }
+}
+---
+
+<AdminLayout title="Új bejegyzés" activePage="blog">
+  <div class="mb-6">
+    <a href="/admin/blog/" class="text-sm text-(--text-secondary) hover:text-(--accent) transition-colors">
+      ← Vissza a listához
+    </a>
+  </div>
+  <PostForm error={formError} />
+</AdminLayout>

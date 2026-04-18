@@ -1,0 +1,136 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar.astro";
+import Footer from "../../components/Footer.astro";
+
+const SITE = "https://levikaldor.hu";
+---
+
+<Layout
+  lang="en"
+  title="Privacy Policy | Káldor Levente"
+  description="Privacy Policy – Káldor Levente web developer."
+  canonical="https://levikaldor.hu/en/privacy/"
+>
+  <Navbar lang="en" />
+
+  <main class="pt-32 pb-20">
+    <div class="max-w-3xl mx-auto px-4">
+      <nav aria-label="Breadcrumb" class="mb-10">
+        <ol class="flex items-center gap-2 text-sm text-gray-400 dark:text-gray-500">
+          <li>
+            <a href="/en/" class="hover:text-(--accent) transition-colors">Home</a>
+          </li>
+          <li aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </li>
+          <li>
+            <span class="text-gray-600 dark:text-gray-300 font-medium" aria-current="page">Privacy Policy</span>
+          </li>
+        </ol>
+      </nav>
+
+      <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 mb-12">
+        <div>
+          <h1 class="text-4xl md:text-5xl font-bold text-(--text-primary) mb-4">
+            Privacy Policy
+          </h1>
+          <p class="text-(--text-secondary) text-lg">
+            Last updated: April 18, 2026.
+          </p>
+        </div>
+        <a
+          href="/docs/privacy.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 shrink-0 px-5 py-3 border border-(--border-subtle) rounded-lg text-(--text-secondary) hover:text-(--accent) hover:border-(--accent) transition-colors text-sm font-medium"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="12" y1="18" x2="12" y2="12"/>
+            <line x1="9" y1="15" x2="15" y2="15"/>
+          </svg>
+          Download PDF
+        </a>
+      </div>
+
+      <div class="space-y-8 text-(--text-secondary) leading-relaxed">
+
+        <section>
+          <h2 class="text-xl font-semibold text-(--text-primary) mb-3">1. Data Controller</h2>
+          <p>
+            <strong class="text-(--text-primary)">Name:</strong> Káldor Levente<br/>
+            <strong class="text-(--text-primary)">Email:</strong> [placeholder@email.hu]<br/>
+            <strong class="text-(--text-primary)">Address:</strong> [Address placeholder]<br/>
+            <strong class="text-(--text-primary)">Website:</strong> {SITE}
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold text-(--text-primary) mb-3">2. What data do we collect?</h2>
+          <p>
+            This website currently does not collect personal data. There is no contact form,
+            newsletter subscription or login system in operation.
+          </p>
+          <p class="mt-3">
+            [Placeholder: If data collection is introduced in the future, it will be detailed here:
+            scope, purpose, legal basis and retention period of the data processed.]
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold text-(--text-primary) mb-3">3. Cookies</h2>
+          <p>
+            The website may use cookies necessary for its operation. For detailed information
+            about cookies, please see the <a href="/en/cookies/" class="text-(--accent) hover:underline">Cookie Policy</a>.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold text-(--text-primary) mb-3">4. Your rights</h2>
+          <p>Under the EU GDPR regulation, you have the right to:</p>
+          <ul class="list-disc list-inside space-y-1 mt-2">
+            <li>access your personal data</li>
+            <li>request rectification</li>
+            <li>request erasure ("right to be forgotten")</li>
+            <li>request restriction of processing</li>
+            <li>data portability</li>
+            <li>object to processing</li>
+          </ul>
+          <p class="mt-3">
+            Requests can be sent to the data controller's email address. Response time: 30 days.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold text-(--text-primary) mb-3">5. Supervisory authority</h2>
+          <p>
+            You may lodge a complaint with the Hungarian National Authority for Data Protection
+            and Freedom of Information (NAIH):
+            <a href="https://naih.hu" target="_blank" rel="noopener noreferrer" class="text-(--accent) hover:underline">naih.hu</a>
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold text-(--text-primary) mb-3">6. Changes</h2>
+          <p>
+            The data controller reserves the right to amend this policy. Changes are communicated
+            by updating the date shown at the top of this page.
+          </p>
+        </section>
+
+      </div>
+
+      <div class="mt-16 p-8 bg-(--accent-bg) border border-(--accent-border) rounded-lg text-center">
+        <h2 class="text-xl font-bold text-(--text-primary) mb-2">Have a question?</h2>
+        <p class="text-(--text-secondary) mb-6">Send me a message and I'll get back to you personally.</p>
+        <a href="/en/#contact" class="inline-block px-6 py-3 bg-(--accent) text-white rounded-md font-medium hover:bg-(--accent-bright) transition-colors">
+          Get in touch
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <Footer lang="en" />
+</Layout>

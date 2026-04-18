@@ -6,6 +6,7 @@ export const en = {
     contact: "Contact",
     faq: "FAQ",
     pricing: "Pricing",
+    blog: "Blog",
     menu: "Menu",
   },
   hero: {

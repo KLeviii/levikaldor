@@ -1,0 +1,82 @@
+---
+export const prerender = false;
+
+import Layout from '../../../layouts/Layout.astro';
+import Navbar from '../../../components/Navbar.astro';
+import Footer from '../../../components/Footer.astro';
+import { createSupabaseServerClient } from '../../../lib/supabase';
+
+const supabase = createSupabaseServerClient(Astro.cookies);
+const { data: posts } = await supabase
+  .from('blog_posts')
+  .select('slug, title_en, title_hu, excerpt_en, excerpt_hu, cover_url, tags, published_at, reading_time_min')
+  .eq('status', 'published')
+  .not('title_en', 'is', null)
+  .order('published_at', { ascending: false });
+---
+
+<Layout
+  lang="en"
+  title="Blog – Web Development | Levente Káldor"
+  description="Articles, tips and thoughts on web development, SEO and modern technologies."
+  canonical="https://levikaldor.hu/en/blog/"
+  alternates={[
+    { lang: 'hu', href: 'https://levikaldor.hu/blog/' },
+    { lang: 'en', href: 'https://levikaldor.hu/en/blog/' },
+  ]}
+>
+  <Navbar lang="en" />
+  <main id="main-content" class="max-w-5xl mx-auto px-4 pt-32 pb-20">
+    <h1 data-animate class="text-3xl md:text-4xl font-bold text-(--text-primary) mb-3">Blog</h1>
+    <p data-animate style="transition-delay:80ms" class="text-(--text-secondary) mb-12 max-w-xl">
+      Articles on web development, SEO and modern technologies.
+    </p>
+
+    {!posts?.length ? (
+      <p class="text-(--text-tertiary) py-12 text-center">Articles coming soon.</p>
+    ) : (
+      <div data-stagger class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {posts.map((post) => (
+          <a href={`/en/blog/${post.slug}/`}
+            class="group flex flex-col bg-white dark:bg-(--bg-surface) border border-(--border-subtle) rounded-lg hover:border-(--border-medium) hover:shadow-(--shadow-md) transition-all overflow-hidden">
+            {post.cover_url ? (
+              <div class="w-full h-40 overflow-hidden bg-(--bg-elevated)">
+                <img src={post.cover_url} alt={post.title_en ?? post.title_hu}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+              </div>
+            ) : (
+              <div class="w-full h-40 bg-gradient-to-br from-(--bg-elevated) to-(--bg-surface) flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-(--border-medium)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+                </svg>
+              </div>
+            )}
+            <div class="p-4 flex flex-col flex-1">
+              <h2 class="font-semibold text-(--text-primary) group-hover:text-(--accent) transition-colors mb-2 leading-snug">
+                {post.title_en ?? post.title_hu}
+              </h2>
+              {(post.excerpt_en ?? post.excerpt_hu) && (
+                <p class="text-sm text-(--text-secondary) mb-3 leading-relaxed line-clamp-3 flex-1">
+                  {post.excerpt_en ?? post.excerpt_hu}
+                </p>
+              )}
+              <div class="flex items-center justify-between text-xs text-(--text-tertiary) mt-auto pt-2">
+                {post.published_at && <time>{new Date(post.published_at).toLocaleDateString('en-GB')}</time>}
+                {post.reading_time_min && <span>{post.reading_time_min} min read</span>}
+              </div>
+              {post.tags?.length > 0 && (
+                <div class="flex flex-wrap gap-1.5 mt-3">
+                  {post.tags.map((tag: string) => (
+                    <span class="px-2 py-0.5 bg-(--accent-bg) text-(--accent) text-xs rounded font-medium">{tag}</span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </a>
+        ))}
+      </div>
+    )}
+  </main>
+  <Footer lang="en" />
+</Layout>

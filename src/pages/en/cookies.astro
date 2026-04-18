@@ -1,0 +1,188 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar.astro";
+import Footer from "../../components/Footer.astro";
+---
+
+<Layout
+  lang="en"
+  title="Cookie Policy | Káldor Levente"
+  description="Cookie Policy – Káldor Levente web developer."
+  canonical="https://levikaldor.hu/en/cookies/"
+>
+  <Navbar lang="en" />
+
+  <main class="pt-32 pb-20">
+    <div class="max-w-3xl mx-auto px-4">
+      <nav aria-label="Breadcrumb" class="mb-10">
+        <ol class="flex items-center gap-2 text-sm text-gray-400 dark:text-gray-500">
+          <li>
+            <a href="/en/" class="hover:text-(--accent) transition-colors">Home</a>
+          </li>
+          <li aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </li>
+          <li>
+            <span class="text-gray-600 dark:text-gray-300 font-medium" aria-current="page">Cookie Policy</span>
+          </li>
+        </ol>
+      </nav>
+
+      <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 mb-12">
+        <div>
+          <h1 class="text-4xl md:text-5xl font-bold text-(--text-primary) mb-4">
+            Cookie Policy
+          </h1>
+          <p class="text-(--text-secondary) text-lg">
+            Last updated: April 18, 2026.
+          </p>
+        </div>
+        <a
+          href="/docs/cookies.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 shrink-0 px-5 py-3 border border-(--border-subtle) rounded-lg text-(--text-secondary) hover:text-(--accent) hover:border-(--accent) transition-colors text-sm font-medium"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="12" y1="18" x2="12" y2="12"/>
+            <line x1="9" y1="15" x2="15" y2="15"/>
+          </svg>
+          Download PDF
+        </a>
+      </div>
+
+      <div class="space-y-8 text-(--text-secondary) leading-relaxed">
+
+        <section>
+          <h2 class="text-xl font-semibold text-(--text-primary) mb-3">What is a cookie?</h2>
+          <p>
+            A cookie is a small text file that a website stores in your browser. It allows the
+            site to remember your preferences and improve the user experience.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold text-(--text-primary) mb-3">What cookies do we use?</h2>
+
+          <div class="space-y-4 mt-4">
+            <div class="border border-(--border-subtle) rounded-lg p-5">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="font-medium text-(--text-primary)">Necessary cookies</h3>
+                <span class="text-xs px-2 py-1 bg-green-500/10 text-green-600 dark:text-green-400 rounded-full">Always active</span>
+              </div>
+              <p class="text-sm">
+                Essential for the basic functioning of the website. These cannot be disabled.
+              </p>
+              <p class="text-sm mt-2 text-(--text-tertiary)">[Placeholder: list of specific cookies]</p>
+            </div>
+
+            <div class="border border-(--border-subtle) rounded-lg p-5">
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="font-medium text-(--text-primary)">Analytics cookies</h3>
+                <span class="text-xs px-2 py-1 bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 rounded-full">Optional</span>
+              </div>
+              <p class="text-sm">
+                Help us understand how visitors use the site (e.g. Google Analytics).
+                They collect anonymous statistical data.
+              </p>
+              <p class="text-sm mt-2 text-(--text-tertiary)">[Placeholder: currently not active / list of specific cookies]</p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold text-(--text-primary) mb-3">How to manage cookies?</h2>
+          <p>
+            Most browsers accept cookies by default, but you can modify or delete them in your
+            browser settings at any time. Note: disabling necessary cookies may affect the
+            functionality of the site.
+          </p>
+          <ul class="list-disc list-inside space-y-1 mt-3 text-sm">
+            <li><a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener noreferrer" class="text-(--accent) hover:underline">Google Chrome</a></li>
+            <li><a href="https://support.mozilla.org/en-US/kb/enable-and-disable-cookies-website-preferences" target="_blank" rel="noopener noreferrer" class="text-(--accent) hover:underline">Mozilla Firefox</a></li>
+            <li><a href="https://support.apple.com/guide/safari/manage-cookies-sfri11471/mac" target="_blank" rel="noopener noreferrer" class="text-(--accent) hover:underline">Safari</a></li>
+            <li><a href="https://support.microsoft.com/en-us/microsoft-edge/delete-cookies-in-microsoft-edge" target="_blank" rel="noopener noreferrer" class="text-(--accent) hover:underline">Microsoft Edge</a></li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="text-xl font-semibold text-(--text-primary) mb-3">More information</h2>
+          <p>
+            For detailed information about data processing, please read the
+            <a href="/en/privacy/" class="text-(--accent) hover:underline">Privacy Policy</a>.
+          </p>
+        </section>
+
+        <section class="border border-(--border-subtle) rounded-lg p-6">
+          <h2 class="text-xl font-semibold text-(--text-primary) mb-2">Manage consent</h2>
+          <p class="text-sm text-(--text-secondary) mb-5">
+            You can change your cookie preferences at any time using the buttons below.
+            Current status: <span id="cookie-status" class="font-medium text-(--text-primary)">–</span>
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <button
+              id="cookie-page-accept"
+              class="px-4 py-2 text-sm rounded-lg bg-(--accent) text-white font-medium hover:bg-(--accent-bright) transition-colors"
+            >
+              Accept all cookies
+            </button>
+            <button
+              id="cookie-page-decline"
+              class="px-4 py-2 text-sm rounded-lg border border-(--border-subtle) text-(--text-secondary) hover:border-(--text-tertiary) transition-colors"
+            >
+              Necessary only
+            </button>
+            <button
+              id="cookie-page-reset"
+              class="px-4 py-2 text-sm rounded-lg border border-(--border-subtle) text-(--text-tertiary) hover:border-(--text-tertiary) transition-colors"
+            >
+              Reset
+            </button>
+          </div>
+        </section>
+
+      </div>
+
+      <script>
+        const STORAGE_KEY = "kl-cookies";
+        const statusEl = document.getElementById("cookie-status");
+
+        const labels: Record<string, string> = {
+          accepted: "Accepted",
+          declined: "Declined",
+        };
+
+        function updateStatus() {
+          const val = localStorage.getItem(STORAGE_KEY);
+          if (statusEl) statusEl.textContent = val ? (labels[val] ?? val) : "Not set";
+        }
+        updateStatus();
+
+        document.getElementById("cookie-page-accept")?.addEventListener("click", () => {
+          localStorage.setItem(STORAGE_KEY, "accepted");
+          updateStatus();
+        });
+        document.getElementById("cookie-page-decline")?.addEventListener("click", () => {
+          localStorage.setItem(STORAGE_KEY, "declined");
+          updateStatus();
+        });
+        document.getElementById("cookie-page-reset")?.addEventListener("click", () => {
+          localStorage.removeItem(STORAGE_KEY);
+          updateStatus();
+        });
+      </script>
+
+      <div class="mt-16 p-8 bg-(--accent-bg) border border-(--accent-border) rounded-lg text-center">
+        <h2 class="text-xl font-bold text-(--text-primary) mb-2">Have a question?</h2>
+        <p class="text-(--text-secondary) mb-6">Send me a message and I'll get back to you personally.</p>
+        <a href="/en/#contact" class="inline-block px-6 py-3 bg-(--accent) text-white rounded-md font-medium hover:bg-(--accent-bright) transition-colors">
+          Get in touch
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <Footer lang="en" />
+</Layout>
