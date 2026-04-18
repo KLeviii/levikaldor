@@ -12,6 +12,18 @@ if (readId) {
   return Astro.redirect('/admin/messages/');
 }
 
+const unreadId = Astro.url.searchParams.get('unread');
+if (unreadId) {
+  await supabase.from('contact_messages').update({ is_read: false }).eq('id', unreadId);
+  return Astro.redirect('/admin/messages/');
+}
+
+const deleteId = Astro.url.searchParams.get('delete');
+if (deleteId) {
+  await supabase.from('contact_messages').delete().eq('id', deleteId);
+  return Astro.redirect('/admin/messages/');
+}
+
 const { data: messages } = await supabase
   .from('contact_messages')
   .select('*')
@@ -50,10 +62,12 @@ const unreadCount = messages?.filter(m => !m.is_read).length ?? 0;
                   {msg.lang.toUpperCase()}
                 </span>
               </div>
-              <a href={`mailto:${msg.email}`}
-                class="text-sm text-(--accent) hover:text-(--accent-bright) transition-colors block mb-2">
+              <button
+                type="button"
+                data-copy={msg.email}
+                class="copy-email text-sm text-(--accent) hover:text-(--accent-bright) transition-colors block mb-2 text-left">
                 {msg.email}
-              </a>
+              </button>
               <p class="text-sm text-(--text-secondary) leading-relaxed whitespace-pre-wrap">{msg.message}</p>
             </div>
             <div class="flex flex-col items-end gap-2 shrink-0">
@@ -63,12 +77,24 @@ const unreadCount = messages?.filter(m => !m.is_read).length ?? 0;
                   hour: '2-digit', minute: '2-digit'
                 })}
               </time>
-              {!msg.is_read && (
-                <a href={`/admin/messages/?read=${msg.id}`}
-                  class="text-xs text-(--text-secondary) hover:text-(--text-primary) transition-colors underline underline-offset-2">
-                  Olvasottnak jelöl
-                </a>
-              )}
+              <div class="flex items-center gap-2">
+                {!msg.is_read ? (
+                  <a href={`/admin/messages/?read=${msg.id}`}
+                    class="text-xs text-(--text-secondary) hover:text-(--text-primary) transition-colors underline underline-offset-2">
+                    Olvasott
+                  </a>
+                ) : (
+                  <a href={`/admin/messages/?unread=${msg.id}`}
+                    class="text-xs text-(--text-secondary) hover:text-(--text-primary) transition-colors underline underline-offset-2">
+                    Olvasatlan
+                  </a>
+                )}
+                <button type="button"
+                  class="delete-btn text-xs text-red-500 hover:text-red-600 dark:hover:text-red-400 transition-colors underline underline-offset-2"
+                  data-id={msg.id} data-name={msg.name}>
+                  Törlés
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -76,3 +102,74 @@ const unreadCount = messages?.filter(m => !m.is_read).length ?? 0;
     )}
   </div>
 </AdminLayout>
+
+<!-- Delete confirm modal -->
+<div id="delete-modal" class="fixed inset-0 z-50 items-center justify-center p-4 hidden" style="display:none;">
+  <div id="delete-backdrop" class="fixed inset-0 bg-black/50 backdrop-blur-sm" style="opacity:0;transition:opacity 0.2s ease;"></div>
+  <div id="delete-panel" class="relative bg-(--bg-surface) border border-(--border-subtle) rounded-xl shadow-2xl w-full max-w-sm p-6"
+    style="opacity:0;transform:scale(0.95) translateY(8px);transition:opacity 0.22s cubic-bezier(0.16,1,0.3,1),transform 0.22s cubic-bezier(0.16,1,0.3,1);">
+    <h3 class="font-semibold text-(--text-primary) mb-1">Üzenet törlése</h3>
+    <p class="text-sm text-(--text-secondary) mb-6">Biztosan törlöd <span id="delete-name" class="font-medium text-(--text-primary)"></span> üzenetét? Ez nem visszavonható.</p>
+    <div class="flex items-center justify-end gap-3">
+      <button id="delete-cancel"
+        class="px-4 py-2 border border-(--border-subtle) hover:border-(--border-medium) text-(--text-secondary) text-sm font-medium rounded-md transition-colors">
+        Mégse
+      </button>
+      <a id="delete-confirm" href="#"
+        class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md transition-colors">
+        Törlés
+      </a>
+    </div>
+  </div>
+</div>
+
+<div id="copy-toast"
+  class="fixed bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm rounded-md shadow-lg opacity-0 translate-y-2 transition-all duration-300 pointer-events-none z-50">
+  Vágólapra másolva!
+</div>
+
+<script>
+  // Copy email
+  const toast = document.getElementById('copy-toast')!;
+  let toastTimer: ReturnType<typeof setTimeout>;
+  document.querySelectorAll<HTMLButtonElement>('.copy-email').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(btn.dataset.copy!);
+      toast.classList.remove('opacity-0', 'translate-y-2');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.add('opacity-0', 'translate-y-2'), 2000);
+    });
+  });
+
+  // Delete modal
+  const modal    = document.getElementById('delete-modal')!;
+  const backdrop = document.getElementById('delete-backdrop')!;
+  const panel    = document.getElementById('delete-panel')!;
+  const nameEl   = document.getElementById('delete-name')!;
+  const confirmBtn = document.getElementById('delete-confirm') as HTMLAnchorElement;
+  const cancelBtn  = document.getElementById('delete-cancel')!;
+
+  function openModal(id: string, name: string) {
+    nameEl.textContent = name;
+    confirmBtn.href = `/admin/messages/?delete=${id}`;
+    modal.style.display = 'flex';
+    requestAnimationFrame(() => {
+      backdrop.style.opacity = '1';
+      panel.style.opacity = '1';
+      panel.style.transform = 'scale(1) translateY(0)';
+    });
+  }
+
+  function closeModal() {
+    backdrop.style.opacity = '0';
+    panel.style.opacity = '0';
+    panel.style.transform = 'scale(0.95) translateY(8px)';
+    setTimeout(() => { modal.style.display = 'none'; }, 220);
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('.delete-btn').forEach(btn => {
+    btn.addEventListener('click', () => openModal(btn.dataset.id!, btn.dataset.name!));
+  });
+  cancelBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', closeModal);
+</script>

@@ -29,6 +29,18 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const file = formData.get('file') as File | null;
     if (!file) return json({ error: 'No file' }, 400);
 
+    const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif'];
+    const ALLOWED_EXTS = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'avif'];
+    const MAX_SIZE = 5 * 1024 * 1024; // 5 MB
+
+    const ext = file.name.split('.').pop()?.toLowerCase() ?? '';
+    if (!ALLOWED_TYPES.includes(file.type) || !ALLOWED_EXTS.includes(ext)) {
+      return json({ error: 'Csak képfájl tölthető fel (JPEG, PNG, WebP, GIF, AVIF).' }, 400);
+    }
+    if (file.size > MAX_SIZE) {
+      return json({ error: 'A fájl max. 5 MB lehet.' }, 400);
+    }
+
     const serviceKey = getSecret('SUPABASE_SERVICE_ROLE_KEY');
     const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
     if (!serviceKey || !supabaseUrl) return json({ error: `Missing env vars: url=${!!supabaseUrl} key=${!!serviceKey}` }, 500);

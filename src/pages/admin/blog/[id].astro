@@ -42,8 +42,15 @@ if (Astro.request.method === 'POST') {
   const tags = tagsRaw.split(',').map(t => t.trim()).filter(Boolean);
   const reading_time_min = parseInt(form.get('reading_time_min')?.toString() ?? '') || null;
 
+  const slugValid = /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug);
+  const coverUrlValid = !cover_url || /^https?:\/\/.+/.test(cover_url) || cover_url.startsWith('/');
+
   if (!slug || !title_hu || !content_hu) {
     formError = 'Slug, cím (HU) és tartalom (HU) kötelező.';
+  } else if (!slugValid) {
+    formError = 'A slug csak kisbetűket, számokat és kötőjelet tartalmazhat (pl. "en-blog-post").';
+  } else if (!coverUrlValid) {
+    formError = 'Érvénytelen borítókép URL.';
   } else {
     const wasPublished = post.status === 'published';
     const nowPublished = status === 'published';

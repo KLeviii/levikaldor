@@ -826,6 +826,21 @@ function formatHUF(amount: number) {
   document.querySelectorAll<HTMLInputElement>("input[name='module']")
     .forEach((el) => el.addEventListener("change", onModuleChange));
 
+  // overflow fix: visible after expand anim, hidden before collapse
+  document.querySelectorAll<HTMLElement>(".mod-options-wrap").forEach((wrap) => {
+    const inner = wrap.querySelector<HTMLElement>(".mod-options-inner")!;
+    wrap.addEventListener("transitionend", () => {
+      const expanded = getComputedStyle(wrap).gridTemplateRows !== "0px";
+      inner.style.overflow = expanded ? "visible" : "hidden";
+    });
+    // reset to hidden before collapse starts
+    const card = wrap.closest<HTMLElement>(".module-card");
+    const cb = card?.querySelector<HTMLInputElement>("input[name='module']");
+    cb?.addEventListener("change", () => {
+      if (!cb.checked) inner.style.overflow = "hidden";
+    });
+  });
+
   // whole-card click (only when card is collapsed)
   document.querySelectorAll<HTMLElement>(".module-card").forEach((card) => {
     card.addEventListener("click", (e) => {

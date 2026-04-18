@@ -1,0 +1,115 @@
+---
+import type { Lang } from "../i18n";
+import { useTranslations } from "../i18n";
+import { createSupabaseServerClient } from "../lib/supabase";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const supabase = createSupabaseServerClient(Astro.cookies, Astro.request);
+const { data: posts } = await supabase
+  .from("blog_posts")
+  .select("slug, title_hu, title_en, excerpt_hu, excerpt_en, cover_url, tags, published_at, reading_time_min")
+  .eq("status", "published")
+  .order("published_at", { ascending: false })
+  .limit(3);
+
+if (!posts?.length) return;
+
+const blogBase = lang === "hu" ? "/blog/" : "/en/blog/";
+---
+
+<section class="py-20">
+  <div class="max-w-5xl mx-auto px-4">
+    <div class="flex items-end justify-between mb-10 gap-4">
+      <div>
+        <h2 data-animate class="text-3xl md:text-4xl font-bold text-(--text-primary) mb-2">
+          {lang === "hu" ? "Blog" : "Blog"}
+        </h2>
+        <p data-animate style="transition-delay:80ms" class="text-(--text-secondary)">
+          {lang === "hu"
+            ? "Cikkek webfejlesztésről, SEO-ról és modern technológiákról."
+            : "Articles on web development, SEO, and modern technologies."}
+        </p>
+      </div>
+      <a
+        data-animate
+        style="transition-delay:160ms"
+        href={blogBase}
+        class="shrink-0 inline-flex items-center gap-1.5 text-sm font-medium text-(--accent) hover:text-(--accent-bright) transition-colors"
+      >
+        {lang === "hu" ? "Összes cikk" : "All posts"}
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </a>
+    </div>
+
+    <div data-stagger class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+      {posts.map((post) => {
+        const title = lang === "hu" ? post.title_hu : (post.title_en ?? post.title_hu);
+        const excerpt = lang === "hu" ? post.excerpt_hu : (post.excerpt_en ?? post.excerpt_hu);
+        return (
+          <a
+            href={`${blogBase}${post.slug}/`}
+            class="group flex flex-col bg-white dark:bg-(--bg-surface) border border-(--border-subtle) rounded-lg hover:border-(--border-medium) hover:shadow-(--shadow-md) transition-all overflow-hidden"
+          >
+            {post.cover_url ? (
+              <div class="w-full h-40 overflow-hidden bg-(--bg-elevated)">
+                <img
+                  src={post.cover_url}
+                  alt={title}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                />
+              </div>
+            ) : (
+              <div class="w-full h-40 bg-linear-to-br from-(--bg-elevated) to-(--bg-surface) flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-(--border-medium)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="16" y1="13" x2="8" y2="13"/>
+                  <line x1="16" y1="17" x2="8" y2="17"/>
+                </svg>
+              </div>
+            )}
+            <div class="p-4 flex flex-col flex-1">
+              <h3 class="font-semibold text-(--text-primary) group-hover:text-(--accent) transition-colors mb-2 leading-snug">
+                {title}
+              </h3>
+              {excerpt && (
+                <p class="text-sm text-(--text-secondary) mb-3 leading-relaxed line-clamp-3 flex-1">{excerpt}</p>
+              )}
+              <div class="flex items-center justify-between text-xs text-(--text-tertiary) mt-auto pt-2">
+                {post.published_at && (
+                  <time>{new Date(post.published_at).toLocaleDateString(lang === "hu" ? "hu-HU" : "en-GB")}</time>
+                )}
+                {post.reading_time_min && (
+                  <span>{post.reading_time_min} {lang === "hu" ? "perc" : "min"}</span>
+                )}
+              </div>
+              <div class="flex items-center justify-between mt-3">
+                {post.tags?.length > 0 ? (
+                  <div class="flex flex-wrap gap-1.5">
+                    {post.tags.slice(0, 3).map((tag: string) => (
+                      <span class="px-2 py-0.5 bg-(--accent-bg) text-(--accent) text-xs rounded font-medium">{tag}</span>
+                    ))}
+                  </div>
+                ) : <span />}
+                <span class="shrink-0 w-7 h-7 rounded-full border border-(--border-subtle) group-hover:border-(--accent) group-hover:bg-(--accent-bg) flex items-center justify-center transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-(--text-tertiary) group-hover:text-(--accent) transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                  </svg>
+                </span>
+              </div>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  </div>
+</section>

@@ -772,6 +772,20 @@ function formatHUF(amount: number) {
     });
   });
 
+  // overflow fix: visible after expand anim, hidden before collapse
+  document.querySelectorAll<HTMLElement>(".mod-options-wrap").forEach((wrap) => {
+    const inner = wrap.querySelector<HTMLElement>(".mod-options-inner")!;
+    wrap.addEventListener("transitionend", () => {
+      const expanded = getComputedStyle(wrap).gridTemplateRows !== "0px";
+      inner.style.overflow = expanded ? "visible" : "hidden";
+    });
+    const card = wrap.closest<HTMLElement>(".module-card");
+    const cb = card?.querySelector<HTMLInputElement>("input[name='module']");
+    cb?.addEventListener("change", () => {
+      if (!cb.checked) inner.style.overflow = "hidden";
+    });
+  });
+
   // floating portal selects
   let activePortal: HTMLElement | null = null;
   let activeTrigger: HTMLElement | null = null;

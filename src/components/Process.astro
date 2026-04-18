@@ -58,19 +58,7 @@ const t = useTranslations(lang);
 
 <style>
   .process-connector {
-    position: absolute;
-    left: 23px;
-    top: 48px;
-    bottom: 0;
-    width: 2px;
     background: var(--accent-border);
-    transform-origin: top;
-    transform: scaleY(0);
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .process-connector.visible {
-    transform: scaleY(1);
   }
 
   :global(.dark) .process-connector {
@@ -79,21 +67,27 @@ const t = useTranslations(lang);
 </style>
 
 <script>
-  const list = document.querySelector<HTMLElement>("#process .process-list");
-  if (list) {
+  function initProcess() {
+    const list = document.querySelector<HTMLElement>("#process .process-list");
+    if (!list) return;
+
     const connectors = Array.from(
       list.querySelectorAll<HTMLElement>(".process-connector")
     );
+
+    // Reset to hidden (handles re-navigation)
+    connectors.forEach((el) => {
+      el.style.transform = "scaleY(0)";
+    });
 
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
           connectors.forEach((el, i) => {
-            setTimeout(
-              () => el.classList.add("visible"),
-              (i + 1) * 100
-            );
+            setTimeout(() => {
+              el.style.transform = "scaleY(1)";
+            }, (i + 1) * 150);
           });
           obs.unobserve(entry.target);
         });
@@ -103,4 +97,7 @@ const t = useTranslations(lang);
 
     obs.observe(list);
   }
+
+  document.addEventListener("astro:page-load", initProcess);
+  initProcess();
 </script>
