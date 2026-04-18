@@ -47,7 +47,6 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
     const admin = createClient(supabaseUrl, serviceKey);
 
-    const ext = file.name.split('.').pop();
     const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
     const arrayBuffer = await file.arrayBuffer();
 
